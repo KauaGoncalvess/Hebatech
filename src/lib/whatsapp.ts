@@ -67,7 +67,7 @@ export function waContrato(p: PedidoContrato): string {
       "Olá, vim pelo site da HebaTech e quero falar sobre contrato de manutenção mensal.",
       "",
       `Plano de interesse: ${p.plano}`,
-      `Parque de máquinas: ${p.maquinas}`,
+      `Quantidade de máquinas: ${p.maquinas}`,
       "Pode me passar a proposta?",
     ].join("\n"),
   );

@@ -58,11 +58,11 @@ export function PlanoForm({ plano }: { plano?: Plano }) {
           <Entrada name="nome" defaultValue={p.nome} placeholder="Essencial" required />
         </Campo>
 
-        <Campo rotulo="Tamanho do parque" nota="Vai em laranja abaixo do nome">
+        <Campo rotulo="Quantas máquinas" nota="Vai em laranja abaixo do nome">
           <Entrada name="faixa" defaultValue={p.faixa} placeholder="Até 5 máquinas" />
         </Campo>
 
-        <Campo rotulo="Cadência do atendimento">
+        <Campo rotulo="Quantas visitas" nota="Aparece abaixo do valor">
           <Entrada
             name="visitas"
             defaultValue={p.visitas}

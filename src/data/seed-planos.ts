@@ -51,7 +51,7 @@ export const seedPlanos: Plano[] = [
   {
     id: "MP-03",
     codigo: "MP-03",
-    nome: "Parque completo",
+    nome: "Completo",
     faixa: "De 16 a 30 máquinas",
     precoMensal: null,
     visitas: "Visita semanal",
@@ -65,7 +65,7 @@ export const seedPlanos: Plano[] = [
       "Gestão de rede, cabeamento e Wi-Fi",
       "Padronização de imagem do Windows",
       "Plano de reposição de máquina em 12 e 24 meses",
-      "Relatório mensal do parque por e-mail",
+      "Relatório mensal dos equipamentos por e-mail",
     ],
   },
 ];

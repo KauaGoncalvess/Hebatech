@@ -3,11 +3,11 @@ export type Plano = {
   id: string;
   codigo: string;
   nome: string;
-  /** Tamanho do parque: "Até 5 máquinas". */
+  /** Quantas máquinas o plano atende: "Até 5 máquinas". */
   faixa: string;
   /** Valor mensal em reais. `null` publica o plano como "Sob proposta". */
   precoMensal: number | null;
-  /** Cadência do atendimento: "2 visitas por mês". */
+  /** Frequência das visitas: "2 visitas por mês". */
   visitas: string;
   destaque: boolean;
   ativo: boolean;

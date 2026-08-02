@@ -35,7 +35,7 @@ export default async function NotebooksPage() {
               revisado item a item
             </h1>
             <p className="mt-6 max-w-[52ch] text-[14px] leading-relaxed text-white/60">
-              Máquina que saiu de parque empresarial: chassi reforçado, teclado melhor
+              Máquina que rodou dentro de empresa: chassi reforçado, teclado melhor
               e peça de reposição fácil de achar. Cada aparelho passa por teste de
               disco, memória, bateria, tela e portas antes de entrar nesta lista.
             </p>

@@ -14,7 +14,9 @@ import { createClient } from "@supabase/supabase-js";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { seedProdutos } from "../src/data/seed";
+import { CHAVE_REGRAS, seedPlanos, seedRegras } from "../src/data/seed-planos";
 import { paraLinha } from "../src/lib/produto-mapper";
+import { paraLinhaPlano } from "../src/lib/plano-mapper";
 
 function carregarEnv(arquivo: string) {
   let conteudo: string;
@@ -85,8 +87,46 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`${count ?? linhas.length} produtos gravados no Supabase.`);
-  console.log("Painel: /admin");
+  console.log(`${count ?? linhas.length} produtos gravados.`);
+
+  // Planos de manutenção mensal
+  const linhasPlano = seedPlanos.map(({ id: _ignorado, ...plano }) =>
+    paraLinhaPlano(plano),
+  );
+
+  const { error: erroPlanos } = await supabase
+    .from("planos_manutencao")
+    .upsert(linhasPlano, { onConflict: "codigo" });
+
+  if (erroPlanos) {
+    console.error("Falha ao gravar os planos:", erroPlanos.message);
+    process.exit(1);
+  }
+  console.log(`${linhasPlano.length} planos de manutenção gravados.`);
+
+  // Regras do contrato — só grava se ainda não existirem, para não sobrescrever
+  // o que o responsável já editou pelo painel.
+  const { data: regrasSalvas } = await supabase
+    .from("configuracoes")
+    .select("chave")
+    .eq("chave", CHAVE_REGRAS)
+    .maybeSingle();
+
+  if (regrasSalvas) {
+    console.log("Regras do contrato já existem — mantidas como estão.");
+  } else {
+    const { error: erroRegras } = await supabase
+      .from("configuracoes")
+      .insert({ chave: CHAVE_REGRAS, valor: seedRegras });
+
+    if (erroRegras) {
+      console.error("Falha ao gravar as regras:", erroRegras.message);
+      process.exit(1);
+    }
+    console.log(`${seedRegras.length} regras de contrato gravadas.`);
+  }
+
+  console.log("\nPainel: /admin");
 }
 
 main();

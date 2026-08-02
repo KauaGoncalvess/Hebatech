@@ -89,6 +89,72 @@ create policy "somente admin escreve"
   using (true)
   with check (true);
 
+-- ── Planos de manutenção mensal ─────────────────────────────────────────────
+create table if not exists public.planos_manutencao (
+  id            uuid primary key default gen_random_uuid(),
+  codigo        text not null unique,
+  nome          text not null,
+  faixa         text not null default '',
+  -- Valor mensal em reais. Nulo publica o plano como "Sob proposta".
+  preco_mensal  integer check (preco_mensal >= 0),
+  visitas       text not null default '',
+  destaque      boolean not null default false,
+  ativo         boolean not null default true,
+  -- Itens inclusos: ["Visita técnica programada, 1x por mês", ...]
+  inclui        jsonb not null default '[]'::jsonb,
+  ordem         integer not null default 0,
+  criado_em     timestamptz not null default now(),
+  atualizado_em timestamptz not null default now()
+);
+
+create index if not exists planos_ordem_idx on public.planos_manutencao (ordem);
+
+drop trigger if exists planos_atualizado_em on public.planos_manutencao;
+create trigger planos_atualizado_em
+  before update on public.planos_manutencao
+  for each row execute function public.tocar_atualizado_em();
+
+alter table public.planos_manutencao enable row level security;
+
+drop policy if exists "planos visiveis para todos" on public.planos_manutencao;
+create policy "planos visiveis para todos"
+  on public.planos_manutencao for select
+  using (true);
+
+drop policy if exists "somente admin edita planos" on public.planos_manutencao;
+create policy "somente admin edita planos"
+  on public.planos_manutencao for all
+  to authenticated
+  using (true)
+  with check (true);
+
+-- ── Textos avulsos editáveis pelo painel ────────────────────────────────────
+-- Hoje guarda só `manutencao_regras`; serve para o que vier depois.
+create table if not exists public.configuracoes (
+  chave         text primary key,
+  valor         jsonb not null default '[]'::jsonb,
+  atualizado_em timestamptz not null default now()
+);
+
+drop trigger if exists configuracoes_atualizado_em on public.configuracoes;
+create trigger configuracoes_atualizado_em
+  before update on public.configuracoes
+  for each row execute function public.tocar_atualizado_em();
+
+alter table public.configuracoes enable row level security;
+
+drop policy if exists "configuracoes visiveis para todos" on public.configuracoes;
+create policy "configuracoes visiveis para todos"
+  on public.configuracoes for select
+  using (true);
+
+drop policy if exists "somente admin edita configuracoes" on public.configuracoes;
+create policy "somente admin edita configuracoes"
+  on public.configuracoes for all
+  to authenticated
+  using (true)
+  with check (true);
+
 -- ── Armazenamento das fotos ─────────────────────────────────────────────────
 insert into storage.buckets (id, name, public)
 values ('produtos', 'produtos', true)

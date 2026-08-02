@@ -42,12 +42,18 @@ máquina, para o `npm run seed`.
 | `/admin/produtos` | Lista completa; tirar do ar ou publicar com um clique |
 | `/admin/produtos/novo` | Cadastrar notebook, PC montado, monitor, peça, periférico ou acessório |
 | `/admin/produtos/<id>` | Editar tudo, trocar fotos ou excluir |
+| `/admin/planos` | Planos de manutenção mensal e as regras do contrato |
+| `/admin/planos/<id>` | Mudar valor, itens inclusos, ordem e o selo de mais contratado |
 
 - **Fotos** vão direto do seu computador para o Supabase Storage. A primeira é a
   capa; dá para reordenar e remover. **Sem foto, o site desenha automaticamente
   um render técnico do produto** — o card nunca fica vazio.
 - **Ficha técnica** é escrita uma linha por item, no formato `Rótulo: valor`.
 - **"À venda"** desligado tira o produto das listas na hora, sem apagar nada.
+- **Planos de manutenção**: o valor mensal é um número; marcar "sem valor fixo"
+  publica o plano como *Sob proposta*. Só um plano por vez pode ficar com o selo
+  de mais contratado — o painel cuida disso sozinho. Sem nenhum plano publicado,
+  a seção inteira some da página de assistência.
 - Ao salvar, as páginas afetadas são revalidadas — a alteração aparece no site em
   segundos, sem publicar de novo.
 
@@ -61,8 +67,9 @@ máquina, para o `npm run seed`.
 | `telefoneFixo` | `(31) 3771-7333`, tirado do Instagram — confirmar |
 | `operacao`, `horario` | Conferir anos de loja, prazos e horário |
 
-Preços da tabela de serviço ficam em `src/app/(site)/assistencia/page.tsx` e os
-planos de manutenção mensal em `src/components/planos-manutencao.tsx`.
+Os preços da tabela de serviço ficam em `src/app/(site)/assistencia/page.tsx`.
+Os planos de manutenção mensal e as regras do contrato são editados no painel,
+em `/admin/planos` — a carga inicial deles está em `src/data/seed-planos.ts`.
 
 ## Páginas
 
@@ -89,13 +96,15 @@ src/
   data/
     site.ts          configuração da loja
     seed.ts          catálogo inicial e carga do banco
+    seed-planos.ts   planos de manutenção e regras do contrato
   lib/
     catalogo.ts      leitura do catálogo, com queda para o seed
+    planos.ts        leitura dos planos, com a mesma queda
     supabase/        clientes de servidor e navegador
     whatsapp.ts      montagem das mensagens
   middleware.ts      renova a sessão e protege /admin
   types/produto.ts   modelo único de produto
-supabase/schema.sql  tabela, permissões e bucket
+supabase/schema.sql  tabelas, permissões e bucket
 ```
 
 ## Decisões que valem manter

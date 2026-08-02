@@ -3,6 +3,7 @@ import { OrcamentoForm } from "@/components/orcamento-form";
 import { PlanosManutencao } from "@/components/planos-manutencao";
 import { SectionHead } from "@/components/section-head";
 import { site } from "@/data/site";
+import { listarPlanosAtivos, listarRegras } from "@/lib/planos";
 
 export const metadata: Metadata = {
   title: "Assistência técnica em notebook e computador",
@@ -45,7 +46,11 @@ const REGRAS = [
   },
 ];
 
-export default function AssistenciaPage() {
+export const revalidate = 300;
+
+export default async function AssistenciaPage() {
+  const [planos, regras] = await Promise.all([listarPlanosAtivos(), listarRegras()]);
+
   return (
     <>
       <section className="mx-auto max-w-[1600px] border-b border-line">
@@ -146,6 +151,7 @@ export default function AssistenciaPage() {
         </div>
       </section>
 
+      {planos.length > 0 && (
       <section id="manutencao" className="mx-auto max-w-[1600px] scroll-mt-16 border-b border-line">
         <SectionHead
           indice="03"
@@ -159,8 +165,9 @@ export default function AssistenciaPage() {
           }
           nota="De 3 a 30 máquinas. Você paga um valor previsível por mês em vez de chamar técnico só quando o problema já parou o trabalho."
         />
-        <PlanosManutencao />
+        <PlanosManutencao planos={planos} regras={regras} />
       </section>
+      )}
 
       <section className="mx-auto max-w-[1600px]">
         <SectionHead

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { listarProdutos } from "@/lib/catalogo";
+import { listarPlanosAtivos } from "@/lib/planos";
 import { preco } from "@/lib/format";
 import { CATEGORIAS } from "@/types/produto";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminHome() {
-  const produtos = await listarProdutos();
+  const [produtos, planos] = await Promise.all([listarProdutos(), listarPlanosAtivos()]);
   const aVenda = produtos.filter((p) => p.disponivel);
   const semFoto = aVenda.filter((p) => p.fotos.length === 0);
   const valorEstoque = aVenda.reduce((soma, p) => soma + p.preco, 0);
@@ -74,10 +75,10 @@ export default async function AdminHome() {
         </section>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3">
         <Link
           href="/admin/produtos"
-          className="group flex items-center justify-between border-b border-line p-6 transition-colors hover:bg-surface md:border-r md:border-b-0 md:p-8"
+          className="group flex items-center justify-between border-b border-line p-6 transition-colors hover:bg-surface lg:border-r lg:border-b-0 lg:p-8"
         >
           <span>
             <span className="eyebrow text-white/35">Gerenciar</span>
@@ -92,8 +93,24 @@ export default async function AdminHome() {
         </Link>
 
         <Link
+          href="/admin/planos"
+          className="group flex items-center justify-between border-b border-line p-6 transition-colors hover:bg-surface lg:border-r lg:border-b-0 lg:p-8"
+        >
+          <span>
+            <span className="eyebrow text-white/35">Assistência</span>
+            <span className="display mt-3 block text-sub">Manutenção mensal</span>
+            <span className="mt-2 block text-[12.5px] text-white/45">
+              {planos.length} {planos.length === 1 ? "plano publicado" : "planos publicados"} · mudar valor e o que inclui
+            </span>
+          </span>
+          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
+            →
+          </span>
+        </Link>
+
+        <Link
           href="/admin/produtos/novo"
-          className="group flex items-center justify-between p-6 transition-colors hover:bg-surface md:p-8"
+          className="group flex items-center justify-between p-6 transition-colors hover:bg-surface lg:p-8"
         >
           <span>
             <span className="eyebrow text-accent">Cadastrar</span>

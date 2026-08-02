@@ -2,6 +2,11 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { SairButton } from "@/components/admin/sair-button";
 
+const SECOES = [
+  { href: "/admin/produtos", rotulo: "Produtos" },
+  { href: "/admin/planos", rotulo: "Planos" },
+];
+
 /** Moldura das telas autenticadas do painel. A tela de login fica fora daqui. */
 export default function PainelLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,16 +21,19 @@ export default function PainelLayout({ children }: { children: React.ReactNode }
           </Link>
 
           <nav className="flex items-center gap-px">
-            <Link
-              href="/admin/produtos/novo"
-              className="border border-line px-4 py-2 font-mono text-[10.5px] tracking-[0.14em] uppercase transition-colors hover:border-accent hover:text-accent"
-            >
-              Novo
-            </Link>
+            {SECOES.map((s) => (
+              <Link
+                key={s.href}
+                href={s.href}
+                className="border border-line px-4 py-2 font-mono text-[10.5px] tracking-[0.14em] uppercase transition-colors hover:border-accent hover:text-accent"
+              >
+                {s.rotulo}
+              </Link>
+            ))}
             <Link
               href="/"
               target="_blank"
-              className="hidden border border-line px-4 py-2 font-mono text-[10.5px] tracking-[0.14em] uppercase transition-colors hover:border-accent hover:text-accent sm:block"
+              className="hidden border border-line px-4 py-2 font-mono text-[10.5px] tracking-[0.14em] uppercase transition-colors hover:border-accent hover:text-accent md:block"
             >
               Ver site
             </Link>

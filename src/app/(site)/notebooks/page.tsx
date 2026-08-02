@@ -1,23 +1,32 @@
 import type { Metadata } from "next";
+import { CatalogoBrowser } from "@/components/catalogo-browser";
 import { CtaPanel } from "@/components/cta-panel";
-import { NotebooksBrowser } from "@/components/notebooks-browser";
-import { faixaPrecoCatalogo, notebooksDisponiveis } from "@/data/notebooks";
+import { listarNotebooks } from "@/lib/catalogo";
 import { preco } from "@/lib/format";
 import { waGenerico } from "@/lib/whatsapp";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Notebooks corporativos seminovos",
   description:
     "Dell Latitude, Lenovo ThinkPad, HP EliteBook e Acer TravelMate revisados, com estado declarado e 90 dias de garantia. Estoque em Sete Lagoas/MG.",
+  alternates: { canonical: "/notebooks" },
 };
 
-export default function NotebooksPage() {
+export default async function NotebooksPage() {
+  const itens = await listarNotebooks();
+  const precos = itens.map((p) => p.preco);
+  const faixa = precos.length
+    ? `${preco(Math.min(...precos))} a ${preco(Math.max(...precos))}`
+    : "sob consulta";
+
   return (
     <>
       <section className="mx-auto max-w-[1600px] border-b border-line">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           <div className="px-4 pt-10 pb-8 md:px-6 md:pt-16 lg:col-span-7 lg:border-r lg:border-line">
-            <p className="eyebrow text-accent">Estoque · atualizado à mão</p>
+            <p className="eyebrow text-accent">Estoque · revisado na bancada</p>
             <h1 className="display mt-5 text-title">
               Notebook de
               <br />
@@ -34,8 +43,8 @@ export default function NotebooksPage() {
 
           <dl className="grid grid-cols-2 border-t border-line lg:col-span-5 lg:border-t-0">
             {[
-              ["Em estoque", `${notebooksDisponiveis.length} aparelhos`],
-              ["Faixa de preço", `${preco(faixaPrecoCatalogo.min)} a ${preco(faixaPrecoCatalogo.max)}`],
+              ["Em estoque", `${itens.length} aparelhos`],
+              ["Faixa de preço", faixa],
               ["Garantia", "90 dias na loja"],
               ["Pagamento", "Pix, débito e 10x sem juros"],
             ].map(([k, v], i) => (
@@ -54,12 +63,12 @@ export default function NotebooksPage() {
       </section>
 
       <section className="mx-auto max-w-[1600px] border-b border-line">
-        <NotebooksBrowser itens={notebooksDisponiveis} />
+        <CatalogoBrowser itens={itens} />
       </section>
 
       <section className="mx-auto max-w-[1600px]">
         <div className="grid grid-cols-1 md:grid-cols-12">
-          <div className="px-4 py-10 md:col-span-8 md:px-6 md:py-14 md:border-r md:border-line">
+          <div className="px-4 py-10 md:col-span-8 md:border-r md:border-line md:px-6 md:py-14">
             <p className="eyebrow text-white/35">Não achou a configuração</p>
             <p className="display mt-4 text-sub">
               Chega estoque novo toda semana e nem tudo é anunciado

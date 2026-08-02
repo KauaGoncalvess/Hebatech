@@ -27,12 +27,12 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-ink">
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between pr-4 pl-4 md:pr-0 md:pl-6">
+      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between pr-4 pl-4 lg:pr-0 lg:pl-6">
         <Link href="/" aria-label={`${site.nomeCompleto} — início`}>
           <Logo />
         </Link>
 
-        <nav className="hidden items-stretch self-stretch md:flex">
+        <nav className="hidden items-stretch self-stretch lg:flex">
           {navegacao.map((item) => {
             const on = ativo(item.href);
             return (
@@ -78,7 +78,7 @@ export function SiteHeader() {
           onClick={() => setAberto((v) => !v)}
           aria-expanded={aberto}
           aria-controls="menu-mobile"
-          className="-mr-1 flex h-11 w-11 flex-col items-center justify-center gap-[7px] border border-line md:hidden"
+          className="-mr-1 flex h-11 w-11 flex-col items-center justify-center gap-[7px] border border-line lg:hidden"
         >
           <span className="sr-only">{aberto ? "Fechar menu" : "Abrir menu"}</span>
           <span
@@ -99,7 +99,7 @@ export function SiteHeader() {
       {aberto && (
         <div
           id="menu-mobile"
-          className="fixed inset-x-0 top-[65px] bottom-0 z-50 flex flex-col border-t border-line bg-ink md:hidden"
+          className="fixed inset-x-0 top-[65px] bottom-0 z-50 flex flex-col border-t border-line bg-ink lg:hidden"
         >
           {navegacao.map((item) => {
             const on = ativo(item.href);
@@ -107,7 +107,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-baseline gap-4 border-b border-line px-4 py-6"
+                className="flex items-baseline gap-4 border-b border-line px-4 py-5"
               >
                 <span
                   className={`font-mono text-[11px] ${on ? "text-accent" : "text-white/30"}`}

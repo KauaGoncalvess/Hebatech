@@ -1,31 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Barlow_Condensed, Inter, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
+import { classesDeFonte } from "../fonts";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { WhatsappDock } from "@/components/whatsapp-dock";
 import { site } from "@/data/site";
-
-const condensed = Barlow_Condensed({
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-condensed",
-  display: "swap",
-});
-
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-mono-tech",
-  display: "swap",
-});
-
-const neutral = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-neutral",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -37,10 +16,12 @@ export const metadata: Metadata = {
   keywords: [
     "assistência técnica notebook Sete Lagoas",
     "conserto de computador Sete Lagoas",
+    "manutenção mensal de computador para empresa",
     "notebook seminovo",
     "Dell Latitude usado",
     "ThinkPad seminovo",
     "HP EliteBook seminovo",
+    "PC montado Sete Lagoas",
   ],
   openGraph: {
     type: "website",
@@ -49,9 +30,7 @@ export const metadata: Metadata = {
     siteName: site.nomeCompleto,
     title: `${site.nomeCompleto} — Sete Lagoas/MG`,
     description: site.descricao,
-    images: [
-      { url: "/og.png", width: 1200, height: 630, alt: site.nomeCompleto },
-    ],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: site.nomeCompleto }],
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
@@ -68,7 +47,7 @@ const jsonLd = {
   name: site.nomeCompleto,
   description: site.descricao,
   url: site.url,
-  image: `${site.url}/marca/hebatech-selo.png`,
+  image: `${site.url}/og.png`,
   telephone: site.telefoneFixoLink,
   priceRange: "R$$",
   address: {
@@ -96,12 +75,9 @@ const jsonLd = {
   sameAs: [site.instagram],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="pt-BR"
-      className={`${condensed.variable} ${mono.variable} ${neutral.variable}`}
-    >
+    <html lang="pt-BR" className={classesDeFonte}>
       <body>
         <a
           href="#conteudo"

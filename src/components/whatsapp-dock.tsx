@@ -8,7 +8,7 @@ export function WhatsappDock() {
   const pathname = usePathname();
 
   // Na página de produto e no formulário, a ação principal já está no conteúdo.
-  if (pathname.startsWith("/notebooks/") || pathname === "/assistencia") return null;
+  if (pathname.startsWith("/produtos/") || pathname === "/assistencia") return null;
 
   return (
     <>

@@ -4,70 +4,12 @@ import { CtaPanel } from "@/components/cta-panel";
 import { ProductRail } from "@/components/product-rail";
 import { SectionHead } from "@/components/section-head";
 import { Ticker } from "@/components/ticker";
-import { notebooksDestaque, notebooksDisponiveis } from "@/data/notebooks";
 import { site } from "@/data/site";
+import { listarDestaques, listarNotebooks, listarOutrosProdutos } from "@/lib/catalogo";
 import { preco } from "@/lib/format";
 import { waGenerico } from "@/lib/whatsapp";
 
-const SERVICOS = [
-  {
-    indice: "01",
-    titulo: "Assistência técnica",
-    resumo:
-      "Notebook e desktop de qualquer marca. Abertura, medição e laudo antes de encostar em qualquer peça.",
-    itens: [
-      "Troca de tela, dobradiça, teclado e carcaça",
-      "Reparo de placa-mãe: conector de carga, trilha e BGA",
-      "Limpeza interna, troca de pasta térmica e thermal pad",
-      "Recuperação de dados e clonagem de disco",
-      "Formatação com backup e reinstalação de programa",
-    ],
-    metricas: [
-      ["Diagnóstico", "até 48h"],
-      ["Garantia", "90 dias"],
-    ],
-    href: "/assistencia",
-    acao: "Pedir orçamento",
-  },
-  {
-    indice: "02",
-    titulo: "Consultoria",
-    resumo:
-      "Para quem tem 3 a 30 máquinas e nenhum TI fixo. Levantamento do parque, plano de troca e rotina de backup.",
-    itens: [
-      "Inventário de equipamento e licença",
-      "Projeto de rede, cabeamento e Wi-Fi",
-      "Rotina de backup e teste de restauração",
-      "Padronização de imagem do Windows",
-      "Plano de reposição em 12 e 24 meses",
-    ],
-    metricas: [
-      ["Visita técnica", "agendada"],
-      ["Escopo", "por escrito"],
-    ],
-    href: "/contato",
-    acao: "Agendar visita",
-  },
-  {
-    indice: "03",
-    titulo: "Compra e venda",
-    resumo:
-      "Notebook corporativo de fim de contrato, revisado na bancada e vendido com estado declarado.",
-    itens: [
-      "Dell Latitude, ThinkPad, HP EliteBook e Acer TravelMate",
-      "SSD, memória e bateria testados um a um",
-      "Estado de conservação declarado por grau A, B ou C",
-      "Windows 11 Pro ativado e nota fiscal",
-      "Avaliamos o seu usado como parte do pagamento",
-    ],
-    metricas: [
-      ["Em estoque", `${notebooksDisponiveis.length} aparelhos`],
-      ["A partir de", preco(Math.min(...notebooksDisponiveis.map((n) => n.preco)))],
-    ],
-    href: "/notebooks",
-    acao: "Ver estoque",
-  },
-];
+export const revalidate = 300;
 
 const PROCESSO = [
   ["01", "Contato", "Você descreve o defeito no WhatsApp ou traz o aparelho na loja."],
@@ -76,7 +18,77 @@ const PROCESSO = [
   ["04", "Entrega", "Aparelho testado na sua frente, com garantia de 90 dias por escrito."],
 ];
 
-export default function Home() {
+export default async function Home() {
+  const [destaques, notebooks, outros] = await Promise.all([
+    listarDestaques(6),
+    listarNotebooks(),
+    listarOutrosProdutos(),
+  ]);
+
+  const menorPreco = notebooks.length
+    ? preco(Math.min(...notebooks.map((p) => p.preco)))
+    : "sob consulta";
+
+  const servicos = [
+    {
+      indice: "01",
+      titulo: "Assistência técnica",
+      resumo:
+        "Notebook e desktop de qualquer marca. Abertura, medição e laudo antes de encostar em qualquer peça.",
+      itens: [
+        "Troca de tela, dobradiça, teclado e carcaça",
+        "Reparo de placa-mãe: conector de carga, trilha e BGA",
+        "Limpeza interna, troca de pasta térmica e thermal pad",
+        "Recuperação de dados e clonagem de disco",
+        "Formatação com backup e reinstalação de programa",
+      ],
+      metricas: [
+        ["Diagnóstico", "até 48h"],
+        ["Garantia", "90 dias"],
+      ],
+      href: "/assistencia",
+      acao: "Pedir orçamento",
+    },
+    {
+      indice: "02",
+      titulo: "Manutenção mensal",
+      resumo:
+        "Contrato fixo para empresa que tem de 3 a 30 máquinas e nenhum TI próprio. Visita programada e chamado incluso.",
+      itens: [
+        "Visita técnica programada todo mês",
+        "Chamado remoto ilimitado no horário comercial",
+        "Rotina de backup com teste de restauração",
+        "Inventário de equipamento e licença atualizado",
+        "Plano de troca de máquina em 12 e 24 meses",
+      ],
+      metricas: [
+        ["A partir de", "R$ 390/mês"],
+        ["Fidelidade", "nenhuma"],
+      ],
+      href: "/assistencia#manutencao",
+      acao: "Ver os planos",
+    },
+    {
+      indice: "03",
+      titulo: "Compra e venda",
+      resumo:
+        "Notebook corporativo de fim de contrato, PC montado, monitor e peça — tudo revisado na bancada.",
+      itens: [
+        "Dell Latitude, ThinkPad, HP EliteBook e Acer TravelMate",
+        "PC montado sob medida, testado antes de sair",
+        "Monitor, dock, SSD, memória e periférico",
+        "Estado de conservação declarado por grau A, B ou C",
+        "Windows 11 Pro ativado e nota fiscal",
+      ],
+      metricas: [
+        ["Notebooks", `${notebooks.length} em estoque`],
+        ["A partir de", menorPreco],
+      ],
+      href: "/notebooks",
+      acao: "Ver estoque",
+    },
+  ];
+
   return (
     <>
       {/* ── Hero: grade assimétrica, título colado na margem, foto sangrando ── */}
@@ -104,7 +116,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="grid-field relative px-4 pt-12 pb-10 md:px-6 md:pt-20 md:pb-14 lg:col-span-7 lg:border-r lg:border-line">
               <p className="eyebrow text-accent">
-                Assistência · Consultoria · Seminovos
+                Assistência · Manutenção · Seminovos
               </p>
 
               <h1 className="display mt-6 text-display">
@@ -142,7 +154,7 @@ export default function Home() {
                   href="/notebooks"
                   className="flex h-14 items-center justify-center gap-3 border border-line px-7 font-mono text-[11.5px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent sm:justify-start"
                 >
-                  {notebooksDisponiveis.length} notebooks em estoque
+                  {notebooks.length} notebooks em estoque
                   <span aria-hidden>→</span>
                 </Link>
               </div>
@@ -244,11 +256,11 @@ export default function Home() {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3">
-          {SERVICOS.map((s, i) => (
+          {servicos.map((s, i) => (
             <article
               key={s.indice}
               className={`group flex flex-col border-line ${
-                i < SERVICOS.length - 1 ? "border-b lg:border-r lg:border-b-0" : ""
+                i < servicos.length - 1 ? "border-b lg:border-r lg:border-b-0" : ""
               }`}
             >
               <div className="flex items-start justify-between px-4 pt-6 md:px-6">
@@ -302,31 +314,42 @@ export default function Home() {
       </section>
 
       {/* ── Estoque em destaque ── */}
-      <section className="mx-auto max-w-[1600px] border-b border-line">
-        <SectionHead
-          indice="03"
-          etiqueta="Estoque"
-          titulo={
-            <>
-              Notebook corporativo
-              <br />
-              revisado na bancada
-            </>
-          }
-          nota="Máquina de fim de contrato empresarial: chassi reforçado, teclado melhor e peça de reposição fácil de achar."
-          acao={
-            <Link
-              href="/notebooks"
-              className="inline-flex w-fit items-center gap-3 border border-line px-5 py-3 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent"
-            >
-              Ver os {notebooksDisponiveis.length}
-              <span aria-hidden>→</span>
-            </Link>
-          }
-        />
-        <ProductRail itens={notebooksDestaque} />
-        <div className="h-4" />
-      </section>
+      {destaques.length > 0 && (
+        <section className="mx-auto max-w-[1600px] border-b border-line">
+          <SectionHead
+            indice="03"
+            etiqueta="Estoque"
+            titulo={
+              <>
+                Revisado na bancada,
+                <br />
+                com estado declarado
+              </>
+            }
+            nota="Notebook corporativo, PC montado, monitor e peça. Cada item sai com nota fiscal e garantia por escrito."
+            acao={
+              <div className="flex flex-wrap gap-px">
+                <Link
+                  href="/notebooks"
+                  className="inline-flex w-fit items-center gap-3 border border-line px-5 py-3 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent"
+                >
+                  {notebooks.length} notebooks
+                  <span aria-hidden>→</span>
+                </Link>
+                <Link
+                  href="/produtos"
+                  className="inline-flex w-fit items-center gap-3 border border-line px-5 py-3 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent"
+                >
+                  {outros.length} produtos
+                  <span aria-hidden>→</span>
+                </Link>
+              </div>
+            }
+          />
+          <ProductRail itens={destaques} />
+          <div className="h-4" />
+        </section>
+      )}
 
       {/* ── Processo ── */}
       <section className="mx-auto max-w-[1600px] border-b border-line">

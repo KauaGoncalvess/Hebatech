@@ -1,14 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Notebook } from "@/data/notebooks";
+import type { Produto } from "@/types/produto";
 import { ProductCard } from "./product-card";
 
 /**
  * Trilho horizontal com encaixe. Usa rolagem nativa — sem biblioteca de
  * carrossel — então funciona com gesto de toque e teclado de graça.
  */
-export function ProductRail({ itens }: { itens: Notebook[] }) {
+export function ProductRail({ itens }: { itens: Produto[] }) {
   const ref = useRef<HTMLUListElement>(null);
   const [limites, setLimites] = useState({ inicio: true, fim: false });
 
@@ -38,7 +38,7 @@ export function ProductRail({ itens }: { itens: Notebook[] }) {
     <div>
       <div className="flex items-center justify-between border-b border-line px-4 py-3 md:px-6">
         <p className="eyebrow text-white/40">
-          Arraste para o lado · {itens.length} aparelhos em destaque
+          Arraste para o lado · {itens.length} itens em destaque
         </p>
         <div className="hidden gap-px md:flex">
           {([-1, 1] as const).map((d) => {
@@ -64,12 +64,12 @@ export function ProductRail({ itens }: { itens: Notebook[] }) {
         onScroll={medir}
         className="rail flex snap-x snap-mandatory gap-px overflow-x-auto px-4 py-px md:px-6"
       >
-        {itens.map((n, i) => (
+        {itens.map((p, i) => (
           <li
-            key={n.codigo}
+            key={p.id}
             className="w-[82vw] shrink-0 snap-start xs:w-[74vw] sm:w-[340px] lg:w-[380px]"
           >
-            <ProductCard n={n} indice={i + 1} />
+            <ProductCard p={p} indice={i + 1} />
           </li>
         ))}
       </ul>

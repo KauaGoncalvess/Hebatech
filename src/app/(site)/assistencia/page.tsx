@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { OrcamentoForm } from "@/components/orcamento-form";
+import { PlanosManutencao } from "@/components/planos-manutencao";
 import { SectionHead } from "@/components/section-head";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Assistência técnica em notebook e computador",
   description:
-    "Diagnóstico em até 48h, orçamento antes de qualquer reparo e 90 dias de garantia. Assistência técnica em Sete Lagoas/MG. Peça o orçamento pelo WhatsApp.",
+    "Diagnóstico em até 48h, orçamento antes de qualquer reparo e 90 dias de garantia. Assistência técnica e contrato de manutenção mensal em Sete Lagoas/MG.",
+  alternates: { canonical: "/assistencia" },
 };
 
 const TABELA = [
@@ -144,9 +146,25 @@ export default function AssistenciaPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1600px]">
+      <section id="manutencao" className="mx-auto max-w-[1600px] scroll-mt-16 border-b border-line">
         <SectionHead
           indice="03"
+          etiqueta="Manutenção mensal"
+          titulo={
+            <>
+              Contrato fixo para
+              <br />
+              empresa sem TI próprio
+            </>
+          }
+          nota="De 3 a 30 máquinas. Você paga um valor previsível por mês em vez de chamar técnico só quando o problema já parou o trabalho."
+        />
+        <PlanosManutencao />
+      </section>
+
+      <section className="mx-auto max-w-[1600px]">
+        <SectionHead
+          indice="04"
           etiqueta="Regras da casa"
           titulo={
             <>

@@ -53,8 +53,9 @@ export const site = {
 export const navegacao = [
   { href: "/", rotulo: "Início", indice: "01" },
   { href: "/notebooks", rotulo: "Notebooks", indice: "02" },
-  { href: "/assistencia", rotulo: "Assistência", indice: "03" },
-  { href: "/contato", rotulo: "Contato", indice: "04" },
+  { href: "/produtos", rotulo: "Produtos", indice: "03" },
+  { href: "/assistencia", rotulo: "Assistência", indice: "04" },
+  { href: "/contato", rotulo: "Contato", indice: "05" },
 ] as const;
 
 export const enderecoLinha = `${site.endereco.logradouro} — ${site.endereco.bairro}, ${site.endereco.cidade}/${site.endereco.uf}`;

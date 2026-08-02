@@ -91,103 +91,75 @@ export default async function Home() {
 
   return (
     <>
-      {/* ── Hero: grade assimétrica, título colado na margem, foto sangrando ── */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-[1600px]">
-          <ul className="grid grid-cols-2 border-b border-line md:grid-cols-4">
+      {/* ── Hero: a foto da bancada é o fundo; o texto fica na margem ── */}
+      <section className="relative overflow-hidden border-b border-line">
+        <Image
+          src="/fotos/setup-montagem.jpg"
+          alt="Computador montado e organizado na bancada da HebaTech"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center brightness-[0.62] contrast-[1.08] grayscale"
+        />
+        {/* Duotone laranja para a foto não brigar com a marca */}
+        <div aria-hidden className="absolute inset-0 bg-accent opacity-40 mix-blend-color" />
+        {/* Véu que garante leitura: sobe de baixo no celular, da esquerda no desktop */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-linear-to-t from-ink via-ink/80 to-ink/25 lg:bg-linear-to-r lg:from-ink lg:via-ink/80 lg:to-ink/10"
+        />
+
+        <div className="relative mx-auto max-w-[1600px] px-4 pt-14 pb-12 md:px-6 md:pt-24 md:pb-20">
+          <p className="eyebrow text-accent">
+            {site.endereco.cidade} / {site.endereco.uf} · Loja física
+          </p>
+
+          <h1 className="display mt-6 max-w-[15ch] text-display">
+            Conserto com <span className="text-accent">laudo</span> antes do orçamento
+          </h1>
+
+          <span
+            aria-hidden
+            className="measure-in mt-8 block h-px w-full max-w-[520px] bg-accent"
+          />
+
+          <p className="mt-6 max-w-[38ch] text-[15px] leading-relaxed text-white/70">
+            Bancada própria. Você recebe o valor fechado de peça e mão de obra antes
+            de autorizar qualquer reparo.
+          </p>
+
+          <div className="mt-9 flex flex-col items-stretch gap-px sm:flex-row sm:flex-wrap">
+            <a
+              href={waGenerico("assistência técnica")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-14 items-center justify-center bg-accent px-7 font-mono text-[11.5px] font-bold tracking-[0.16em] text-black uppercase transition-colors hover:bg-white sm:justify-start"
+            >
+              Descrever o defeito
+            </a>
+            <Link
+              href="/notebooks"
+              className="flex h-14 items-center justify-center gap-3 border border-white/25 bg-ink/60 px-7 font-mono text-[11.5px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent sm:justify-start"
+            >
+              {notebooks.length} notebooks em estoque
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+
+          {/* Os números que antes ocupavam quatro caixas, agora numa linha só.
+              Cada item é indivisível, então a quebra cai entre eles. */}
+          <ul className="mt-10 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] tracking-[0.1em] text-white/55">
             {[
-              ["Base", `${site.endereco.cidade} / ${site.endereco.uf}`],
-              ["Operação", `${site.operacao.anos} anos de loja física`],
-              ["Diagnóstico", `até ${site.operacao.prazoDiagnosticoHoras}h`],
-              ["Garantia", `${site.operacao.garantiaServicoDias} dias`],
-            ].map(([k, v], i) => (
-              <li
-                key={k}
-                className={`px-4 py-3 md:px-6 ${i % 2 === 0 ? "border-r border-line" : ""} ${
-                  i < 2 ? "border-b border-line md:border-b-0" : ""
-                } ${i === 2 ? "md:border-r md:border-line" : ""}`}
-              >
-                <p className="eyebrow text-white/35">{k}</p>
-                <p className="mt-1.5 font-mono text-[12px] text-white">{v}</p>
+              `${site.operacao.anos} anos de loja`,
+              `diagnóstico em até ${site.operacao.prazoDiagnosticoHoras}h`,
+              `${site.operacao.garantiaServicoDias} dias de garantia`,
+            ].map((item) => (
+              <li key={item} className="flex items-center gap-2 whitespace-nowrap">
+                <span aria-hidden className="h-1 w-1 shrink-0 bg-accent" />
+                {item}
               </li>
             ))}
           </ul>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12">
-            <div className="grid-field relative px-4 pt-12 pb-10 md:px-6 md:pt-20 md:pb-14 lg:col-span-7 lg:border-r lg:border-line">
-              <p className="eyebrow text-accent">
-                Assistência · Manutenção · Seminovos
-              </p>
-
-              <h1 className="display mt-6 text-display">
-                Conserto de
-                <br />
-                notebook com
-                <br />
-                <span className="text-accent">laudo</span> antes
-                <br />
-                do orçamento
-              </h1>
-
-              <span
-                aria-hidden
-                className="measure-in mt-8 block h-px w-full max-w-[520px] bg-accent"
-              />
-
-              <p className="mt-6 max-w-[46ch] text-[15px] leading-relaxed text-white/60">
-                Bancada própria em {site.endereco.cidade}. O aparelho entra, é medido e
-                você recebe o valor fechado de peça e mão de obra antes de autorizar
-                qualquer reparo. Se não tiver conserto viável, você leva de volta sem
-                custo de diagnóstico.
-              </p>
-
-              <div className="mt-10 flex flex-col items-stretch gap-px sm:flex-row sm:flex-wrap">
-                <a
-                  href={waGenerico("assistência técnica")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-14 items-center justify-center bg-accent px-7 font-mono text-[11.5px] font-bold tracking-[0.16em] text-black uppercase transition-colors hover:bg-white sm:justify-start"
-                >
-                  Descrever o defeito
-                </a>
-                <Link
-                  href="/notebooks"
-                  className="flex h-14 items-center justify-center gap-3 border border-line px-7 font-mono text-[11.5px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent sm:justify-start"
-                >
-                  {notebooks.length} notebooks em estoque
-                  <span aria-hidden>→</span>
-                </Link>
-              </div>
-            </div>
-
-            {/* Foto real da bancada, tratada em duotone para não brigar com a marca */}
-            <div className="relative min-h-[340px] border-t border-line lg:col-span-5 lg:min-h-0 lg:border-t-0">
-              <Image
-                src="/fotos/setup-montagem.jpg"
-                alt="Computador montado e organizado na bancada da HebaTech"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 42vw"
-                className="object-cover brightness-[0.72] contrast-[1.12] grayscale"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-accent opacity-45 mix-blend-color"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-linear-to-t from-ink via-transparent to-ink/40"
-              />
-              <div className="absolute inset-x-0 bottom-0 grid grid-cols-2 border-t border-line/80 bg-ink/80">
-                <p className="border-r border-line px-4 py-3 font-mono text-[10px] tracking-[0.16em] text-white/70 uppercase">
-                  Montagem e organização
-                </p>
-                <p className="px-4 py-3 font-mono text-[10px] tracking-[0.16em] text-accent uppercase">
-                  Serviço executado na loja
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -213,18 +185,15 @@ export default async function Home() {
           }
         />
 
-        <dl className="grid grid-cols-2 lg:grid-cols-4">
+        <dl className="grid grid-cols-1 sm:grid-cols-3">
           {[
             [`${site.operacao.anos}`, "anos", "de operação contínua em Sete Lagoas"],
             [`${site.operacao.atendimentos}+`, "atendimentos", "entre pessoa física e empresa"],
             [`${site.operacao.garantiaServicoDias}`, "dias", "de garantia em serviço e equipamento"],
-            [`${site.operacao.prazoDiagnosticoHoras}h`, "prazo", "para o diagnóstico ficar pronto"],
           ].map(([num, unidade, texto], i) => (
             <div
               key={unidade}
-              className={`border-line p-4 md:p-6 ${i < 2 ? "border-b lg:border-b-0" : ""} ${
-                i % 2 === 0 ? "border-r" : ""
-              } ${i === 2 ? "lg:border-r" : ""}`}
+              className={`border-line p-4 md:p-6 ${i < 2 ? "border-b sm:border-b-0 sm:border-r" : ""}`}
             >
               <dt className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span className="display text-[clamp(2.75rem,7vw,5rem)] leading-[0.8] text-accent">

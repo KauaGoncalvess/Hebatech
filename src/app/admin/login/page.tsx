@@ -5,7 +5,7 @@ import { LoginForm } from "@/components/admin/login-form";
 export default function LoginPage() {
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-      <div className="grid-field flex flex-col justify-between border-b border-line p-6 lg:border-r lg:border-b-0 lg:p-10">
+      <div className="flex flex-col justify-between border-b border-line p-6 lg:border-r lg:border-b-0 lg:p-10">
         <Logo />
         <div className="py-16">
           <p className="eyebrow text-accent">Área restrita</p>

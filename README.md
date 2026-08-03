@@ -61,11 +61,11 @@ máquina, para o `npm run seed`.
 
 | Campo | Situação |
 | --- | --- |
-| `whatsapp` / `whatsappVisivel` | **Placeholder.** Sem isso nenhum botão funciona |
-| `email`, `url` | **Placeholder** |
+| `email`, `url` | **Únicos placeholders que restam.** `url` alimenta `metadataBase`, o sitemap e os canonical — sem o domínio real, todo link absoluto aponta para lugar nenhum |
+| `whatsapp` / `whatsappVisivel` | `(31) 99961-2371` — confirmado |
 | `endereco` | Av. José Sérvulo Soalheiro, 1625 — Jardim Europa. **Conferir o CEP**: a avenida atravessa mais de um bairro |
 | `telefoneFixo` | `(31) 3771-7333`, tirado do Instagram — confirmar |
-| `operacao.atendimentos` | `2400` é uma estimativa de rascunho — confirmar antes de divulgar |
+| `operacao.atendimentos` | `3000`, informado pela loja |
 | `horario` | Conferir prazos e horário |
 
 Os preços da tabela de serviço ficam em `src/app/(site)/assistencia/page.tsx`.

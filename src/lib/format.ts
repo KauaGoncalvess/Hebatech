@@ -4,8 +4,15 @@ const brl = new Intl.NumberFormat("pt-BR", {
   maximumFractionDigits: 0,
 });
 
+const decimal = new Intl.NumberFormat("pt-BR");
+
 export function preco(valor: number): string {
   return brl.format(valor);
+}
+
+/** Número inteiro com separador de milhar: 3000 → "3.000". */
+export function numero(valor: number): string {
+  return decimal.format(valor);
 }
 
 /** Parcela sem juros no cartão, arredondada para cima no centavo. */

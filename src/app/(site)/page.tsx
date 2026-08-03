@@ -8,6 +8,7 @@ import { ServicoCard } from "@/components/servico-card";
 import { servicos } from "@/data/servicos";
 import { site } from "@/data/site";
 import { listarDestaques, listarNotebooks } from "@/lib/catalogo";
+import { numero } from "@/lib/format";
 import { waGenerico } from "@/lib/whatsapp";
 
 export const revalidate = 300;
@@ -211,7 +212,7 @@ export default async function Home() {
 
             <dl className="grid grid-cols-3 gap-3">
               {[
-                [`${site.operacao.atendimentos}+`, "atendimentos"],
+                [`${numero(site.operacao.atendimentos)}+`, "atendimentos"],
                 [`${site.operacao.prazoDiagnosticoHoras}h`, "para o diagnóstico"],
                 [`${site.operacao.garantiaServicoDias}`, "dias de garantia"],
               ].map(([num, unidade]) => (

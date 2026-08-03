@@ -13,8 +13,8 @@ export const site = {
   url: "https://hebatech.com.br",
 
   /** Número no formato internacional, só dígitos — usado no link wa.me. */
-  whatsapp: "5531977000000",
-  whatsappVisivel: "(31) 97700-0000",
+  whatsapp: "5531999612371",
+  whatsappVisivel: "(31) 99961-2371",
 
   telefoneFixo: "(31) 3771-7333",
   telefoneFixoLink: "+553137717333",
@@ -48,7 +48,7 @@ export const site = {
   ],
 
   operacao: {
-    atendimentos: 2400,
+    atendimentos: 3000,
     garantiaServicoDias: 90,
     garantiaEquipamentoDias: 90,
     prazoDiagnosticoHoras: 48,

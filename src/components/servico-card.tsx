@@ -1,9 +1,10 @@
+import Link from "next/link";
 import type { Servico } from "@/data/servicos";
 import { ServicoArt } from "./servico-art";
 
 export function ServicoCard({ s }: { s: Servico }) {
-  return (
-    <article className="spot card flex h-full flex-col overflow-hidden">
+  const conteudo = (
+    <>
       <div className="relative aspect-[16/10] overflow-hidden text-white">
         <ServicoArt area={s.area} className="h-full w-full" />
         <span className="absolute top-4 left-4 rounded-full bg-black/60 px-3 py-1.5 font-mono text-[10px] tracking-[0.14em] text-accent uppercase backdrop-blur">
@@ -23,7 +24,25 @@ export function ServicoCard({ s }: { s: Servico }) {
             </li>
           ))}
         </ul>
+
+        {s.href && (
+          <span className="mt-6 inline-flex items-center gap-3 font-mono text-[11.5px] tracking-[0.12em] text-accent uppercase">
+            Ver planos e valores
+            <span aria-hidden>→</span>
+          </span>
+        )}
       </div>
-    </article>
+    </>
+  );
+
+  const classe = "spot card flex h-full flex-col overflow-hidden";
+
+  // Só o serviço que tem página própria vira link; o resto continua cartão.
+  return s.href ? (
+    <Link href={s.href} className={`${classe} transition-colors hover:bg-surface-2`}>
+      {conteudo}
+    </Link>
+  ) : (
+    <article className={classe}>{conteudo}</article>
   );
 }

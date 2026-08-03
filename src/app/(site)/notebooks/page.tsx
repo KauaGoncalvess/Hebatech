@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { CatalogoBrowser } from "@/components/catalogo-browser";
 import { CtaPanel } from "@/components/cta-panel";
 import { listarNotebooks } from "@/lib/catalogo";
@@ -26,13 +27,16 @@ export default async function NotebooksPage() {
         </p>
       </section>
       <section className="mx-auto max-w-[1180px] px-5 pb-20">
-        <CatalogoBrowser itens={itens} />
+        {/* O filtro lê a barra de endereço; a página segue estática. */}
+        <Suspense fallback={null}>
+          <CatalogoBrowser itens={itens} />
+        </Suspense>
       </section>
 
       <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
           <div className="card p-6 md:p-8">
-            <p className="eyebrow text-white/35">Não achou a configuração</p>
+            <p className="eyebrow text-white/50">Não achou a configuração</p>
             <p className="display mt-4 max-w-[20ch] text-sub">
               Chega estoque novo toda semana e nem tudo é anunciado
             </p>

@@ -6,7 +6,7 @@ import { ProductGallery } from "@/components/product-gallery";
 import { ProductRender } from "@/components/product-render";
 import { buscarPorSlug, listarDisponiveis, listarRelacionados } from "@/lib/catalogo";
 import { parcela, preco } from "@/lib/format";
-import { waProduto } from "@/lib/whatsapp";
+import { waParecido, waProduto } from "@/lib/whatsapp";
 import { site } from "@/data/site";
 import {
   GRAU_DESCRICAO,
@@ -31,11 +31,27 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   const resumo = resumoTecnico(p);
   const titulo = `${p.marca} ${p.modelo}${resumo.length ? ` — ${resumo.join(" / ")}` : ""}`;
+  const descricao = p.disponivel
+    ? `${titulo} por ${preco(p.preco)}. ${p.resumo} Garantia de ${p.garantiaDias} dias. Estoque em ${site.endereco.cidade}/${site.endereco.uf}.`
+    : `${titulo} — já vendido. Veja o que temos parecido em estoque em ${site.endereco.cidade}/${site.endereco.uf}.`;
+
+  // Sem foto o link cai na imagem genérica da loja; com foto, a capa do produto.
+  const imagem = p.fotos[0];
 
   return {
-    title: titulo,
-    description: `${titulo} por ${preco(p.preco)}. ${p.resumo} Garantia de ${p.garantiaDias} dias. Estoque em ${site.endereco.cidade}/${site.endereco.uf}.`,
+    title: p.disponivel ? titulo : `${titulo} (vendido)`,
+    description: descricao,
     alternates: { canonical: `/produtos/${p.slug}` },
+    openGraph: {
+      type: "website",
+      title: titulo,
+      description: descricao,
+      url: `/produtos/${p.slug}`,
+      images: imagem
+        ? [{ url: imagem, alt: `${p.marca} ${p.modelo}` }]
+        : [{ url: "/og.png", width: 1200, height: 630, alt: site.nomeCompleto }],
+    },
+    robots: p.disponivel ? undefined : { index: false, follow: true },
   };
 }
 
@@ -81,8 +97,11 @@ function roteiroRevisao(p: Produto): string[] {
 export default async function ProdutoPage({ params }: Params) {
   const { slug } = await params;
   const p = await buscarPorSlug(slug);
-  if (!p || !p.disponivel) notFound();
+  if (!p) notFound();
 
+  // Vendido não é erro: o link já circulou no Instagram e no WhatsApp. Mantém a
+  // página de pé, avisa que saiu e joga a conversa para o que ainda tem.
+  const vendido = !p.disponivel;
   const relacionados = await listarRelacionados(p);
   const voltarPara = p.categoria === "notebook" ? "/notebooks" : "/produtos";
   const rotuloVoltar = p.categoria === "notebook" ? "Notebooks" : "Produtos";
@@ -118,9 +137,36 @@ export default async function ProdutoPage({ params }: Params) {
       "@type": "Offer",
       priceCurrency: "BRL",
       price: p.preco,
-      availability: "https://schema.org/InStock",
+      availability: vendido
+        ? "https://schema.org/SoldOut"
+        : "https://schema.org/InStock",
+      itemCondition:
+        p.condicao === "novo"
+          ? "https://schema.org/NewCondition"
+          : "https://schema.org/UsedCondition",
       url: `${site.url}/produtos/${p.slug}`,
+      seller: { "@id": `${site.url}#loja` },
     },
+  };
+
+  const trilhaLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Início", item: site.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: rotuloVoltar,
+        item: `${site.url}${voltarPara}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: `${p.marca} ${p.modelo}`,
+        item: `${site.url}/produtos/${p.slug}`,
+      },
+    ],
   };
 
   return (
@@ -153,7 +199,7 @@ export default async function ProdutoPage({ params }: Params) {
           <ul className="mt-4 grid grid-cols-3 gap-3">
             {medidas.map(([k, v]) => (
               <li key={k} className="rounded-2xl bg-surface-2 p-4">
-                <p className="eyebrow text-white/35">{k}</p>
+                <p className="eyebrow text-white/50">{k}</p>
                 <p className="mt-2 font-mono text-[14px]">{v}</p>
               </li>
             ))}
@@ -169,9 +215,14 @@ export default async function ProdutoPage({ params }: Params) {
             <span className="rounded-full bg-surface-2 px-3.5 py-2 font-mono text-[10.5px] tracking-[0.12em] text-white/50 uppercase">
               {rotuloCategoria(p.categoria)}
             </span>
-            <span className="rounded-full bg-surface-2 px-3.5 py-2 font-mono text-[10.5px] tracking-[0.12em] text-white/40 uppercase">
+            <span className="rounded-full bg-surface-2 px-3.5 py-2 font-mono text-[10.5px] tracking-[0.12em] text-white/55 uppercase">
               {p.codigo}
             </span>
+            {vendido && (
+              <span className="rounded-full bg-accent px-3.5 py-2 font-mono text-[10.5px] font-bold tracking-[0.12em] text-black uppercase">
+                Vendido
+              </span>
+            )}
           </div>
 
           <h1 className="display mt-5 text-[clamp(2rem,5vw,3.2rem)] leading-[0.92]">
@@ -187,32 +238,61 @@ export default async function ProdutoPage({ params }: Params) {
             <p className="mt-4 text-[14.5px] leading-relaxed text-white/60">{p.resumo}</p>
           )}
 
-          <div className="card mt-7 p-6">
-            {p.precoReferencia && p.precoReferencia > p.preco && (
-              <p className="font-mono text-[12px] text-white/35 line-through">
-                {preco(p.precoReferencia)}
+          {vendido ? (
+            <div className="card mt-7 p-6">
+              <p className="eyebrow text-accent">Já saiu do estoque</p>
+              <p className="display mt-4 max-w-[18ch] text-[clamp(1.6rem,4vw,2.2rem)] leading-[0.95]">
+                Este aparelho foi vendido
               </p>
-            )}
-            <p className="display mt-1 text-[clamp(2.2rem,6vw,3rem)] leading-none">
-              {preco(p.preco)}
-            </p>
-            <p className="mt-3 font-mono text-[12px] text-white/50">
-              à vista no Pix · ou 10x de {parcela(p.preco)} sem juros
-            </p>
+              <p className="mt-4 text-[14px] leading-relaxed text-white/60">
+                A ficha continua no ar para você comparar. Chega máquina do mesmo
+                porte toda semana — diga a configuração e avisamos assim que entrar.
+              </p>
 
-            <a
-              href={waProduto(p)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
-            >
-              Reservar no WhatsApp
-              <span aria-hidden>→</span>
-            </a>
-            <p className="mt-4 text-center font-mono text-[11px] text-white/40">
-              A mensagem já vai com modelo, código e preço.
-            </p>
-          </div>
+              <a
+                href={waParecido(p)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+              >
+                Quero um parecido
+                <span aria-hidden>→</span>
+              </a>
+              <Link
+                href={voltarPara}
+                className="mt-3 flex h-14 items-center justify-center rounded-full bg-surface-2 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+              >
+                Ver o que tem em estoque
+              </Link>
+            </div>
+          ) : (
+            <div className="card mt-7 p-6">
+              {p.precoReferencia && p.precoReferencia > p.preco && (
+                <p className="font-mono text-[12px] text-white/50 line-through">
+                  {preco(p.precoReferencia)}
+                </p>
+              )}
+              <p className="display mt-1 text-[clamp(2.2rem,6vw,3rem)] leading-none">
+                {preco(p.preco)}
+              </p>
+              <p className="mt-3 font-mono text-[12px] text-white/50">
+                à vista no Pix · ou 10x de {parcela(p.preco)} sem juros
+              </p>
+
+              <a
+                href={waProduto(p)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+              >
+                Reservar no WhatsApp
+                <span aria-hidden>→</span>
+              </a>
+              <p className="mt-4 text-center font-mono text-[11px] text-white/55">
+                A mensagem já vai com modelo, código e preço.
+              </p>
+            </div>
+          )}
 
           {/* Estado de conservação */}
           <div className="card mt-4 p-6">
@@ -224,7 +304,7 @@ export default async function ProdutoPage({ params }: Params) {
                 <h2 className="font-mono text-[12px] tracking-[0.1em] uppercase">
                   {p.estadoGrau ? "Estado de conservação" : "Produto novo"}
                 </h2>
-                <p className="font-mono text-[11px] text-white/40">
+                <p className="font-mono text-[11px] text-white/55">
                   {p.estadoGrau ? `Grau ${p.estadoGrau} de A a C` : "Lacrado, com nota fiscal"}
                 </p>
               </div>
@@ -247,7 +327,7 @@ export default async function ProdutoPage({ params }: Params) {
               </ul>
             )}
 
-            <p className="mt-5 text-[13px] text-white/40">
+            <p className="mt-5 text-[13px] text-white/55">
               Você pode conferir o produto na loja antes de fechar, sem compromisso.
             </p>
           </div>
@@ -279,7 +359,7 @@ export default async function ProdutoPage({ params }: Params) {
           <dl className="card mt-6 divide-y divide-line overflow-hidden">
             {[...p.ficha, { rotulo: "Código do produto", valor: p.codigo }].map((item) => (
               <div key={item.rotulo} className="grid gap-1 p-5 sm:grid-cols-[200px_1fr] sm:gap-6">
-                <dt className="font-mono text-[11px] tracking-[0.1em] text-white/35 uppercase">
+                <dt className="font-mono text-[11px] tracking-[0.1em] text-white/50 uppercase">
                   {item.rotulo}
                 </dt>
                 <dd className="font-mono text-[13px] text-white/80">{item.valor}</dd>
@@ -309,7 +389,7 @@ export default async function ProdutoPage({ params }: Params) {
           ],
         ].map(([k, v, texto]) => (
           <div key={k} className="spot card p-6">
-            <p className="eyebrow text-white/35">{k}</p>
+            <p className="eyebrow text-white/50">{k}</p>
             <p className="display mt-3 text-[1.8rem] leading-none text-accent">{v}</p>
             <p className="mt-3 text-[13px] leading-relaxed text-white/55">{texto}</p>
           </div>
@@ -318,7 +398,9 @@ export default async function ProdutoPage({ params }: Params) {
 
       {relacionados.length > 0 && (
         <section className="mt-16">
-          <h2 className="display text-sub">Preço parecido</h2>
+          <h2 className="display text-sub">
+            {vendido ? "Em estoque agora" : "Preço parecido"}
+          </h2>
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {relacionados.map((o) => (
               <li key={o.id}>
@@ -333,6 +415,10 @@ export default async function ProdutoPage({ params }: Params) {
         type="application/ld+json"
         // Dados vêm do catálogo da loja, não de entrada do visitante.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(produtoLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(trilhaLd) }}
       />
     </article>
   );

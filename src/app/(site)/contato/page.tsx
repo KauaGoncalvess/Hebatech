@@ -70,7 +70,7 @@ export default function ContatoPage() {
                   }`}
                 >
                   <span>
-                    <span className="eyebrow text-white/35 group-hover:text-inherit">
+                    <span className="eyebrow text-white/50 group-hover:text-inherit">
                       {c.rotulo}
                     </span>
                     <span className="mt-2 block font-mono text-[15px]">{c.valor}</span>
@@ -80,7 +80,7 @@ export default function ContatoPage() {
                   </span>
                   <span
                     aria-hidden
-                    className="font-mono text-lg text-white/25 transition-transform group-hover:translate-x-1 group-hover:text-inherit"
+                    className="font-mono text-lg text-white/45 transition-transform group-hover:translate-x-1 group-hover:text-inherit"
                   >
                     →
                   </span>
@@ -90,14 +90,14 @@ export default function ContatoPage() {
           </ul>
 
           <div className="card p-6">
-            <p className="eyebrow text-white/35">Horário de funcionamento</p>
+            <p className="eyebrow text-white/50">Horário de funcionamento</p>
             <ul className="mt-4 space-y-3">
               {site.horario.map((h) => (
                 <li key={h.dia} className="flex items-baseline justify-between gap-4">
                   <span className="text-[14px] text-white/70">{h.dia}</span>
                   <span
                     className={`font-mono text-[13px] ${
-                      h.faixa === "Fechado" ? "text-white/30" : "text-accent"
+                      h.faixa === "Fechado" ? "text-white/50" : "text-accent"
                     }`}
                   >
                     {h.faixa}
@@ -121,7 +121,7 @@ export default function ContatoPage() {
               />
             </div>
             <div className="p-5">
-              <p className="eyebrow text-white/35">Endereço</p>
+              <p className="eyebrow text-white/50">Endereço</p>
               <p className="mt-2 font-mono text-[13.5px] text-white/80">{enderecoLinha}</p>
               <p className="mt-1 font-mono text-[12.5px] text-white/45">
                 CEP {site.endereco.cep}
@@ -138,7 +138,7 @@ export default function ContatoPage() {
           </div>
 
           <div className="card p-6">
-            <p className="eyebrow text-white/35">Antes de vir</p>
+            <p className="eyebrow text-white/50">Antes de vir</p>
             <ul className="mt-4 space-y-3">
               {[
                 "Peça de modelo raro pode precisar de encomenda — conferimos na hora.",

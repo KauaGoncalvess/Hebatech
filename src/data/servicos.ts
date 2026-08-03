@@ -16,6 +16,8 @@ export type Servico = {
   titulo: string;
   resumo: string;
   itens: string[];
+  /** Quando o serviço tem página própria, o card inteiro vira link. */
+  href?: string;
 };
 
 export const servicos: Servico[] = [
@@ -122,5 +124,6 @@ export const servicos: Servico[] = [
       "Rotina de backup com teste",
       "Sem fidelidade",
     ],
+    href: "/assistencia#manutencao",
   },
 ];

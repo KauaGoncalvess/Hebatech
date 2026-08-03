@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Carrossel } from "@/components/carrossel";
@@ -10,6 +11,12 @@ import { listarDestaques, listarNotebooks } from "@/lib/catalogo";
 import { waGenerico } from "@/lib/whatsapp";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = {
+  title: `Assistência técnica e notebooks seminovos em ${site.endereco.cidade}/${site.endereco.uf}`,
+  description: `Conserto de notebook e computador com diagnóstico em até ${site.operacao.prazoDiagnosticoHoras}h e orçamento fechado antes do reparo. Também vendemos notebook corporativo revisado, PC montado, monitor e peça. Loja física em ${site.endereco.cidade}/${site.endereco.uf}.`,
+  alternates: { canonical: "/" },
+};
 
 const PROCESSO = [
   ["Contato", "Você descreve o defeito no WhatsApp ou traz o aparelho na loja."],

@@ -12,7 +12,13 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
 
-  useEffect(() => setAberto(false), [pathname]);
+  // Navegou, o menu fecha. Ajuste durante a renderização em vez de efeito, que
+  // aqui provocaria um segundo render com o menu ainda aberto.
+  const [ultimaRota, setUltimaRota] = useState(pathname);
+  if (pathname !== ultimaRota) {
+    setUltimaRota(pathname);
+    if (aberto) setAberto(false);
+  }
 
   useEffect(() => {
     document.body.style.overflow = aberto ? "hidden" : "";
@@ -107,7 +113,7 @@ export function SiteHeader() {
                 <span className={`display text-sub ${on ? "text-accent" : "text-white"}`}>
                   {item.rotulo}
                 </span>
-                <span aria-hidden className="font-mono text-white/25">
+                <span aria-hidden className="font-mono text-white/45">
                   →
                 </span>
               </Link>

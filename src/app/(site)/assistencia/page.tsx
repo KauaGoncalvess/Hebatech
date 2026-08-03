@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { OrcamentoForm } from "@/components/orcamento-form";
 import { PlanosManutencao } from "@/components/planos-manutencao";
 import { SectionHead } from "@/components/section-head";
-import { site } from "@/data/site";
+import { enderecoLinha, site } from "@/data/site";
 import { listarPlanosAtivos, listarRegras } from "@/lib/planos";
 
 export const revalidate = 300;
@@ -47,6 +47,55 @@ const REGRAS = [
       "Tela, bateria e teclado com nota fiscal. A garantia de 90 dias cobre peça e mão de obra do que foi feito.",
   },
 ];
+
+/**
+ * As mesmas respostas que a loja dá no balcão. Vira `FAQPage` no JSON-LD, que é
+ * o formato que o Google usa para mostrar a pergunta direto no resultado.
+ */
+const PERGUNTAS: [string, string][] = [
+  [
+    "O diagnóstico é cobrado?",
+    `Não, se você aprovar o reparo. Se o conserto não for viável ou você desistir, o aparelho volta montado e o diagnóstico não é cobrado. O prazo é de até ${site.operacao.prazoDiagnosticoHoras} horas.`,
+  ],
+  [
+    "Em quanto tempo fica pronto?",
+    `O diagnóstico sai em até ${site.operacao.prazoDiagnosticoHoras} horas. O prazo do serviço vai junto com o orçamento: formatação em um dia útil, limpeza em um dia útil, troca de tela de dois a cinco dias úteis, conforme a peça.`,
+  ],
+  [
+    "Vocês fazem backup antes de formatar?",
+    "Sim. Copiamos os seus arquivos para um disco da loja antes de qualquer formatação e devolvemos junto com o aparelho.",
+  ],
+  [
+    "Qual é a garantia do serviço?",
+    `${site.operacao.garantiaServicoDias} dias, cobrindo peça e mão de obra do que foi feito. Tela, bateria e teclado saem com nota fiscal.`,
+  ],
+  [
+    "Precisa agendar para levar o aparelho?",
+    `Não. É só trazer na loja, na ${enderecoLinha}, de segunda a sexta das 8h30 às 18h e sábado até meio-dia.`,
+  ],
+  [
+    "Consertam qualquer marca?",
+    "Sim, notebook e desktop de qualquer marca — Dell, Lenovo, HP, Acer, Samsung, Positivo, Asus e montados.",
+  ],
+  [
+    "Atendem empresa?",
+    "Sim. Além do atendimento avulso, temos contrato de manutenção mensal para empresa sem TI própria, de 3 a 30 máquinas, com valor fixo por mês.",
+  ],
+  [
+    "Nenhum reparo começa sem eu autorizar?",
+    "Nenhum. O valor fechado de peça e mão de obra vai para você no WhatsApp e só seguimos depois do seu aval por escrito. O preço não sobe no meio do caminho.",
+  ],
+];
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: PERGUNTAS.map(([pergunta, resposta]) => ({
+    "@type": "Question",
+    name: pergunta,
+    acceptedAnswer: { "@type": "Answer", text: resposta },
+  })),
+};
 
 export default async function AssistenciaPage() {
   const [planos, regras] = await Promise.all([listarPlanosAtivos(), listarRegras()]);
@@ -137,6 +186,41 @@ export default async function AssistenciaPage() {
           ))}
         </div>
       </section>
+
+      <section id="duvidas" className="mx-auto max-w-[1180px] scroll-mt-28 px-5 pb-20 md:pb-28">
+        <SectionHead
+          etiqueta="Perguntas frequentes"
+          titulo="O que mais perguntam no balcão"
+          nota="Se a sua dúvida não estiver aqui, manda no WhatsApp que respondemos."
+        />
+
+        <div className="grid gap-3">
+          {PERGUNTAS.map(([pergunta, resposta]) => (
+            <details key={pergunta} className="card group p-6">
+              <summary className="flex cursor-pointer items-center justify-between gap-6 list-none">
+                <h3 className="font-mono text-[13.5px] tracking-[0.02em] text-white">
+                  {pergunta}
+                </h3>
+                <span
+                  aria-hidden
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-2 font-mono text-sm transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p className="mt-4 max-w-[72ch] text-[13.5px] leading-relaxed text-white/60">
+                {resposta}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <script
+        type="application/ld+json"
+        // Perguntas e respostas fixas do arquivo — nada vem do visitante.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+      />
     </>
   );
 }

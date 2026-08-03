@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../globals.css";
 import { classesDeFonte } from "../fonts";
 import { SiteHeader } from "@/components/site-header";
@@ -44,12 +46,20 @@ export const viewport: Viewport = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ComputerStore",
+  "@id": `${site.url}#loja`,
   name: site.nomeCompleto,
   description: site.descricao,
   url: site.url,
   image: `${site.url}/og.png`,
+  logo: `${site.url}/marca/hebatech-selo.png`,
   telephone: site.telefoneFixoLink,
+  email: site.email,
   priceRange: "R$$",
+  areaServed: {
+    "@type": "City",
+    name: `${site.endereco.cidade}, ${site.endereco.uf}`,
+  },
+  hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.mapaQuery)}`,
   address: {
     "@type": "PostalAddress",
     streetAddress: site.endereco.logradouro,
@@ -96,6 +106,10 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           // Conteúdo estático definido acima — não há entrada de usuário aqui.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+
+        {/* Medição sem cookie e sem dado pessoal, só no site público. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -64,7 +64,7 @@ export function ProductCard({ p }: { p: Produto }) {
             <p className="font-mono text-[1.35rem] leading-none font-bold">
               {preco(p.preco)}
             </p>
-            <p className="mt-2 font-mono text-[11px] text-white/40">
+            <p className="mt-2 font-mono text-[11px] text-white/55">
               ou 10x {parcela(p.preco)}
             </p>
           </div>

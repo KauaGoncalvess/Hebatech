@@ -30,7 +30,7 @@ export default function ErroGlobal({
             WhatsApp que a gente resolve por lá.
           </p>
           {error.digest && (
-            <p className="mt-4 font-mono text-[11px] text-white/35">
+            <p className="mt-4 font-mono text-[11px] text-white/50">
               Código do erro: {error.digest}
             </p>
           )}

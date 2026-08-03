@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { enderecoLinha, site } from "@/data/site";
 import { waOrcamento } from "@/lib/whatsapp";
@@ -40,7 +41,7 @@ function mascararTelefone(valor: string): string {
 }
 
 const CAMPO =
-  "mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3.5 font-mono text-[13.5px] transition-colors placeholder:text-white/25 focus:bg-surface-3 focus:outline-none";
+  "mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3.5 font-mono text-[13.5px] transition-colors placeholder:text-white/55 focus-visible:bg-surface-3";
 
 export function OrcamentoForm() {
   const [f, setF] = useState(INICIAL);
@@ -192,22 +193,26 @@ export function OrcamentoForm() {
           Enviar pelo WhatsApp
           <span aria-hidden>→</span>
         </button>
-        <p className="mt-4 text-center font-mono text-[11px] text-white/40">
-          Nada é enviado a servidor nenhum. O botão abre o WhatsApp com o texto montado.
+        <p className="mt-4 text-center font-mono text-[11px] text-white/55">
+          Nada é enviado a servidor nenhum. O botão abre o WhatsApp com o texto montado.{" "}
+          <Link href="/privacidade" className="text-accent underline underline-offset-4">
+            Como tratamos seus dados
+          </Link>
+          .
         </p>
       </form>
 
       {/* Prévia da mensagem */}
       <aside className="space-y-4">
         <div className="card p-6">
-          <p className="eyebrow text-white/35">Prévia da mensagem</p>
+          <p className="eyebrow text-white/45">Prévia da mensagem</p>
           <pre className="mt-4 overflow-x-auto font-mono text-[12px] leading-[1.9] whitespace-pre-wrap text-white/70">
             {previa}
           </pre>
         </div>
 
         <div className="card p-6">
-          <p className="eyebrow text-white/35">O que acontece depois</p>
+          <p className="eyebrow text-white/45">O que acontece depois</p>
           <ol className="mt-4 space-y-3">
             {[
               "Respondemos no horário comercial com uma estimativa e o prazo.",
@@ -225,7 +230,7 @@ export function OrcamentoForm() {
         </div>
 
         <div className="card p-6">
-          <p className="eyebrow text-white/35">Prefere resolver direto</p>
+          <p className="eyebrow text-white/45">Prefere resolver direto</p>
           <p className="mt-4 text-[13.5px] leading-relaxed text-white/55">
             Traga o aparelho na loja sem agendar, de segunda a sexta das 8h30 às 18h e
             sábado até meio-dia.
@@ -309,14 +314,14 @@ function Campo({
   return (
     <label className="block">
       <span className="flex items-baseline justify-between gap-3">
-        <span className="eyebrow text-white/45">
+        <span className="eyebrow text-white/55">
           {rotulo}
           {obrigatorio && <span className="text-accent"> *</span>}
         </span>
         {erro ? (
           <span className="font-mono text-[10px] text-accent">{erro}</span>
         ) : (
-          nota && <span className="font-mono text-[10px] text-white/25">{nota}</span>
+          nota && <span className="font-mono text-[10px] text-white/45">{nota}</span>
         )}
       </span>
       {children}

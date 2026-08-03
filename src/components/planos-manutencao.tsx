@@ -26,7 +26,7 @@ export function PlanosManutencao({ planos, regras }: Props) {
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="font-mono text-[11px] tracking-[0.14em] text-white/35">
+                  <p className="font-mono text-[11px] tracking-[0.14em] text-white/50">
                     {p.codigo}
                   </p>
                   <h3 className="display mt-2 text-sub">{p.nome}</h3>

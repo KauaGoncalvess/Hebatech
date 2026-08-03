@@ -45,6 +45,19 @@ export function waProduto(p: Produto): string {
   );
 }
 
+/** Produto já vendido: a conversa começa pelo que a pessoa veio procurar. */
+export function waParecido(p: Produto): string {
+  const resumo = resumoTecnico(p);
+  return link(
+    [
+      "Olá, vim pelo site da HebaTech.",
+      `Vi o ${p.marca} ${p.modelo} (${p.codigo}), mas já está vendido.`,
+      ...(resumo.length ? [`Procuro algo parecido: ${resumo.join(", ")}`] : []),
+      "Tem outro nessa linha ou entra em breve?",
+    ].join("\n"),
+  );
+}
+
 export type Orcamento = {
   nome: string;
   telefone: string;

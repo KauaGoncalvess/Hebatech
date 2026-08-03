@@ -21,7 +21,7 @@ export default function NotFound() {
             <span className="display text-[1.4rem] leading-none">{item.rotulo}</span>
             <span
               aria-hidden
-              className="font-mono text-white/25 transition-transform group-hover:translate-x-1 group-hover:text-accent"
+              className="font-mono text-white/45 transition-transform group-hover:translate-x-1 group-hover:text-accent"
             >
               →
             </span>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { CatalogoBrowser } from "@/components/catalogo-browser";
 import { CtaPanel } from "@/components/cta-panel";
 import { listarOutrosProdutos } from "@/lib/catalogo";
@@ -45,13 +46,16 @@ export default async function ProdutosPage() {
         )}
       </section>
       <section className="mx-auto max-w-[1180px] px-5 pb-20">
-        <CatalogoBrowser itens={itens} filtrarCategoria />
+        {/* O filtro lê a barra de endereço; a página segue estática. */}
+        <Suspense fallback={null}>
+          <CatalogoBrowser itens={itens} filtrarCategoria />
+        </Suspense>
       </section>
 
       <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
           <div className="card p-6 md:p-8">
-            <p className="eyebrow text-white/35">Montagem sob medida</p>
+            <p className="eyebrow text-white/50">Montagem sob medida</p>
             <p className="display mt-4 max-w-[20ch] text-sub">
               Diga o uso e a faixa de preço que montamos a configuração
             </p>

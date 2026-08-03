@@ -23,19 +23,23 @@ export function SiteFooter() {
               height={64}
               className="rounded-full"
             />
-            <p className="mt-5 max-w-[34ch] text-[14px] leading-relaxed text-white/50">
+            <p className="mt-5 max-w-[34ch] text-[14px] leading-relaxed text-white/60">
               Assistência técnica, manutenção e venda de equipamento de informática.
               Loja física em {site.endereco.cidade}.
             </p>
-            <p className="mt-5 font-mono text-[12px] leading-relaxed text-white/35">
+            <p className="mt-5 font-mono text-[12px] leading-relaxed text-white/50">
               {enderecoLinha}
             </p>
           </div>
 
           <nav>
-            <p className="eyebrow text-white/30">Páginas</p>
+            <p className="eyebrow text-white/45">Páginas</p>
             <ul className="mt-5 space-y-3.5">
-              {navegacao.map((item) => (
+              {[
+                ...navegacao,
+                { href: "/assistencia#manutencao", rotulo: "Manutenção mensal" },
+                { href: "/privacidade", rotulo: "Privacidade" },
+              ].map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -49,7 +53,7 @@ export function SiteFooter() {
           </nav>
 
           <div>
-            <p className="eyebrow text-white/30">Contato</p>
+            <p className="eyebrow text-white/45">Contato</p>
             <ul className="mt-5 space-y-3.5">
               {CONTATO.map((c) => (
                 <li key={c.rotulo}>
@@ -65,10 +69,10 @@ export function SiteFooter() {
               ))}
             </ul>
 
-            <p className="eyebrow mt-8 text-white/30">Horário</p>
+            <p className="eyebrow mt-8 text-white/45">Horário</p>
             <ul className="mt-4 space-y-2">
               {site.horario.map((h) => (
-                <li key={h.dia} className="font-mono text-[12px] text-white/45">
+                <li key={h.dia} className="font-mono text-[12px] text-white/55">
                   {h.dia} · <span className="text-white/70">{h.faixa}</span>
                 </li>
               ))}
@@ -77,7 +81,7 @@ export function SiteFooter() {
         </div>
 
         <div className="bg-surface-2 px-6 py-5 text-center md:px-10">
-          <p className="font-mono text-[11px] tracking-[0.08em] text-white/35">
+          <p className="font-mono text-[11px] tracking-[0.08em] text-white/50">
             © {new Date().getFullYear()} {site.nomeCompleto} · Preços e disponibilidade
             sujeitos a alteração
           </p>

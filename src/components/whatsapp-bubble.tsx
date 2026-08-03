@@ -23,6 +23,10 @@ export function WhatsappBubble() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Falar com um técnico no WhatsApp"
+      // Invisível também sai da ordem de tabulação: sem isso o Tab no topo da
+      // página cai num link que ninguém enxerga.
+      tabIndex={visivel ? undefined : -1}
+      aria-hidden={visivel ? undefined : true}
       className={`group fixed right-4 bottom-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-black shadow-[0_10px_30px_-8px_rgba(255,107,24,0.6)] transition-all duration-300 hover:bg-white md:right-6 md:bottom-6 md:h-16 md:w-16 ${
         visivel ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
@@ -32,7 +36,7 @@ export function WhatsappBubble() {
       </svg>
 
       {/* Rótulo que abre no hover, só onde há mouse */}
-      <span className="pointer-events-none absolute right-full mr-3 hidden origin-right scale-95 rounded-full bg-surface-3 px-4 py-2 font-mono text-[11px] whitespace-nowrap text-white opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 lg:block">
+      <span className="pointer-events-none absolute right-full mr-3 hidden origin-right scale-95 rounded-full bg-surface-3 px-4 py-2 font-mono text-[11px] whitespace-nowrap text-white opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 lg:block">
         Falar com um técnico
       </span>
     </a>

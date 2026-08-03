@@ -7,6 +7,14 @@ import { excluirProduto } from "@/app/admin/actions";
 export function ExcluirButton({ id, nome }: { id: string; nome: string }) {
   const [confirmando, setConfirmando] = useState(false);
   const [pendente, iniciar] = useTransition();
+  const [erro, setErro] = useState<string | null>(null);
+
+  // Em caso de sucesso a action redireciona e nada volta para cá.
+  const excluir = () =>
+    iniciar(async () => {
+      const { erro } = await excluirProduto(id);
+      setErro(erro ?? null);
+    });
 
   if (!confirmando) {
     return (
@@ -30,7 +38,7 @@ export function ExcluirButton({ id, nome }: { id: string; nome: string }) {
         <button
           type="button"
           disabled={pendente}
-          onClick={() => iniciar(() => excluirProduto(id))}
+          onClick={excluir}
           className="h-10 rounded-full bg-accent px-5 font-mono text-[10.5px] font-bold tracking-[0.12em] text-black uppercase disabled:opacity-50"
         >
           {pendente ? "Excluindo..." : "Confirmar"}
@@ -43,6 +51,11 @@ export function ExcluirButton({ id, nome }: { id: string; nome: string }) {
           Voltar
         </button>
       </div>
+      {erro && (
+        <p role="alert" className="font-mono text-[11px] text-accent">
+          Não deu para excluir: {erro}
+        </p>
+      )}
     </div>
   );
 }

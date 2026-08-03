@@ -31,11 +31,20 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   const ehLogin = rota === "/admin/login";
+
+  // Supabase fora do ar não pode derrubar a rota inteira: sem conseguir
+  // confirmar a sessão, tratamos como visitante e mandamos para o login.
+  let user = null;
+  try {
+    ({
+      data: { user },
+    } = await supabase.auth.getUser());
+  } catch (erro) {
+    console.error("Falha ao confirmar a sessão do painel:", erro);
+    if (ehLogin) return resposta;
+    return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
 
   if (!user && rota.startsWith("/admin") && !ehLogin) {
     const destino = new URL("/admin/login", request.url);

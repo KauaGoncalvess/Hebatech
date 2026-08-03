@@ -2,13 +2,20 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { alternarDisponibilidade } from "@/app/admin/actions";
 import { preco } from "@/lib/format";
 import { rotuloCategoria, type Produto } from "@/types/produto";
 
 export function LinhaProduto({ p }: { p: Produto }) {
   const [pendente, iniciar] = useTransition();
+  const [erro, setErro] = useState<string | null>(null);
+
+  const alternar = () =>
+    iniciar(async () => {
+      const { erro } = await alternarDisponibilidade(p.id, !p.disponivel);
+      setErro(erro ?? null);
+    });
 
   return (
     <li
@@ -50,7 +57,7 @@ export function LinhaProduto({ p }: { p: Produto }) {
         <button
           type="button"
           disabled={pendente}
-          onClick={() => iniciar(() => alternarDisponibilidade(p.id, !p.disponivel))}
+          onClick={alternar}
           className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40"
         >
           {p.disponivel ? "Tirar do ar" : "Publicar"}
@@ -62,6 +69,12 @@ export function LinhaProduto({ p }: { p: Produto }) {
           Editar
         </Link>
       </div>
+
+      {erro && (
+        <p role="alert" className="col-span-3 font-mono text-[11px] text-accent">
+          Não deu para mudar: {erro}
+        </p>
+      )}
     </li>
   );
 }

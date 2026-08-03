@@ -77,10 +77,12 @@ export async function salvarPlano(
   const id = texto(dados, "id");
   const linha = paraLinhaPlano(plano);
 
-  // Só um plano por vez pode carregar o selo de mais contratado.
+  // Só um plano por vez pode carregar o selo de mais contratado. Se essa
+  // limpeza falhar, parar aqui: seguir deixaria dois planos em destaque.
   if (plano.destaque) {
     const limpeza = supabase.from("planos_manutencao").update({ destaque: false });
-    await (id ? limpeza.neq("id", id) : limpeza.neq("codigo", codigo));
+    const { error } = await (id ? limpeza.neq("id", id) : limpeza.neq("codigo", codigo));
+    if (error) return { erro: `Não foi possível trocar o destaque: ${error.message}` };
   }
 
   const resposta = id
@@ -99,19 +101,24 @@ export async function salvarPlano(
   redirect("/admin/planos?ok=1");
 }
 
-export async function alternarPlanoAtivo(id: string, ativo: boolean) {
+export async function alternarPlanoAtivo(id: string, ativo: boolean): Promise<Resultado> {
   const supabase = await criarClienteServidor();
-  if (!supabase) return;
+  if (!supabase) return { erro: "Supabase não configurado." };
 
-  await supabase.from("planos_manutencao").update({ ativo }).eq("id", id);
+  const { error } = await supabase.from("planos_manutencao").update({ ativo }).eq("id", id);
+  if (error) return { erro: error.message };
+
   revalidarManutencao();
+  return { ok: true };
 }
 
-export async function excluirPlano(id: string) {
+export async function excluirPlano(id: string): Promise<Resultado> {
   const supabase = await criarClienteServidor();
-  if (!supabase) return;
+  if (!supabase) return { erro: "Supabase não configurado." };
 
-  await supabase.from("planos_manutencao").delete().eq("id", id);
+  const { error } = await supabase.from("planos_manutencao").delete().eq("id", id);
+  if (error) return { erro: error.message };
+
   revalidarManutencao();
   redirect("/admin/planos?excluido=1");
 }

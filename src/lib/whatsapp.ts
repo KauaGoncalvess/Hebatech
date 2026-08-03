@@ -14,6 +14,23 @@ export function waGenerico(assunto?: string): string {
   );
 }
 
+/**
+ * Avaliação do aparelho usado como parte do pagamento. A mensagem já sai com
+ * os campos que o técnico precisa saber para dar um valor.
+ */
+export function waTroca(): string {
+  return link(
+    [
+      "Olá, vim pelo site da HebaTech.",
+      "Quero saber quanto vale o meu notebook usado como parte do pagamento.",
+      "",
+      "Marca e modelo:",
+      "Tempo de uso:",
+      "Estado da tela, da bateria e do teclado:",
+    ].join("\n"),
+  );
+}
+
 export function waProduto(p: Produto): string {
   const resumo = resumoTecnico(p);
   return link(

@@ -1,13 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { alternarPlanoAtivo } from "@/app/admin/planos-actions";
 import { preco } from "@/lib/format";
 import type { Plano } from "@/types/plano";
 
 export function LinhaPlano({ p }: { p: Plano }) {
   const [pendente, iniciar] = useTransition();
+  const [erro, setErro] = useState<string | null>(null);
+
+  const alternar = () =>
+    iniciar(async () => {
+      const { erro } = await alternarPlanoAtivo(p.id, !p.ativo);
+      setErro(erro ?? null);
+    });
 
   return (
     <li
@@ -37,7 +44,7 @@ export function LinhaPlano({ p }: { p: Plano }) {
         <button
           type="button"
           disabled={pendente}
-          onClick={() => iniciar(() => alternarPlanoAtivo(p.id, !p.ativo))}
+          onClick={alternar}
           className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40"
         >
           {p.ativo ? "Tirar do ar" : "Publicar"}
@@ -49,6 +56,12 @@ export function LinhaPlano({ p }: { p: Plano }) {
           Editar
         </Link>
       </div>
+
+      {erro && (
+        <p role="alert" className="w-full font-mono text-[11px] text-accent">
+          Não deu para mudar: {erro}
+        </p>
+      )}
     </li>
   );
 }

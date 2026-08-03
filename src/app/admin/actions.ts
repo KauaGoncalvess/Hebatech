@@ -163,32 +163,47 @@ export async function salvarProduto(
   redirect("/admin/produtos?ok=1");
 }
 
-export async function alternarDisponibilidade(id: string, disponivel: boolean) {
+export async function alternarDisponibilidade(
+  id: string,
+  disponivel: boolean,
+): Promise<Resultado> {
   const supabase = await criarClienteServidor();
-  if (!supabase) return;
+  if (!supabase) return { erro: "Supabase não configurado." };
 
-  await supabase.from("produtos").update({ disponivel }).eq("id", id);
+  const { error } = await supabase.from("produtos").update({ disponivel }).eq("id", id);
+  if (error) return { erro: error.message };
+
   revalidarSite();
   revalidatePath("/admin/produtos");
+  return {};
 }
 
-export async function excluirProduto(id: string) {
+export async function excluirProduto(id: string): Promise<Resultado> {
   const supabase = await criarClienteServidor();
-  if (!supabase) return;
+  if (!supabase) return { erro: "Supabase não configurado." };
 
-  const { data } = await supabase.from("produtos").select("fotos").eq("id", id).single();
+  const { data, error: erroLeitura } = await supabase
+    .from("produtos")
+    .select("fotos")
+    .eq("id", id)
+    .single();
 
-  // Remove as imagens do Storage junto com o registro.
+  if (erroLeitura) return { erro: erroLeitura.message };
+
+  // Remove as imagens do Storage junto com o registro. Uma falha aqui deixa
+  // arquivo órfão no bucket, mas não impede apagar o produto: só registra.
   const fotos = Array.isArray(data?.fotos) ? (data.fotos as string[]) : [];
   const caminhos = fotos
     .map((url) => url.split(`/${BUCKET_FOTOS}/`)[1])
     .filter((c): c is string => Boolean(c));
 
   if (caminhos.length) {
-    await supabase.storage.from(BUCKET_FOTOS).remove(caminhos);
+    const { error } = await supabase.storage.from(BUCKET_FOTOS).remove(caminhos);
+    if (error) console.error("Falha ao remover fotos do Storage:", error.message);
   }
 
-  await supabase.from("produtos").delete().eq("id", id);
+  const { error } = await supabase.from("produtos").delete().eq("id", id);
+  if (error) return { erro: error.message };
 
   revalidarSite();
   revalidatePath("/admin/produtos");

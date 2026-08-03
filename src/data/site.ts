@@ -25,15 +25,21 @@ export const site = {
   email: "contato@hebatech.com.br",
 
   endereco: {
-    logradouro: "Rua Coronel Randolfo Silva, 214",
-    bairro: "Centro",
+    logradouro: "Avenida José Sérvulo Soalheiro, 1625",
+    bairro: "Jardim Europa",
     cidade: "Sete Lagoas",
     uf: "MG",
-    cep: "35700-030",
+    /** Faixa da avenida em Jardim Europa. Conferir com o cliente. */
+    cep: "35701-456",
   },
 
-  /** Termo enviado ao Google Maps no embed e no botão "traçar rota". */
-  mapaQuery: "HebaTech Soluções em Informática, Sete Lagoas, MG",
+  /**
+   * Termo enviado ao Google Maps no embed e no botão "traçar rota".
+   * É o endereço, não o nome fantasia: assim o mapa acerta o ponto mesmo
+   * antes de a loja ter ficha no Google.
+   */
+  mapaQuery:
+    "Avenida José Sérvulo Soalheiro, 1625 - Jardim Europa, Sete Lagoas - MG, 35701-456",
 
   horario: [
     { dia: "Segunda a sexta", faixa: "08:30 — 18:00" },
@@ -42,7 +48,6 @@ export const site = {
   ],
 
   operacao: {
-    anos: 6,
     atendimentos: 2400,
     garantiaServicoDias: 90,
     garantiaEquipamentoDias: 90,

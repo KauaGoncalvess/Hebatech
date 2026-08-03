@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { CHAVE_REGRAS, seedPlanos, seedRegras } from "@/data/seed-planos";
 import { paraPlano, type LinhaPlano } from "@/lib/plano-mapper";
 import { supabaseConfigurado } from "@/lib/supabase/config";
@@ -7,14 +8,14 @@ import { criarClienteServidor } from "@/lib/supabase/server";
 import type { Plano, RegraManutencao } from "@/types/plano";
 
 /**
- * Planos de manutenção mensal. Mesma regra do catálogo: sem Supabase, ou com o
- * banco fora do ar, o site cai para a carga inicial em vez de quebrar.
+ * Planos de manutenção mensal. Mesma divisão do catálogo: o site cai para a
+ * carga inicial, o painel exige o banco de verdade.
  */
-async function carregarTodos(): Promise<Plano[]> {
-  if (!supabaseConfigurado) return seedPlanos;
+const lerDoBanco = cache(async (): Promise<Plano[] | null> => {
+  if (!supabaseConfigurado) return null;
 
   const supabase = await criarClienteServidor();
-  if (!supabase) return seedPlanos;
+  if (!supabase) return null;
 
   const { data, error } = await supabase
     .from("planos_manutencao")
@@ -23,22 +24,25 @@ async function carregarTodos(): Promise<Plano[]> {
 
   if (error || !data) {
     console.error("Falha ao ler planos do Supabase:", error?.message);
-    return seedPlanos;
+    return null;
   }
 
   return (data as LinhaPlano[]).map(paraPlano);
-}
+});
 
-export async function listarPlanos(): Promise<Plano[]> {
-  return carregarTodos();
+async function carregarTodosEstrito(): Promise<Plano[]> {
+  const lista = await lerDoBanco();
+  if (!lista) {
+    throw new Error(
+      "Não foi possível ler os planos no Supabase. Confira a conexão antes de editar.",
+    );
+  }
+  return lista;
 }
 
 export async function listarPlanosAtivos(): Promise<Plano[]> {
-  return (await carregarTodos()).filter((p) => p.ativo);
-}
-
-export async function buscarPlanoPorId(id: string): Promise<Plano | null> {
-  return (await carregarTodos()).find((p) => p.id === id) ?? null;
+  const lista = (await lerDoBanco()) ?? seedPlanos;
+  return lista.filter((p) => p.ativo);
 }
 
 function comoRegras(valor: unknown): RegraManutencao[] {
@@ -51,7 +55,7 @@ function comoRegras(valor: unknown): RegraManutencao[] {
   });
 }
 
-export async function listarRegras(): Promise<RegraManutencao[]> {
+export const listarRegras = cache(async (): Promise<RegraManutencao[]> => {
   if (!supabaseConfigurado) return seedRegras;
 
   const supabase = await criarClienteServidor();
@@ -70,4 +74,15 @@ export async function listarRegras(): Promise<RegraManutencao[]> {
 
   const regras = comoRegras(data?.valor);
   return regras.length ? regras : seedRegras;
+});
+
+/* ── Só o painel usa daqui para baixo: leitura estrita ── */
+
+export async function listarPlanos(): Promise<Plano[]> {
+  return carregarTodosEstrito();
+}
+
+export async function buscarPlanoPorId(id: string): Promise<Plano | null> {
+  const todos = await carregarTodosEstrito();
+  return todos.find((p) => p.id === id) ?? null;
 }

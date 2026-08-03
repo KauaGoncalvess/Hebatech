@@ -81,7 +81,7 @@ export default async function Home() {
 
           <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[12px] tracking-[0.08em] text-white/55">
             {[
-              `${site.operacao.anos} anos de loja`,
+              "loja física com bancada",
               `diagnóstico em até ${site.operacao.prazoDiagnosticoHoras}h`,
               `${site.operacao.garantiaServicoDias} dias de garantia`,
             ].map((item) => (
@@ -204,8 +204,8 @@ export default async function Home() {
 
             <dl className="grid grid-cols-3 gap-3">
               {[
-                [`${site.operacao.anos}`, "anos"],
                 [`${site.operacao.atendimentos}+`, "atendimentos"],
+                [`${site.operacao.prazoDiagnosticoHoras}h`, "para o diagnóstico"],
                 [`${site.operacao.garantiaServicoDias}`, "dias de garantia"],
               ].map(([num, unidade]) => (
                 <div key={unidade} className="rounded-2xl bg-surface-2 p-4 text-center">

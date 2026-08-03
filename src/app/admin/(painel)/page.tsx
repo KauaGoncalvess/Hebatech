@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { listarProdutos } from "@/lib/catalogo";
-import { listarPlanosAtivos } from "@/lib/planos";
+import { listarPlanos } from "@/lib/planos";
 import { preco } from "@/lib/format";
 import { CATEGORIAS } from "@/types/produto";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminHome() {
-  const [produtos, planos] = await Promise.all([listarProdutos(), listarPlanosAtivos()]);
+  const [produtos, todosOsPlanos] = await Promise.all([listarProdutos(), listarPlanos()]);
+  const planos = todosOsPlanos.filter((p) => p.ativo);
   const aVenda = produtos.filter((p) => p.disponivel);
   const semFoto = aVenda.filter((p) => p.fotos.length === 0);
   const valorEstoque = aVenda.reduce((soma, p) => soma + p.preco, 0);

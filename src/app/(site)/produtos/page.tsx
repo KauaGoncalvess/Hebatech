@@ -3,7 +3,6 @@ import Link from "next/link";
 import { CatalogoBrowser } from "@/components/catalogo-browser";
 import { CtaPanel } from "@/components/cta-panel";
 import { listarOutrosProdutos } from "@/lib/catalogo";
-import { preco } from "@/lib/format";
 import { waGenerico } from "@/lib/whatsapp";
 import { CATEGORIAS } from "@/types/produto";
 
@@ -18,11 +17,6 @@ export const metadata: Metadata = {
 
 export default async function ProdutosPage() {
   const itens = await listarOutrosProdutos();
-  const precos = itens.map((p) => p.preco);
-  const faixa = precos.length
-    ? `${preco(Math.min(...precos))} a ${preco(Math.max(...precos))}`
-    : "sob consulta";
-
   const presentes = CATEGORIAS.filter((c) => itens.some((p) => p.categoria === c.id));
 
   return (

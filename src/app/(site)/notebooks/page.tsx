@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { CatalogoBrowser } from "@/components/catalogo-browser";
 import { CtaPanel } from "@/components/cta-panel";
 import { listarNotebooks } from "@/lib/catalogo";
-import { preco } from "@/lib/format";
-import { waGenerico } from "@/lib/whatsapp";
+import { waGenerico, waTroca } from "@/lib/whatsapp";
 
 export const revalidate = 300;
 
@@ -16,10 +15,6 @@ export const metadata: Metadata = {
 
 export default async function NotebooksPage() {
   const itens = await listarNotebooks();
-  const precos = itens.map((p) => p.preco);
-  const faixa = precos.length
-    ? `${preco(Math.min(...precos))} a ${preco(Math.max(...precos))}`
-    : "sob consulta";
 
   return (
     <>
@@ -44,6 +39,15 @@ export default async function NotebooksPage() {
             <p className="mt-4 max-w-[54ch] text-[14px] leading-relaxed text-white/55">
               Diga processador, memória e faixa de preço que você procura. Avisamos assim que entrar algo compatível — e avaliamos o seu notebook antigo como parte do pagamento.
             </p>
+            <a
+              href={waTroca()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-3 rounded-full bg-surface-2 px-6 py-3.5 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3 hover:text-accent"
+            >
+              Avaliar o meu usado
+              <span aria-hidden>→</span>
+            </a>
           </div>
           <CtaPanel
             etiqueta="Encomenda"

@@ -13,7 +13,7 @@ function Salvar({ salvo }: { salvo: boolean }) {
       <button
         type="submit"
         disabled={pending}
-        className="flex h-11 items-center border border-accent px-6 font-mono text-[11px] tracking-[0.16em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-50"
+        className="flex h-12 items-center rounded-full border border-accent px-7 font-mono text-[11.5px] tracking-[0.12em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-50"
       >
         {pending ? "Salvando..." : "Salvar regras"}
       </button>
@@ -29,7 +29,7 @@ export function RegrasForm({ regras }: { regras: RegraManutencao[] }) {
   const salvo = estado.ok === true;
 
   return (
-    <form action={acao} className="p-4 md:p-6">
+    <form action={acao} className="card p-6 md:p-8">
       <Campo
         rotulo="Regras do contrato"
         nota="Uma por linha, no formato «Título: texto»"

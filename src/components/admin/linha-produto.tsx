@@ -12,11 +12,11 @@ export function LinhaProduto({ p }: { p: Produto }) {
 
   return (
     <li
-      className={`grid grid-cols-[64px_1fr_auto] items-center gap-4 border-b border-line px-4 py-3 transition-colors hover:bg-surface md:px-6 ${
+      className={`card grid grid-cols-[64px_1fr_auto] items-center gap-4 p-4 transition-colors hover:bg-surface-2 ${
         p.disponivel ? "" : "opacity-45"
       }`}
     >
-      <div className="relative aspect-[4/3] border border-line bg-ink">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-surface-2">
         {p.fotos[0] ? (
           <Image
             src={p.fotos[0]}
@@ -46,18 +46,18 @@ export function LinhaProduto({ p }: { p: Produto }) {
         <p className="mt-0.5 font-mono text-[12px] text-accent">{preco(p.preco)}</p>
       </div>
 
-      <div className="flex items-center gap-px">
+      <div className="flex items-center gap-2">
         <button
           type="button"
           disabled={pendente}
           onClick={() => iniciar(() => alternarDisponibilidade(p.id, !p.disponivel))}
-          className="border border-line px-3 py-2 font-mono text-[9.5px] tracking-[0.12em] uppercase transition-colors hover:border-accent hover:text-accent disabled:opacity-40"
+          className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40"
         >
           {p.disponivel ? "Tirar do ar" : "Publicar"}
         </button>
         <Link
           href={`/admin/produtos/${p.id}`}
-          className="border border-line px-3 py-2 font-mono text-[9.5px] tracking-[0.12em] uppercase transition-colors hover:border-accent hover:text-accent"
+          className="rounded-full bg-accent px-4 py-2.5 font-mono text-[9.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white"
         >
           Editar
         </Link>

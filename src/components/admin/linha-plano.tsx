@@ -11,7 +11,7 @@ export function LinhaPlano({ p }: { p: Plano }) {
 
   return (
     <li
-      className={`flex flex-wrap items-center justify-between gap-4 border-b border-line px-4 py-4 transition-colors hover:bg-surface md:px-6 ${
+      className={`card flex flex-wrap items-center justify-between gap-4 p-5 transition-colors hover:bg-surface-2 ${
         p.ativo ? "" : "opacity-45"
       }`}
     >
@@ -33,18 +33,18 @@ export function LinhaPlano({ p }: { p: Plano }) {
         </p>
       </div>
 
-      <div className="flex items-center gap-px">
+      <div className="flex items-center gap-2">
         <button
           type="button"
           disabled={pendente}
           onClick={() => iniciar(() => alternarPlanoAtivo(p.id, !p.ativo))}
-          className="border border-line px-3 py-2 font-mono text-[9.5px] tracking-[0.12em] uppercase transition-colors hover:border-accent hover:text-accent disabled:opacity-40"
+          className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40"
         >
           {p.ativo ? "Tirar do ar" : "Publicar"}
         </button>
         <Link
           href={`/admin/planos/${p.id}`}
-          className="border border-line px-3 py-2 font-mono text-[9.5px] tracking-[0.12em] uppercase transition-colors hover:border-accent hover:text-accent"
+          className="rounded-full bg-accent px-4 py-2.5 font-mono text-[9.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white"
         >
           Editar
         </Link>

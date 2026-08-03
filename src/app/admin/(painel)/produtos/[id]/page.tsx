@@ -15,7 +15,7 @@ export default async function EditarProduto({ params }: Props) {
 
   return (
     <>
-      <section className="flex flex-wrap items-end justify-between gap-4 border-b border-line px-4 py-8 md:px-6 md:py-10">
+      <section className="flex flex-wrap items-end justify-between gap-4 py-10 md:py-12">
         <div>
           <p className="eyebrow text-accent">
             {produto.codigo} · {produto.disponivel ? "à venda" : "fora do ar"}
@@ -26,7 +26,7 @@ export default async function EditarProduto({ params }: Props) {
           <Link
             href={`/produtos/${produto.slug}`}
             target="_blank"
-            className="mt-4 inline-block font-mono text-[11px] text-white/45 underline decoration-line underline-offset-4 transition-colors hover:text-accent"
+            className="mt-4 inline-block font-mono text-[11px] text-white/45 underline underline-offset-4 transition-colors hover:text-accent"
           >
             Ver no site: /produtos/{produto.slug}
           </Link>

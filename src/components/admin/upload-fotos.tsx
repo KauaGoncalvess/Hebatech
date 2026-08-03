@@ -88,12 +88,12 @@ export function UploadFotos({
         </span>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-px">
+      <div className="mt-3 flex flex-wrap items-center gap-3">
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={enviando}
-          className="border border-accent px-5 py-2.5 font-mono text-[11px] tracking-[0.14em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-40"
+          className="rounded-full border border-accent px-6 py-3 font-mono text-[11.5px] tracking-[0.12em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-40"
         >
           {enviando ? "Enviando..." : "Escolher fotos"}
         </button>
@@ -116,10 +116,10 @@ export function UploadFotos({
       {erro && <p className="mt-3 font-mono text-[11px] text-accent">{erro}</p>}
 
       {fotos.length > 0 && (
-        <ul className="mt-4 grid grid-cols-2 gap-px bg-line sm:grid-cols-3 lg:grid-cols-4">
+        <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {fotos.map((url, i) => (
-            <li key={url} className="bg-ink">
-              <div className="relative aspect-[4/3] border-b border-line">
+            <li key={url} className="overflow-hidden rounded-2xl bg-surface-2">
+              <div className="relative aspect-[4/3]">
                 <Image
                   src={url}
                   alt={`Foto ${i + 1}`}
@@ -140,7 +140,7 @@ export function UploadFotos({
                   onClick={() => mover(i, -1)}
                   disabled={i === 0}
                   aria-label="Mover para trás"
-                  className="flex-1 border-r border-line py-2 font-mono text-[12px] text-white/60 hover:text-accent disabled:text-white/15"
+                  className="flex-1 py-2.5 font-mono text-[12px] text-white/60 hover:text-accent disabled:text-white/15"
                 >
                   ←
                 </button>
@@ -149,7 +149,7 @@ export function UploadFotos({
                   onClick={() => mover(i, 1)}
                   disabled={i === fotos.length - 1}
                   aria-label="Mover para frente"
-                  className="flex-1 border-r border-line py-2 font-mono text-[12px] text-white/60 hover:text-accent disabled:text-white/15"
+                  className="flex-1 py-2.5 font-mono text-[12px] text-white/60 hover:text-accent disabled:text-white/15"
                 >
                   →
                 </button>
@@ -157,7 +157,7 @@ export function UploadFotos({
                   type="button"
                   onClick={() => remover(i)}
                   aria-label="Remover foto"
-                  className="flex-1 py-2 font-mono text-[10px] tracking-[0.1em] text-white/50 uppercase hover:text-accent"
+                  className="flex-1 py-2.5 font-mono text-[10px] tracking-[0.1em] text-white/50 uppercase hover:text-accent"
                 >
                   Tirar
                 </button>

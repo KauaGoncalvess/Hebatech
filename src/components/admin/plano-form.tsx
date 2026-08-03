@@ -25,7 +25,7 @@ function Salvar() {
     <button
       type="submit"
       disabled={pending}
-      className="flex h-12 items-center justify-center bg-accent px-8 font-mono text-[11.5px] font-bold tracking-[0.16em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
+      className="flex h-13 items-center justify-center rounded-full bg-accent px-8 py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
     >
       {pending ? "Salvando..." : "Salvar plano"}
     </button>
@@ -131,11 +131,11 @@ export function PlanoForm({ plano }: { plano?: Plano }) {
         </Campo>
       </Bloco>
 
-      <div className="flex flex-wrap items-center gap-4 p-4 md:p-6">
+      <div className="flex flex-wrap items-center gap-3 pt-2">
         <Salvar />
         <Link
           href="/admin/planos"
-          className="flex h-12 items-center border border-line px-6 font-mono text-[11.5px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent"
+          className="flex h-13 items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
         >
           Cancelar
         </Link>
@@ -168,7 +168,7 @@ function Interruptor({
   const ligado = checked ?? interno;
 
   return (
-    <label className="flex cursor-pointer items-start gap-4 border border-line p-4 transition-colors hover:border-line-strong">
+    <label className="flex cursor-pointer items-start gap-4 rounded-2xl bg-surface-2 p-4 transition-colors hover:bg-surface-3">
       <input
         type="checkbox"
         name={name}
@@ -181,7 +181,7 @@ function Interruptor({
       />
       <span
         aria-hidden
-        className={`mt-0.5 h-4 w-4 shrink-0 border transition-colors ${
+        className={`mt-0.5 h-4 w-4 shrink-0 rounded-md border transition-colors ${
           ligado ? "border-accent bg-accent" : "border-line-strong"
         }`}
       />

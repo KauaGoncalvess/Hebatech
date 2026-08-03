@@ -34,17 +34,15 @@ export default async function NotebooksPage() {
         <CatalogoBrowser itens={itens} />
       </section>
 
-      <section className="mx-auto max-w-[1600px]">
-        <div className="grid grid-cols-1 md:grid-cols-12">
-          <div className="px-4 py-10 md:col-span-8 md:border-r md:border-line md:px-6 md:py-14">
+      <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
+        <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
+          <div className="card p-6 md:p-8">
             <p className="eyebrow text-white/35">Não achou a configuração</p>
-            <p className="display mt-4 text-sub">
+            <p className="display mt-4 max-w-[20ch] text-sub">
               Chega estoque novo toda semana e nem tudo é anunciado
             </p>
-            <p className="mt-4 max-w-[54ch] text-[13.5px] text-white/55">
-              Diga processador, memória e faixa de preço que você procura. Avisamos
-              assim que entrar algo compatível — e avaliamos o seu notebook antigo como
-              parte do pagamento.
+            <p className="mt-4 max-w-[54ch] text-[14px] leading-relaxed text-white/55">
+              Diga processador, memória e faixa de preço que você procura. Avisamos assim que entrar algo compatível — e avaliamos o seu notebook antigo como parte do pagamento.
             </p>
           </div>
           <CtaPanel
@@ -52,7 +50,6 @@ export default async function NotebooksPage() {
             titulo="Diga a configuração que você procura"
             acao="Mandar no WhatsApp"
             href={waGenerico("procuro um notebook específico")}
-            className="border-t border-line md:col-span-4 md:border-t-0"
           />
         </div>
       </section>

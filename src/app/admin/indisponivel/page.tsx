@@ -38,9 +38,9 @@ export default function PainelIndisponivel() {
         funciona depois que o Supabase estiver configurado. São cinco passos.
       </p>
 
-      <ol className="mt-10 border-t border-line">
+      <ol className="mt-10 grid gap-3">
         {passos.map(([n, titulo, texto]) => (
-          <li key={n} className="flex gap-5 border-b border-line py-5">
+          <li key={n} className="card flex gap-5 p-5">
             <span className="font-mono text-[11px] text-accent">{n}</span>
             <span>
               <span className="block font-mono text-[13px] tracking-[0.04em]">{titulo}</span>
@@ -54,7 +54,7 @@ export default function PainelIndisponivel() {
 
       <Link
         href="/"
-        className="mt-10 inline-flex items-center gap-3 border border-line px-6 py-3 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent"
+        className="mt-10 inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
       >
         Voltar para o site
         <span aria-hidden>→</span>

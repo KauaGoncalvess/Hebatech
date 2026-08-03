@@ -38,10 +38,10 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={entrar} className="border border-line">
-      <p className="eyebrow border-b border-line px-5 py-4 text-white/45">Entrar</p>
+    <form onSubmit={entrar} className="card overflow-hidden">
+      <p className="eyebrow px-6 pt-6 text-white/45">Entrar</p>
 
-      <div className="flex flex-col gap-5 p-5">
+      <div className="flex flex-col gap-5 p-6">
         <Campo rotulo="E-mail" obrigatorio>
           <Entrada
             type="email"
@@ -68,7 +68,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={entrando}
-        className="flex h-13 w-full items-center justify-center bg-accent py-4 font-mono text-[11.5px] font-bold tracking-[0.16em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
+        className="m-6 mt-0 flex h-14 items-center justify-center rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
       >
         {entrando ? "Entrando..." : "Entrar no painel"}
       </button>

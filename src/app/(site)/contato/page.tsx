@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { CtaPanel } from "@/components/cta-panel";
 import { enderecoLinha, site } from "@/data/site";
 import { waGenerico } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contato, endereço e horário",
   description: `${site.nomeCompleto} fica em ${enderecoLinha}. Telefone ${site.telefoneFixo}, atendimento de segunda a sexta das 8h30 às 18h.`,
+  alternates: { canonical: "/contato" },
 };
 
 const mapaSrc = `https://www.google.com/maps?q=${encodeURIComponent(site.mapaQuery)}&output=embed&hl=pt-BR`;
@@ -44,105 +44,59 @@ const CANAIS = [
 
 export default function ContatoPage() {
   return (
-    <>
-      <section className="mx-auto max-w-[1600px] border-b border-line pt-28 md:pt-36">
-        <div className="grid grid-cols-1 lg:grid-cols-12">
-          <div className="px-4 pt-10 pb-8 md:px-6 md:pt-16 lg:col-span-7 lg:border-r lg:border-line">
-            <p className="eyebrow text-accent">
-              {site.endereco.cidade} · {site.endereco.uf}
-            </p>
-            <h1 className="display mt-5 text-title">
-              Loja física,
-              <br />
-              endereço fixo
-              <br />
-              e bancada própria
-            </h1>
-            <p className="mt-6 max-w-[52ch] text-[14px] leading-relaxed text-white/60">
-              Você pode trazer o aparelho sem agendar. Para conferir um notebook do
-              estoque, avise antes pelo WhatsApp — assim ele fica separado e testado na
-              sua chegada.
-            </p>
-          </div>
+    <div className="mx-auto max-w-[1180px] px-5 pt-32 pb-20 md:pt-40 md:pb-28">
+      <p className="eyebrow text-accent">
+        {site.endereco.cidade} · {site.endereco.uf}
+      </p>
+      <h1 className="display mt-5 max-w-[15ch] text-title">
+        Loja física, endereço fixo e bancada própria
+      </h1>
+      <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+        Você pode trazer o aparelho sem agendar. Para conferir um produto do estoque,
+        avise antes pelo WhatsApp — assim ele fica separado e testado na sua chegada.
+      </p>
 
-          <address className="not-italic lg:col-span-5">
-            <dl>
-              {[
-                ["Endereço", enderecoLinha],
-                ["CEP", site.endereco.cep],
-                ["Referência", `${site.endereco.bairro}, ${site.endereco.cidade}/${site.endereco.uf}`],
-              ].map(([k, v]) => (
-                <div
-                  key={k}
-                  className="border-t border-line px-4 py-4 md:px-6 lg:first:border-t-0"
+      <div className="mt-12 grid gap-4 lg:grid-cols-[1fr_1.2fr]">
+        <div className="space-y-4">
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            {CANAIS.map((c) => (
+              <li key={c.rotulo}>
+                <a
+                  href={c.href}
+                  target={c.href.startsWith("http") ? "_blank" : undefined}
+                  rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className={`spot card group flex items-center justify-between gap-4 p-5 transition-colors ${
+                    c.destaque ? "hover:bg-accent hover:text-black" : "hover:bg-surface-2"
+                  }`}
                 >
-                  <dt className="eyebrow text-white/35">{k}</dt>
-                  <dd className="mt-2 font-mono text-[13px] text-white">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            <a
-              href={rotaHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between border-t border-line px-4 py-4 font-mono text-[11px] tracking-[0.16em] text-accent uppercase transition-colors hover:bg-accent hover:text-black md:px-6"
-            >
-              Traçar rota no Google Maps
-              <span aria-hidden>→</span>
-            </a>
-          </address>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-[1600px] border-b border-line">
-        <div className="grid grid-cols-1 lg:grid-cols-12">
-          <div className="lg:col-span-5 lg:border-r lg:border-line">
-            <p className="eyebrow border-b border-line px-4 py-3 text-white/35 md:px-6">
-              Canais de atendimento
-            </p>
-            <ul>
-              {CANAIS.map((c) => (
-                <li key={c.rotulo}>
-                  <a
-                    href={c.href}
-                    target={c.href.startsWith("http") ? "_blank" : undefined}
-                    rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    className={`group flex items-center justify-between gap-4 border-b border-line px-4 py-4 transition-colors md:px-6 ${
-                      c.destaque ? "hover:bg-accent hover:text-black" : "hover:bg-surface"
-                    }`}
-                  >
-                    <span>
-                      <span className="eyebrow text-white/35 group-hover:text-inherit">
-                        {c.rotulo}
-                      </span>
-                      <span className="mt-1.5 block font-mono text-[14px]">{c.valor}</span>
-                      <span className="mt-1 block text-[12px] text-white/45 group-hover:text-inherit">
-                        {c.nota}
-                      </span>
+                  <span>
+                    <span className="eyebrow text-white/35 group-hover:text-inherit">
+                      {c.rotulo}
                     </span>
-                    <span
-                      aria-hidden
-                      className="font-mono text-base text-white/25 transition-transform group-hover:translate-x-1 group-hover:text-inherit"
-                    >
-                      →
+                    <span className="mt-2 block font-mono text-[15px]">{c.valor}</span>
+                    <span className="mt-1 block text-[12.5px] text-white/45 group-hover:text-inherit">
+                      {c.nota}
                     </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            <p className="eyebrow border-b border-line px-4 py-3 text-white/35 md:px-6">
-              Horário de funcionamento
-            </p>
-            <ul>
-              {site.horario.map((h) => (
-                <li
-                  key={h.dia}
-                  className="flex items-baseline justify-between border-b border-line px-4 py-3 md:px-6"
-                >
-                  <span className="text-[13px] text-white/70">{h.dia}</span>
+                  </span>
                   <span
-                    className={`font-mono text-[12.5px] ${
+                    aria-hidden
+                    className="font-mono text-lg text-white/25 transition-transform group-hover:translate-x-1 group-hover:text-inherit"
+                  >
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="card p-6">
+            <p className="eyebrow text-white/35">Horário de funcionamento</p>
+            <ul className="mt-4 space-y-3">
+              {site.horario.map((h) => (
+                <li key={h.dia} className="flex items-baseline justify-between gap-4">
+                  <span className="text-[14px] text-white/70">{h.dia}</span>
+                  <span
+                    className={`font-mono text-[13px] ${
                       h.faixa === "Fechado" ? "text-white/30" : "text-accent"
                     }`}
                   >
@@ -152,52 +106,71 @@ export default function ContatoPage() {
               ))}
             </ul>
           </div>
-
-          <div className="relative min-h-[380px] border-t border-line bg-surface lg:col-span-7 lg:border-t-0">
-            <iframe
-              src={mapaSrc}
-              title={`Mapa com a localização da ${site.nomeCompleto}`}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-              className="absolute inset-0 h-full w-full grayscale-[0.85] contrast-[1.05] invert-[0.92] hue-rotate-180"
-            />
-          </div>
         </div>
-      </section>
 
-      <section className="mx-auto max-w-[1600px]">
-        <div className="grid grid-cols-1 md:grid-cols-12">
-          <div className="px-4 py-10 md:col-span-8 md:border-r md:border-line md:px-6 md:py-14">
+        <div className="space-y-4">
+          <div className="card overflow-hidden">
+            <div className="relative min-h-[380px] bg-surface-2 lg:min-h-[460px]">
+              <iframe
+                src={mapaSrc}
+                title={`Mapa com a localização da ${site.nomeCompleto}`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full grayscale-[0.85] contrast-[1.05] invert-[0.92] hue-rotate-180"
+              />
+            </div>
+            <div className="p-5">
+              <p className="eyebrow text-white/35">Endereço</p>
+              <p className="mt-2 font-mono text-[13.5px] text-white/80">{enderecoLinha}</p>
+              <p className="mt-1 font-mono text-[12.5px] text-white/45">
+                CEP {site.endereco.cep}
+              </p>
+              <a
+                href={rotaHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 flex h-12 items-center justify-center rounded-full bg-surface-2 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+              >
+                Traçar rota no Google Maps
+              </a>
+            </div>
+          </div>
+
+          <div className="card p-6">
             <p className="eyebrow text-white/35">Antes de vir</p>
-            <p className="display mt-4 text-sub">
-              Uma mensagem economiza a sua viagem
-            </p>
-            <ul className="mt-6 max-w-[56ch] space-y-2.5">
+            <ul className="mt-4 space-y-3">
               {[
-                "Peça de reposição de modelo raro pode precisar de encomenda — conferimos na hora.",
-                "Notebook do estoque fica separado e ligado para você testar na chegada.",
-                "Para empresa, emitimos proposta com prazo e condição de pagamento por e-mail.",
+                "Peça de modelo raro pode precisar de encomenda — conferimos na hora.",
+                "Produto do estoque fica separado e ligado para você testar na chegada.",
+                "Para empresa, emitimos proposta com prazo e condição por e-mail.",
               ].map((t, i) => (
                 <li key={t} className="flex gap-3 text-[13.5px] text-white/60">
-                  <span className="font-mono text-[10px] text-accent">
-                    {String(i + 1).padStart(2, "0")}
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-[10px] font-bold text-black">
+                    {i + 1}
                   </span>
                   {t}
                 </li>
               ))}
             </ul>
           </div>
-
-          <CtaPanel
-            etiqueta="WhatsApp"
-            titulo="Confirme o estoque antes de sair de casa"
-            acao="Abrir conversa"
-            href={waGenerico()}
-            className="border-t border-line md:col-span-4 md:border-t-0"
-          />
         </div>
-      </section>
-    </>
+      </div>
+
+      <div className="spot card mt-4 p-6 text-center md:p-12">
+        <p className="eyebrow text-accent">WhatsApp</p>
+        <h2 className="display mx-auto mt-5 max-w-[20ch] text-title">
+          Confirme o estoque antes de sair de casa
+        </h2>
+        <a
+          href={waGenerico()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-8 inline-flex h-14 items-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+        >
+          Abrir conversa
+        </a>
+      </div>
+    </div>
   );
 }

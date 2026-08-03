@@ -54,21 +54,17 @@ export default async function ProdutosPage() {
         <CatalogoBrowser itens={itens} filtrarCategoria />
       </section>
 
-      <section className="mx-auto max-w-[1600px]">
-        <div className="grid grid-cols-1 md:grid-cols-12">
-          <div className="px-4 py-10 md:col-span-8 md:border-r md:border-line md:px-6 md:py-14">
+      <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
+        <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
+          <div className="card p-6 md:p-8">
             <p className="eyebrow text-white/35">Montagem sob medida</p>
-            <p className="display mt-4 text-sub">
+            <p className="display mt-4 max-w-[20ch] text-sub">
               Diga o uso e a faixa de preço que montamos a configuração
             </p>
-            <p className="mt-4 max-w-[54ch] text-[13.5px] text-white/55">
-              PC para jogo, edição, escritório ou ponto de venda. Fechamos a lista de
-              peças com preço item a item, você aprova e a máquina sai montada, testada
-              e com o sistema instalado.{" "}
-              <Link href="/notebooks" className="text-accent underline underline-offset-4">
+            <p className="mt-4 max-w-[54ch] text-[14px] leading-relaxed text-white/55">
+              PC para jogo, edição, escritório ou ponto de venda. Fechamos a lista de peças com preço item a item, você aprova e a máquina sai montada, testada e com o sistema instalado. <Link href="/notebooks" className="text-accent underline underline-offset-4">
                 Se procura notebook, o estoque está aqui
-              </Link>
-              .
+              </Link>.
             </p>
           </div>
           <CtaPanel
@@ -76,7 +72,6 @@ export default async function ProdutosPage() {
             titulo="Montar um PC para o meu uso"
             acao="Mandar no WhatsApp"
             href={waGenerico("montagem de PC sob medida")}
-            className="border-t border-line md:col-span-4 md:border-t-0"
           />
         </div>
       </section>

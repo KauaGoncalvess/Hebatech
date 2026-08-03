@@ -3,7 +3,7 @@ import "../globals.css";
 import { classesDeFonte } from "../fonts";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { WhatsappDock } from "@/components/whatsapp-dock";
+import { WhatsappBubble } from "@/components/whatsapp-bubble";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -89,7 +89,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="conteudo">{children}</main>
         <SiteFooter />
-        <WhatsappDock />
+        <WhatsappBubble />
 
         <script
           type="application/ld+json"

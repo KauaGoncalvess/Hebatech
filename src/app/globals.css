@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* Base: preto profundo. Superfície secundária: cinza frio. */
-  --color-ink: #000000;
-  --color-surface: #0a0c0e;
-  --color-surface-2: #101418;
-  --color-line: #22282e;
-  --color-line-strong: #3a444e;
+  /* Base preta, superfícies em cinza frio. Nada de linha como estrutura. */
+  --color-ink: #050505;
+  --color-surface: #0e0f11;
+  --color-surface-2: #16181b;
+  --color-surface-3: #1e2125;
+
+  /* Contornos existem só para dar borda ao painel, nunca para dividir grade. */
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
 
   /* Acento único da marca, amostrado do logo. */
   --color-accent: #ff6b18;
@@ -16,17 +19,20 @@
   --font-mono: var(--font-mono-tech), ui-monospace, monospace;
   --font-sans: var(--font-neutral), system-ui, sans-serif;
 
-  --text-display: clamp(2.75rem, 9.5vw, 8.5rem);
-  --text-display--line-height: 0.86;
+  --text-display: clamp(2.6rem, 8.5vw, 7rem);
+  --text-display--line-height: 0.88;
   --text-display--letter-spacing: -0.035em;
 
-  --text-title: clamp(2rem, 6vw, 4.5rem);
-  --text-title--line-height: 0.9;
+  --text-title: clamp(1.9rem, 5.5vw, 3.8rem);
+  --text-title--line-height: 0.92;
   --text-title--letter-spacing: -0.03em;
 
-  --text-sub: clamp(1.4rem, 3.2vw, 2.1rem);
-  --text-sub--line-height: 0.95;
+  --text-sub: clamp(1.35rem, 3vw, 1.9rem);
+  --text-sub--line-height: 1;
   --text-sub--letter-spacing: -0.02em;
+
+  --radius-card: 18px;
+  --radius-panel: 24px;
 
   --breakpoint-xs: 26rem;
 }
@@ -47,8 +53,8 @@
     background-color: var(--color-ink);
     color: #ffffff;
     font-family: var(--font-sans);
-    font-size: 0.875rem;
-    line-height: 1.6;
+    font-size: 0.9375rem;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
@@ -59,16 +65,14 @@
   }
 
   :focus-visible {
-    outline: 1px solid var(--color-accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
 
-  /* Radius zero global. Só avatar/badge circular recebe raio. */
   button,
   input,
   select,
   textarea {
-    border-radius: 0;
     font: inherit;
     color: inherit;
   }
@@ -81,8 +85,8 @@
 @layer components {
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.22em;
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     line-height: 1;
   }
@@ -93,7 +97,14 @@
     font-weight: 800;
   }
 
-  /* Trilho horizontal com snap — carrossel sem biblioteca. */
+  /* Painel padrão: preenchimento suave e contorno quase invisível. */
+  .card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+  }
+
+  /* Trilho horizontal com encaixe — carrossel sem biblioteca. */
   .rail {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -101,25 +112,62 @@
   .rail::-webkit-scrollbar {
     display: none;
   }
+
+  /**
+   * Brilho que segue o card no hover, como na referência: um halo laranja
+   * atrás e uma borda que acende. Sem cor fora da paleta.
+   */
+  .spot {
+    position: relative;
+    isolation: isolate;
+  }
+  .spot::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--color-accent) 70%, transparent),
+      transparent 45%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .spot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      70% 60% at 50% 0%,
+      color-mix(in oklab, var(--color-accent) 18%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .spot:hover::before,
+  .spot:hover::after,
+  .spot:focus-visible::before,
+  .spot:focus-visible::after {
+    opacity: 1;
+  }
 }
 
 @layer utilities {
-  .tick {
-    animation: tick 42s linear infinite;
-  }
-
   .measure-in {
     transform-origin: left;
     animation: measure 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-}
-
-@keyframes tick {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
   }
 }
 

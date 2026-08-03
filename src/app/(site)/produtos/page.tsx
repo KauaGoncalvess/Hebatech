@@ -27,63 +27,30 @@ export default async function ProdutosPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-[1600px] border-b border-line">
-        <div className="grid grid-cols-1 lg:grid-cols-12">
-          <div className="px-4 pt-10 pb-8 md:px-6 md:pt-16 lg:col-span-7 lg:border-r lg:border-line">
-            <p className="eyebrow text-accent">Produtos à venda</p>
-            <h1 className="display mt-5 text-title">
-              PC montado,
-              <br />
-              monitor, peça
-              <br />
-              e periférico
-            </h1>
-            <p className="mt-6 max-w-[52ch] text-[14px] leading-relaxed text-white/60">
-              O que sai do balcão além de notebook. Peça nova vem com nota fiscal e
-              garantia de fábrica; item seminovo passa pela mesma revisão de bancada e
-              tem o estado declarado. Upgrade de SSD e memória já sai com instalação
-              inclusa no preço.
-            </p>
+      <section className="mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
+        <p className="eyebrow text-accent">Produtos à venda</p>
+        <h1 className="display mt-5 max-w-[16ch] text-title">PC montado, monitor, peça e periférico</h1>
+        <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+          O que sai do balcão além de notebook. Peça nova vem com nota fiscal e garantia de fábrica; item seminovo passa pela mesma revisão de bancada. Upgrade de SSD e memória já sai com instalação inclusa.
+        </p>
 
-            {presentes.length > 1 && (
-              <ul className="mt-8 flex flex-wrap gap-px">
-                {presentes.map((c) => (
-                  <li
-                    key={c.id}
-                    className="border border-line px-3 py-2 font-mono text-[10.5px] tracking-[0.12em] text-white/60 uppercase"
-                  >
-                    {c.plural}
-                    <span className="ml-2 text-accent">
-                      {itens.filter((p) => p.categoria === c.id).length}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <dl className="grid grid-cols-2 border-t border-line lg:col-span-5 lg:border-t-0">
-            {[
-              ["Itens à venda", `${itens.length} produtos`],
-              ["Faixa de preço", faixa],
-              ["Peça nova", "Garantia de fábrica"],
-              ["Pagamento", "Pix, débito e 10x sem juros"],
-            ].map(([k, v], i) => (
-              <div
-                key={k}
-                className={`border-line p-4 md:p-6 ${i % 2 === 0 ? "border-r" : ""} ${
-                  i < 2 ? "border-b" : ""
-                }`}
+        {presentes.length > 1 && (
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {presentes.map((c) => (
+              <li
+                key={c.id}
+                className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[11.5px] text-white/60"
               >
-                <dt className="eyebrow text-white/35">{k}</dt>
-                <dd className="mt-2 font-mono text-[13px] text-white">{v}</dd>
-              </div>
+                {c.plural}
+                <span className="ml-2 text-accent">
+                  {itens.filter((p) => p.categoria === c.id).length}
+                </span>
+              </li>
             ))}
-          </dl>
-        </div>
+          </ul>
+        )}
       </section>
-
-      <section className="mx-auto max-w-[1600px] border-b border-line">
+      <section className="mx-auto max-w-[1180px] px-5 pb-20">
         <CatalogoBrowser itens={itens} filtrarCategoria />
       </section>
 

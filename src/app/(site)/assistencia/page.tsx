@@ -53,7 +53,7 @@ export default async function AssistenciaPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-[1600px] border-b border-line">
+      <section className="mx-auto max-w-[1600px] border-b border-line pt-28 md:pt-36">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           <div className="px-4 pt-10 pb-8 md:px-6 md:pt-16 lg:col-span-7 lg:border-r lg:border-line">
             <p className="eyebrow text-accent">Assistência técnica</p>
@@ -102,7 +102,6 @@ export default async function AssistenciaPage() {
 
       <section className="mx-auto max-w-[1600px] border-b border-line">
         <SectionHead
-          indice="02"
           etiqueta="Referência de preço"
           titulo={
             <>
@@ -154,7 +153,6 @@ export default async function AssistenciaPage() {
       {planos.length > 0 && (
       <section id="manutencao" className="mx-auto max-w-[1600px] scroll-mt-16 border-b border-line">
         <SectionHead
-          indice="03"
           etiqueta="Manutenção mensal"
           titulo={
             <>
@@ -171,7 +169,6 @@ export default async function AssistenciaPage() {
 
       <section className="mx-auto max-w-[1600px]">
         <SectionHead
-          indice="04"
           etiqueta="Regras da casa"
           titulo={
             <>

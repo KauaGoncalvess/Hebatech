@@ -9,8 +9,8 @@ type Faixa = { id: string; rotulo: string; min: number; max: number };
 
 /**
  * Faixas de preço derivadas do próprio estoque, arredondadas para valor
- * redondo. Assim o filtro continua útil tanto para notebook de R$ 3.000
- * quanto para periférico de R$ 129.
+ * redondo. Continua útil tanto para notebook de R$ 3.000 quanto para
+ * periférico de R$ 129.
  */
 function faixasDePreco(itens: Produto[]): Faixa[] {
   if (itens.length < 4) return [];
@@ -25,12 +25,10 @@ function faixasDePreco(itens: Produto[]): Faixa[] {
   const limites = [...new Set([corte(0.25), corte(0.5), corte(0.75)])].filter(
     (v) => v > precos[0] && v <= precos[precos.length - 1],
   );
-
   if (limites.length === 0) return [];
 
   const faixas: Faixa[] = [];
   let anterior = 0;
-
   for (const limite of limites) {
     faixas.push({
       id: `ate-${limite}`,
@@ -40,14 +38,12 @@ function faixasDePreco(itens: Produto[]): Faixa[] {
     });
     anterior = limite;
   }
-
   faixas.push({
     id: `acima-${anterior}`,
     rotulo: `Acima de ${preco(anterior)}`,
     min: anterior,
     max: Number.POSITIVE_INFINITY,
   });
-
   return faixas;
 }
 
@@ -97,7 +93,6 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
   const [ordem, setOrdem] = useState<OrdemId>("preco-asc");
   const [drawer, setDrawer] = useState(false);
 
-  // Trava a rolagem do fundo enquanto a gaveta está aberta.
   useEffect(() => {
     document.body.style.overflow = drawer ? "hidden" : "";
     return () => {
@@ -127,14 +122,11 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
   const resultado = useMemo(() => {
     const filtrado = itens.filter((p) => {
       if (filtros.categoria.length && !filtros.categoria.includes(p.categoria)) return false;
-      if (filtros.cpu.length && !(p.cpuFamilia && filtros.cpu.includes(p.cpuFamilia))) return false;
-      if (filtros.ram.length && !(p.ramGb && filtros.ram.includes(p.ramGb))) return false;
-      if (
-        filtros.ssd.length &&
-        !(p.armazenamentoGb && filtros.ssd.includes(p.armazenamentoGb))
-      ) {
+      if (filtros.cpu.length && !(p.cpuFamilia && filtros.cpu.includes(p.cpuFamilia)))
         return false;
-      }
+      if (filtros.ram.length && !(p.ramGb && filtros.ram.includes(p.ramGb))) return false;
+      if (filtros.ssd.length && !(p.armazenamentoGb && filtros.ssd.includes(p.armazenamentoGb)))
+        return false;
       if (filtros.faixa.length) {
         const bate = faixas.some(
           (f) => filtros.faixa.includes(f.id) && p.preco >= f.min && p.preco < f.max,
@@ -159,13 +151,13 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
     filtros.faixa.length;
 
   const painel = (
-    <div>
+    <div className="space-y-7">
       {filtrarCategoria && opcoes.categoria.length > 1 && (
         <Grupo titulo="Categoria">
           {CATEGORIAS.filter((c) => opcoes.categoria.some(([id]) => id === c.id)).map((c) => (
-            <Opcao
+            <Chip
               key={c.id}
-              rotulo={c.plural}
+              rotulo={c.rotulo}
               quantidade={opcoes.categoria.find(([id]) => id === c.id)?.[1] ?? 0}
               ativo={filtros.categoria.includes(c.id)}
               onClick={() =>
@@ -179,7 +171,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
       {opcoes.cpu.length > 0 && (
         <Grupo titulo="Processador">
           {opcoes.cpu.map(([valor, qtd]) => (
-            <Opcao
+            <Chip
               key={valor}
               rotulo={valor}
               quantidade={qtd}
@@ -193,7 +185,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
       {opcoes.ram.length > 0 && (
         <Grupo titulo="Memória">
           {opcoes.ram.map(([valor, qtd]) => (
-            <Opcao
+            <Chip
               key={valor}
               rotulo={`${valor} GB`}
               quantidade={qtd}
@@ -207,7 +199,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
       {opcoes.ssd.length > 0 && (
         <Grupo titulo="Armazenamento">
           {opcoes.ssd.map(([valor, qtd]) => (
-            <Opcao
+            <Chip
               key={valor}
               rotulo={armazenamento(valor)}
               quantidade={qtd}
@@ -221,7 +213,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
       {faixas.length > 0 && (
         <Grupo titulo="Faixa de preço">
           {faixas.map((f) => (
-            <Opcao
+            <Chip
               key={f.id}
               rotulo={f.rotulo}
               quantidade={opcoes.faixa.find(([id]) => id === f.id)?.[1] ?? 0}
@@ -237,115 +229,115 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
   );
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12">
-      {/* Coluna de filtro — vira gaveta no celular */}
-      <aside className="hidden lg:col-span-3 lg:block lg:border-r lg:border-line">
-        <div className="sticky top-[65px]">
-          <div className="flex items-center justify-between border-b border-line px-6 py-4">
-            <p className="eyebrow text-white/40">Filtro</p>
+    <div>
+      {/* Barra de controle */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <p className="font-mono text-[12px] text-white/50">
+          <span className="text-accent">{resultado.length}</span> de {itens.length} itens
+        </p>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setDrawer(true)}
+            className="flex items-center gap-2 rounded-full bg-surface-2 px-5 py-3 font-mono text-[11.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 lg:hidden"
+          >
+            Filtrar
             {ativos > 0 && (
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent font-mono text-[10px] font-bold text-black">
+                {ativos}
+              </span>
+            )}
+          </button>
+
+          <label className="relative flex items-center">
+            <span className="sr-only">Ordenar por</span>
+            <select
+              value={ordem}
+              onChange={(e) => setOrdem(e.target.value as OrdemId)}
+              className="appearance-none rounded-full bg-surface-2 py-3 pr-10 pl-5 font-mono text-[11.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 focus:outline-none"
+            >
+              {ORDENS.map((o) => (
+                <option key={o.id} value={o.id} className="bg-surface">
+                  {o.rotulo}
+                </option>
+              ))}
+            </select>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute right-4 font-mono text-[9px] text-accent"
+            >
+              ▼
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-[240px_1fr] lg:gap-10">
+        <aside className="hidden lg:block">
+          <div className="sticky top-28">
+            <div className="mb-6 flex items-center justify-between">
+              <p className="eyebrow text-white/35">Filtro</p>
+              {ativos > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setFiltros(VAZIO)}
+                  className="font-mono text-[11px] text-accent"
+                >
+                  Limpar
+                </button>
+              )}
+            </div>
+            {painel}
+          </div>
+        </aside>
+
+        <div>
+          {resultado.length === 0 ? (
+            <div className="card px-6 py-20 text-center">
+              <p className="display text-sub">Nada com esse filtro</p>
+              <p className="mx-auto mt-4 max-w-[44ch] text-[14px] text-white/55">
+                O estoque gira rápido e nem tudo fica anunciado. Diga o que você procura
+                no WhatsApp — costumamos ter algo chegando na semana.
+              </p>
               <button
                 type="button"
                 onClick={() => setFiltros(VAZIO)}
-                className="font-mono text-[10px] tracking-[0.14em] text-accent uppercase"
+                className="mt-7 rounded-full bg-accent px-7 py-3.5 font-mono text-[11.5px] font-bold tracking-[0.12em] text-black uppercase"
               >
-                Limpar ({ativos})
+                Limpar filtro
               </button>
-            )}
-          </div>
-          {painel}
+            </div>
+          ) : (
+            <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {resultado.map((p) => (
+                <li key={p.id}>
+                  <ProductCard p={p} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-      </aside>
-
-      <div className="lg:col-span-9">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3 md:px-6">
-          <p className="font-mono text-[11px] tracking-[0.12em] text-white/50">
-            <span className="text-accent">{String(resultado.length).padStart(2, "0")}</span>
-            {" de "}
-            {String(itens.length).padStart(2, "0")} itens
-          </p>
-
-          <div className="flex items-center gap-px">
-            <button
-              type="button"
-              onClick={() => setDrawer(true)}
-              className="flex h-9 items-center gap-2 border border-line px-4 font-mono text-[10.5px] tracking-[0.14em] uppercase lg:hidden"
-            >
-              Filtrar
-              {ativos > 0 && (
-                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-accent font-mono text-[9px] font-bold text-black">
-                  {ativos}
-                </span>
-              )}
-            </button>
-
-            <label className="relative flex h-9 items-center border border-line">
-              <span className="sr-only">Ordenar por</span>
-              <select
-                value={ordem}
-                onChange={(e) => setOrdem(e.target.value as OrdemId)}
-                className="h-full appearance-none bg-transparent pr-9 pl-3 font-mono text-[10.5px] tracking-[0.12em] uppercase focus:outline-none"
-              >
-                {ORDENS.map((o) => (
-                  <option key={o.id} value={o.id} className="bg-ink">
-                    {o.rotulo}
-                  </option>
-                ))}
-              </select>
-              <span
-                aria-hidden
-                className="pointer-events-none absolute right-3 font-mono text-[9px] text-accent"
-              >
-                ▼
-              </span>
-            </label>
-          </div>
-        </div>
-
-        {resultado.length === 0 ? (
-          <div className="px-4 py-20 text-center md:px-6">
-            <p className="display text-sub">Nada com esse filtro</p>
-            <p className="mx-auto mt-4 max-w-[42ch] text-[13px] text-white/55">
-              O estoque gira rápido e nem tudo fica anunciado. Diga o que você procura no
-              WhatsApp — costumamos ter algo chegando na semana.
-            </p>
-            <button
-              type="button"
-              onClick={() => setFiltros(VAZIO)}
-              className="mt-6 border border-accent px-6 py-3 font-mono text-[11px] tracking-[0.16em] text-accent uppercase transition-colors hover:bg-accent hover:text-black"
-            >
-              Limpar filtro
-            </button>
-          </div>
-        ) : (
-          <ul className="grid grid-cols-1 gap-px bg-line sm:grid-cols-2 xl:grid-cols-3">
-            {resultado.map((p, i) => (
-              <li key={p.id}>
-                <ProductCard p={p} indice={i + 1} />
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
 
       {/* Gaveta de filtro no celular */}
       {drawer && (
-        <div className="fixed inset-0 z-50 flex flex-col lg:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col justify-end lg:hidden">
           <button
             type="button"
             aria-label="Fechar filtro"
             onClick={() => setDrawer(false)}
-            className="flex-1 bg-black/70"
+            className="flex-1 bg-black/70 backdrop-blur-sm"
           />
-          <div className="flex max-h-[82vh] flex-col border-t border-accent bg-ink">
-            <div className="flex shrink-0 items-center justify-between border-b border-line px-4 py-4">
-              <p className="eyebrow text-white/40">Filtro · {resultado.length} resultados</p>
-              <div className="flex gap-4">
+          <div className="flex max-h-[82vh] flex-col rounded-t-[28px] border border-line bg-surface">
+            <div className="flex shrink-0 items-center justify-between px-6 py-5">
+              <p className="eyebrow text-white/40">Filtro · {resultado.length} itens</p>
+              <div className="flex gap-5">
                 {ativos > 0 && (
                   <button
                     type="button"
                     onClick={() => setFiltros(VAZIO)}
-                    className="font-mono text-[10px] tracking-[0.14em] text-accent uppercase"
+                    className="font-mono text-[11px] text-accent"
                   >
                     Limpar
                   </button>
@@ -353,18 +345,18 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
                 <button
                   type="button"
                   onClick={() => setDrawer(false)}
-                  className="font-mono text-[10px] tracking-[0.14em] uppercase"
+                  className="font-mono text-[11px] text-white/60"
                 >
                   Fechar
                 </button>
               </div>
             </div>
-            <div className="flex-1 overflow-y-auto overscroll-contain">{painel}</div>
-            <div className="shrink-0 border-t border-line p-4">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-6 pb-4">{painel}</div>
+            <div className="shrink-0 p-4">
               <button
                 type="button"
                 onClick={() => setDrawer(false)}
-                className="w-full bg-accent py-4 font-mono text-[11px] font-bold tracking-[0.16em] text-black uppercase"
+                className="w-full rounded-full bg-accent py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase"
               >
                 Ver {resultado.length} {resultado.length === 1 ? "item" : "itens"}
               </button>
@@ -378,14 +370,14 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
 
 function Grupo({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
-    <section className="border-b border-line last:border-b-0">
-      <h3 className="eyebrow px-4 py-3 text-white/35 md:px-6">{titulo}</h3>
-      <div className="border-t border-line">{children}</div>
+    <section>
+      <h3 className="eyebrow mb-3 text-white/35">{titulo}</h3>
+      <div className="flex flex-wrap gap-2">{children}</div>
     </section>
   );
 }
 
-function Opcao({
+function Chip({
   rotulo,
   quantidade,
   ativo,
@@ -401,22 +393,14 @@ function Opcao({
       type="button"
       onClick={onClick}
       aria-pressed={ativo}
-      className={`flex w-full items-center justify-between gap-3 border-b border-line px-4 py-2.5 text-left transition-colors last:border-b-0 md:px-6 ${
-        ativo ? "bg-surface-2" : "hover:bg-surface"
+      className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-mono text-[11.5px] transition-colors ${
+        ativo
+          ? "bg-accent text-black"
+          : "bg-surface-2 text-white/70 hover:bg-surface-3 hover:text-white"
       }`}
     >
-      <span className="flex items-center gap-3">
-        <span
-          aria-hidden
-          className={`h-2.5 w-2.5 shrink-0 border transition-colors ${
-            ativo ? "border-accent bg-accent" : "border-line-strong"
-          }`}
-        />
-        <span className={`font-mono text-[11.5px] ${ativo ? "text-accent" : "text-white/80"}`}>
-          {rotulo}
-        </span>
-      </span>
-      <span className="font-mono text-[10px] text-white/25">{quantidade}</span>
+      {rotulo}
+      <span className={ativo ? "text-black/50" : "text-white/25"}>{quantidade}</span>
     </button>
   );
 }

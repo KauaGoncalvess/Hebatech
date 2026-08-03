@@ -130,7 +130,7 @@ export default async function ProdutoPage({ params }: Params) {
     <>
       <nav
         aria-label="Trilha"
-        className="mx-auto flex max-w-[1600px] items-center gap-2 border-b border-line px-4 py-3 font-mono text-[10px] tracking-[0.14em] text-white/35 uppercase md:px-6"
+        className="mx-auto flex max-w-[1600px] items-center gap-2 border-b border-line px-4 pt-28 pb-3 md:pt-36 font-mono text-[10px] tracking-[0.14em] text-white/35 uppercase md:px-6"
       >
         <Link href={voltarPara} className="transition-colors hover:text-accent">
           {rotuloVoltar}
@@ -367,9 +367,9 @@ export default async function ProdutoPage({ params }: Params) {
               <h2 className="eyebrow text-white/45">Preço parecido</h2>
             </div>
             <ul className="grid grid-cols-1 gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
-              {relacionados.map((o, i) => (
+              {relacionados.map((o) => (
                 <li key={o.id}>
-                  <ProductCard p={o} indice={i + 1} />
+                  <ProductCard p={o} />
                 </li>
               ))}
             </ul>

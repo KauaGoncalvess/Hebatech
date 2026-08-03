@@ -45,7 +45,7 @@ const CANAIS = [
 export default function ContatoPage() {
   return (
     <>
-      <section className="mx-auto max-w-[1600px] border-b border-line">
+      <section className="mx-auto max-w-[1600px] border-b border-line pt-28 md:pt-36">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           <div className="px-4 pt-10 pb-8 md:px-6 md:pt-16 lg:col-span-7 lg:border-r lg:border-line">
             <p className="eyebrow text-accent">

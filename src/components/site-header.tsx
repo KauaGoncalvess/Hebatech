@@ -7,13 +7,12 @@ import { Logo } from "./logo";
 import { navegacao, site } from "@/data/site";
 import { waGenerico } from "@/lib/whatsapp";
 
+/** Barra flutuante em pílula, no modelo da referência. */
 export function SiteHeader() {
   const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
 
-  useEffect(() => {
-    setAberto(false);
-  }, [pathname]);
+  useEffect(() => setAberto(false), [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = aberto ? "hidden" : "";
@@ -26,13 +25,17 @@ export function SiteHeader() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-ink">
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between pr-4 pl-4 lg:pr-0 lg:pl-6">
-        <Link href="/" aria-label={`${site.nomeCompleto} — início`}>
-          <Logo />
+    <header className="fixed inset-x-0 top-3 z-50 px-3 md:top-5 md:px-5">
+      <div className="mx-auto flex max-w-[1180px] items-center gap-2 rounded-full border border-line bg-surface/85 p-1.5 pl-4 backdrop-blur-xl md:pl-5">
+        <Link
+          href="/"
+          aria-label={`${site.nomeCompleto} — início`}
+          className="mr-auto shrink-0 py-1"
+        >
+          <Logo compacto />
         </Link>
 
-        <nav className="hidden items-stretch self-stretch lg:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {navegacao.map((item) => {
             const on = ativo(item.href);
             return (
@@ -40,57 +43,47 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 aria-current={on ? "page" : undefined}
-                className={`group relative flex items-center gap-2 border-l border-line px-5 transition-colors ${
-                  on ? "bg-surface-2" : "hover:bg-surface"
+                className={`rounded-full px-4 py-2.5 font-mono text-[11.5px] tracking-[0.1em] uppercase transition-colors ${
+                  on
+                    ? "bg-surface-3 text-white"
+                    : "text-white/55 hover:bg-surface-2 hover:text-white"
                 }`}
               >
-                <span
-                  className={`font-mono text-[10px] leading-none ${
-                    on ? "text-accent" : "text-white/30"
-                  }`}
-                >
-                  {item.indice}
-                </span>
-                <span className="font-mono text-[11px] tracking-[0.14em] uppercase">
-                  {item.rotulo}
-                </span>
-                <span
-                  className={`absolute inset-x-0 bottom-0 h-px bg-accent transition-transform duration-200 ${
-                    on ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
+                {item.rotulo}
               </Link>
             );
           })}
-
-          <a
-            href={waGenerico()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center border-l border-accent bg-accent px-6 font-mono text-[11px] font-bold tracking-[0.14em] text-black uppercase transition-colors hover:bg-white"
-          >
-            WhatsApp
-          </a>
         </nav>
+
+        <span aria-hidden className="hidden h-6 w-px bg-line-strong lg:block" />
+
+        <a
+          href={waGenerico()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden rounded-full bg-accent px-5 py-2.5 font-mono text-[11.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white lg:block"
+        >
+          Orçamento
+        </a>
 
         <button
           type="button"
           onClick={() => setAberto((v) => !v)}
           aria-expanded={aberto}
           aria-controls="menu-mobile"
-          className="-mr-1 flex h-11 w-11 flex-col items-center justify-center gap-[7px] border border-line lg:hidden"
+          className="flex h-11 w-11 shrink-0 flex-col items-center justify-center gap-[6px] rounded-full bg-surface-2 transition-colors hover:bg-surface-3 lg:hidden"
         >
           <span className="sr-only">{aberto ? "Fechar menu" : "Abrir menu"}</span>
           <span
             aria-hidden
-            className={`h-px w-5 bg-white transition-transform duration-200 ${
-              aberto ? "translate-y-1 rotate-45" : ""
+            className={`h-px w-4 bg-white transition-transform duration-200 ${
+              aberto ? "translate-y-[3.5px] rotate-45" : ""
             }`}
           />
           <span
             aria-hidden
-            className={`h-px w-5 bg-accent transition-transform duration-200 ${
-              aberto ? "-translate-y-1 -rotate-45" : ""
+            className={`h-px w-4 bg-accent transition-transform duration-200 ${
+              aberto ? "-translate-y-[3.5px] -rotate-45" : ""
             }`}
           />
         </button>
@@ -99,7 +92,7 @@ export function SiteHeader() {
       {aberto && (
         <div
           id="menu-mobile"
-          className="fixed inset-x-0 top-[65px] bottom-0 z-50 flex flex-col border-t border-line bg-ink lg:hidden"
+          className="mx-auto mt-2 max-w-[1180px] overflow-hidden rounded-[24px] border border-line bg-surface/95 p-2 backdrop-blur-xl lg:hidden"
         >
           {navegacao.map((item) => {
             const on = ativo(item.href);
@@ -107,57 +100,28 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-baseline gap-4 border-b border-line px-4 py-5"
+                className={`flex items-center justify-between rounded-2xl px-4 py-4 transition-colors ${
+                  on ? "bg-surface-3" : "hover:bg-surface-2"
+                }`}
               >
-                <span
-                  className={`font-mono text-[11px] ${on ? "text-accent" : "text-white/30"}`}
-                >
-                  {item.indice}
-                </span>
-                <span
-                  className={`display text-sub ${on ? "text-accent" : "text-white"}`}
-                >
+                <span className={`display text-sub ${on ? "text-accent" : "text-white"}`}>
                   {item.rotulo}
+                </span>
+                <span aria-hidden className="font-mono text-white/25">
+                  →
                 </span>
               </Link>
             );
           })}
 
-          <dl className="grid grid-cols-2">
-            {[
-              ["Endereço", `${site.endereco.logradouro}, ${site.endereco.bairro}`],
-              ["Cidade", `${site.endereco.cidade}/${site.endereco.uf}`],
-              ["Fixo", site.telefoneFixo],
-              ["Seg a sex", site.horario[0].faixa],
-            ].map(([k, v], i) => (
-              <div
-                key={k}
-                className={`border-b border-line px-4 py-3 ${i % 2 === 0 ? "border-r" : ""}`}
-              >
-                <dt className="eyebrow text-white/30">{k}</dt>
-                <dd className="mt-1.5 font-mono text-[11px] text-white/75">{v}</dd>
-              </div>
-            ))}
-          </dl>
-
-          <div className="mt-auto border-t border-line p-4">
-            <a
-              href={waGenerico()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-14 items-center justify-center bg-accent font-mono text-xs font-bold tracking-[0.16em] text-black uppercase"
-            >
-              Falar no WhatsApp
-            </a>
-            <a
-              href={site.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 block font-mono text-[10px] tracking-[0.14em] text-white/40 uppercase"
-            >
-              {site.instagramHandle}
-            </a>
-          </div>
+          <a
+            href={waGenerico()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 flex h-14 items-center justify-center rounded-2xl bg-accent font-mono text-xs font-bold tracking-[0.14em] text-black uppercase"
+          >
+            Pedir orçamento
+          </a>
         </div>
       )}
     </header>

@@ -23,46 +23,14 @@ export default async function NotebooksPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-[1600px] border-b border-line">
-        <div className="grid grid-cols-1 lg:grid-cols-12">
-          <div className="px-4 pt-10 pb-8 md:px-6 md:pt-16 lg:col-span-7 lg:border-r lg:border-line">
-            <p className="eyebrow text-accent">Estoque · revisado na bancada</p>
-            <h1 className="display mt-5 text-title">
-              Notebook de
-              <br />
-              fim de contrato,
-              <br />
-              revisado item a item
-            </h1>
-            <p className="mt-6 max-w-[52ch] text-[14px] leading-relaxed text-white/60">
-              Máquina que rodou dentro de empresa: chassi reforçado, teclado melhor
-              e peça de reposição fácil de achar. Cada aparelho passa por teste de
-              disco, memória, bateria, tela e portas antes de entrar nesta lista.
-            </p>
-          </div>
-
-          <dl className="grid grid-cols-2 border-t border-line lg:col-span-5 lg:border-t-0">
-            {[
-              ["Em estoque", `${itens.length} aparelhos`],
-              ["Faixa de preço", faixa],
-              ["Garantia", "90 dias na loja"],
-              ["Pagamento", "Pix, débito e 10x sem juros"],
-            ].map(([k, v], i) => (
-              <div
-                key={k}
-                className={`border-line p-4 md:p-6 ${i % 2 === 0 ? "border-r" : ""} ${
-                  i < 2 ? "border-b" : ""
-                }`}
-              >
-                <dt className="eyebrow text-white/35">{k}</dt>
-                <dd className="mt-2 font-mono text-[13px] text-white">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+      <section className="mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
+        <p className="eyebrow text-accent">Notebooks seminovos</p>
+        <h1 className="display mt-5 max-w-[16ch] text-title">Máquina de empresa, revisada item a item</h1>
+        <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+          Chassi reforçado, teclado melhor e peça de reposição fácil de achar. Cada aparelho passa por teste de disco, memória, bateria, tela e portas antes de entrar na lista.
+        </p>
       </section>
-
-      <section className="mx-auto max-w-[1600px] border-b border-line">
+      <section className="mx-auto max-w-[1180px] px-5 pb-20">
         <CatalogoBrowser itens={itens} />
       </section>
 

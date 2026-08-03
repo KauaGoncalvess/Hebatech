@@ -1,98 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CtaPanel } from "@/components/cta-panel";
-import { ProductRail } from "@/components/product-rail";
+import { Carrossel } from "@/components/carrossel";
+import { ProductCard } from "@/components/product-card";
 import { SectionHead } from "@/components/section-head";
-import { Ticker } from "@/components/ticker";
+import { ServicoCard } from "@/components/servico-card";
+import { servicos } from "@/data/servicos";
 import { site } from "@/data/site";
-import { listarDestaques, listarNotebooks, listarOutrosProdutos } from "@/lib/catalogo";
-import { preco } from "@/lib/format";
+import { listarDestaques, listarNotebooks } from "@/lib/catalogo";
 import { waGenerico } from "@/lib/whatsapp";
 
 export const revalidate = 300;
 
 const PROCESSO = [
-  ["01", "Contato", "Você descreve o defeito no WhatsApp ou traz o aparelho na loja."],
-  ["02", "Diagnóstico", "Teste de bancada em até 48h. Nada é aberto sem registro."],
-  ["03", "Orçamento", "Valor fechado de peça e mão de obra. Só seguimos com o seu aval."],
-  ["04", "Entrega", "Aparelho testado na sua frente, com garantia de 90 dias por escrito."],
+  ["Contato", "Você descreve o defeito no WhatsApp ou traz o aparelho na loja."],
+  ["Diagnóstico", "Teste de bancada em até 48h. Nada é aberto sem registro."],
+  ["Orçamento", "Valor fechado de peça e mão de obra. Só seguimos com o seu aval."],
+  ["Entrega", "Aparelho testado na sua frente, com 90 dias de garantia por escrito."],
 ];
 
 export default async function Home() {
-  const [destaques, notebooks, outros] = await Promise.all([
-    listarDestaques(6),
+  const [destaques, notebooks] = await Promise.all([
+    listarDestaques(8),
     listarNotebooks(),
-    listarOutrosProdutos(),
   ]);
-
-  const menorPreco = notebooks.length
-    ? preco(Math.min(...notebooks.map((p) => p.preco)))
-    : "sob consulta";
-
-  const servicos = [
-    {
-      indice: "01",
-      titulo: "Assistência técnica",
-      resumo:
-        "Notebook e desktop de qualquer marca. Abertura, medição e laudo antes de encostar em qualquer peça.",
-      itens: [
-        "Troca de tela, dobradiça, teclado e carcaça",
-        "Reparo de placa-mãe: conector de carga, trilha e BGA",
-        "Limpeza interna, troca de pasta térmica e thermal pad",
-        "Recuperação de dados e clonagem de disco",
-        "Formatação com backup e reinstalação de programa",
-      ],
-      metricas: [
-        ["Diagnóstico", "até 48h"],
-        ["Garantia", "90 dias"],
-      ],
-      href: "/assistencia",
-      acao: "Pedir orçamento",
-    },
-    {
-      indice: "02",
-      titulo: "Manutenção mensal",
-      resumo:
-        "Contrato fixo para empresa que tem de 3 a 30 máquinas e nenhum TI próprio. Visita programada e chamado incluso.",
-      itens: [
-        "Visita técnica programada todo mês",
-        "Chamado remoto ilimitado no horário comercial",
-        "Rotina de backup com teste de restauração",
-        "Inventário de equipamento e licença atualizado",
-        "Plano de troca de máquina em 12 e 24 meses",
-      ],
-      metricas: [
-        ["A partir de", "R$ 390/mês"],
-        ["Fidelidade", "nenhuma"],
-      ],
-      href: "/assistencia#manutencao",
-      acao: "Ver os planos",
-    },
-    {
-      indice: "03",
-      titulo: "Compra e venda",
-      resumo:
-        "Notebook corporativo de fim de contrato, PC montado, monitor e peça — tudo revisado na bancada.",
-      itens: [
-        "Dell Latitude, ThinkPad, HP EliteBook e Acer TravelMate",
-        "PC montado sob medida, testado antes de sair",
-        "Monitor, dock, SSD, memória e periférico",
-        "Estado de conservação declarado por grau A, B ou C",
-        "Windows 11 Pro ativado e nota fiscal",
-      ],
-      metricas: [
-        ["Notebooks", `${notebooks.length} em estoque`],
-        ["A partir de", menorPreco],
-      ],
-      href: "/notebooks",
-      acao: "Ver estoque",
-    },
-  ];
 
   return (
     <>
-      {/* ── Hero: a foto da bancada é o fundo; o texto fica na margem ── */}
-      <section className="relative overflow-hidden border-b border-line">
+      {/* ── Topo: a foto da bancada é o fundo ── */}
+      <section className="relative overflow-hidden">
         <Image
           src="/fotos/setup-montagem.jpg"
           alt="Computador montado e organizado na bancada da HebaTech"
@@ -101,15 +36,13 @@ export default async function Home() {
           sizes="100vw"
           className="object-cover object-center brightness-[0.62] contrast-[1.08] grayscale"
         />
-        {/* Duotone laranja para a foto não brigar com a marca */}
         <div aria-hidden className="absolute inset-0 bg-accent opacity-40 mix-blend-color" />
-        {/* Véu que garante leitura: sobe de baixo no celular, da esquerda no desktop */}
         <div
           aria-hidden
           className="absolute inset-0 bg-linear-to-t from-ink via-ink/80 to-ink/25 lg:bg-linear-to-r lg:from-ink lg:via-ink/80 lg:to-ink/10"
         />
 
-        <div className="relative mx-auto max-w-[1600px] px-4 pt-14 pb-12 md:px-6 md:pt-24 md:pb-20">
+        <div className="relative mx-auto max-w-[1180px] px-5 pt-32 pb-16 md:pt-44 md:pb-24">
           <p className="eyebrow text-accent">
             {site.endereco.cidade} / {site.endereco.uf} · Loja física
           </p>
@@ -120,42 +53,40 @@ export default async function Home() {
 
           <span
             aria-hidden
-            className="measure-in mt-8 block h-px w-full max-w-[520px] bg-accent"
+            className="measure-in mt-8 block h-px w-full max-w-[480px] bg-accent"
           />
 
-          <p className="mt-6 max-w-[38ch] text-[15px] leading-relaxed text-white/70">
-            Bancada própria. Você recebe o valor fechado de peça e mão de obra antes
-            de autorizar qualquer reparo.
+          <p className="mt-6 max-w-[40ch] text-[16px] leading-relaxed text-white/70">
+            Bancada própria. Você recebe o valor fechado de peça e mão de obra antes de
+            autorizar qualquer reparo.
           </p>
 
-          <div className="mt-9 flex flex-col items-stretch gap-px sm:flex-row sm:flex-wrap">
+          <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap">
             <a
               href={waGenerico("assistência técnica")}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-14 items-center justify-center bg-accent px-7 font-mono text-[11.5px] font-bold tracking-[0.16em] text-black uppercase transition-colors hover:bg-white sm:justify-start"
+              className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
             >
               Descrever o defeito
             </a>
             <Link
-              href="/notebooks"
-              className="flex h-14 items-center justify-center gap-3 border border-white/25 bg-ink/60 px-7 font-mono text-[11.5px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent sm:justify-start"
+              href="/produtos"
+              className="flex h-14 items-center justify-center gap-3 rounded-full border border-white/25 bg-black/40 px-8 font-mono text-[12px] tracking-[0.12em] uppercase backdrop-blur transition-colors hover:border-accent hover:text-accent"
             >
-              {notebooks.length} notebooks em estoque
+              Ver produtos à venda
               <span aria-hidden>→</span>
             </Link>
           </div>
 
-          {/* Os números que antes ocupavam quatro caixas, agora numa linha só.
-              Cada item é indivisível, então a quebra cai entre eles. */}
-          <ul className="mt-10 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] tracking-[0.1em] text-white/55">
+          <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[12px] tracking-[0.08em] text-white/55">
             {[
               `${site.operacao.anos} anos de loja`,
               `diagnóstico em até ${site.operacao.prazoDiagnosticoHoras}h`,
               `${site.operacao.garantiaServicoDias} dias de garantia`,
             ].map((item) => (
               <li key={item} className="flex items-center gap-2 whitespace-nowrap">
-                <span aria-hidden className="h-1 w-1 shrink-0 bg-accent" />
+                <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 {item}
               </li>
             ))}
@@ -163,226 +94,159 @@ export default async function Home() {
         </div>
       </section>
 
-      <Ticker />
-
-      {/* ── Prova de operação ── */}
-      <section className="mx-auto max-w-[1600px] border-b border-line">
+      {/* ── Nossos serviços ── */}
+      <section className="mx-auto max-w-[1180px] px-5 py-20 md:py-28">
         <SectionHead
-          indice="01"
-          etiqueta="Quem atende você"
-          titulo={
-            <>
-              Loja com endereço,
-              <br />
-              bancada e nota fiscal
-            </>
-          }
-          nota={
-            <>
-              Não é serviço de garagem nem intermediário. O aparelho fica na loja, sob
-              responsabilidade registrada, e você acompanha o andamento pelo WhatsApp.
-            </>
-          }
+          etiqueta="Nossos serviços"
+          titulo="Tudo que a bancada resolve"
+          nota="De limpeza e formatação a reparo de placa e montagem de PC. Qualquer marca, com orçamento fechado antes de começar."
         />
 
-        <dl className="grid grid-cols-1 sm:grid-cols-3">
-          {[
-            [`${site.operacao.anos}`, "anos", "de operação contínua em Sete Lagoas"],
-            [`${site.operacao.atendimentos}+`, "atendimentos", "entre pessoa física e empresa"],
-            [`${site.operacao.garantiaServicoDias}`, "dias", "de garantia em serviço e equipamento"],
-          ].map(([num, unidade, texto], i) => (
-            <div
-              key={unidade}
-              className={`border-line p-4 md:p-6 ${i < 2 ? "border-b sm:border-b-0 sm:border-r" : ""}`}
-            >
-              <dt className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                <span className="display text-[clamp(2.75rem,7vw,5rem)] leading-[0.8] text-accent">
-                  {num}
-                </span>
-                <span className="font-mono text-[10px] tracking-[0.18em] text-white/40 uppercase">
-                  {unidade}
-                </span>
-              </dt>
-              <dd className="mt-4 max-w-[24ch] text-[13px] text-white/55">{texto}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      {/* ── Serviços ── */}
-      <section className="mx-auto max-w-[1600px] border-b border-line">
-        <SectionHead
-          indice="02"
-          etiqueta="O que fazemos"
-          titulo={
-            <>
-              Três frentes,
-              <br />
-              um mesmo técnico
-            </>
-          }
-          nota="Tudo passa pela mesma bancada. Não terceirizamos reparo nem revisão de estoque."
+        <Carrossel
+          rotulo="Serviços da assistência"
+          larguraItem="w-[85vw] xs:w-[78vw] sm:w-[400px] lg:w-[440px]"
+          itens={servicos.map((s) => ({
+            chave: s.area,
+            conteudo: <ServicoCard s={s} />,
+          }))}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3">
-          {servicos.map((s, i) => (
-            <article
-              key={s.indice}
-              className={`group flex flex-col border-line ${
-                i < servicos.length - 1 ? "border-b lg:border-r lg:border-b-0" : ""
-              }`}
-            >
-              <div className="flex items-start justify-between px-4 pt-6 md:px-6">
-                <span className="display text-[3.5rem] leading-[0.75] text-white/10 transition-colors duration-300 group-hover:text-accent">
-                  {s.indice}
-                </span>
-                <span className="eyebrow pt-2 text-white/30">Serviço</span>
-              </div>
-
-              <h3 className="display mt-4 px-4 text-sub md:px-6">{s.titulo}</h3>
-              <p className="mt-3 px-4 pb-5 text-[13.5px] leading-relaxed text-white/55 md:px-6">
-                {s.resumo}
-              </p>
-
-              <ul className="border-t border-line">
-                {s.itens.map((item) => (
-                  <li
-                    key={item}
-                    className="flex gap-3 border-b border-line px-4 py-2.5 text-[12.5px] text-white/70 md:px-6"
-                  >
-                    <span aria-hidden className="font-mono text-accent">
-                      ·
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              <dl className="mt-auto grid grid-cols-2">
-                {s.metricas.map(([k, v], j) => (
-                  <div
-                    key={k}
-                    className={`px-4 py-3 md:px-6 ${j === 0 ? "border-r border-line" : ""}`}
-                  >
-                    <dt className="eyebrow text-white/30">{k}</dt>
-                    <dd className="mt-1.5 font-mono text-[13px] text-white">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-
-              <Link
-                href={s.href}
-                className="flex items-center justify-between border-t border-line px-4 py-4 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors hover:bg-accent hover:text-black md:px-6"
-              >
-                {s.acao}
-                <span aria-hidden>→</span>
-              </Link>
-            </article>
-          ))}
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Link
+            href="/assistencia"
+            className="flex items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+          >
+            Tabela de preço e prazo
+          </Link>
+          <a
+            href={waGenerico("assistência técnica")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center rounded-full bg-accent px-7 py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+          >
+            Pedir orçamento
+          </a>
         </div>
       </section>
 
-      {/* ── Estoque em destaque ── */}
+      {/* ── Produtos em destaque ── */}
       {destaques.length > 0 && (
-        <section className="mx-auto max-w-[1600px] border-b border-line">
-          <SectionHead
-            indice="03"
-            etiqueta="Estoque"
-            titulo={
-              <>
-                Revisado na bancada,
-                <br />
-                com estado declarado
-              </>
-            }
-            nota="Notebook corporativo, PC montado, monitor e peça. Cada item sai com nota fiscal e garantia por escrito."
-            acao={
-              <div className="flex flex-wrap gap-px">
-                <Link
-                  href="/notebooks"
-                  className="inline-flex w-fit items-center gap-3 border border-line px-5 py-3 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent"
-                >
-                  {notebooks.length} notebooks
-                  <span aria-hidden>→</span>
-                </Link>
-                <Link
-                  href="/produtos"
-                  className="inline-flex w-fit items-center gap-3 border border-line px-5 py-3 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors hover:border-accent hover:text-accent"
-                >
-                  {outros.length} produtos
-                  <span aria-hidden>→</span>
-                </Link>
-              </div>
-            }
-          />
-          <ProductRail itens={destaques} />
-          <div className="h-4" />
+        <section className="bg-surface/40 py-20 md:py-28">
+          <div className="mx-auto max-w-[1180px] px-5">
+            <SectionHead
+              etiqueta="À venda na loja"
+              titulo="Em destaque nesta semana"
+              nota="Notebook corporativo revisado, PC montado, monitor e peça — tudo com nota fiscal e estado declarado."
+            />
+
+            <Carrossel
+              rotulo="Produtos em destaque"
+              larguraItem="w-[78vw] xs:w-[68vw] sm:w-[320px] lg:w-[340px]"
+              itens={destaques.map((p) => ({
+                chave: p.id,
+                conteudo: <ProductCard p={p} />,
+              }))}
+            />
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link
+                href="/notebooks"
+                className="flex items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+              >
+                {notebooks.length} notebooks
+              </Link>
+              <Link
+                href="/produtos"
+                className="flex items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+              >
+                Todos os produtos
+              </Link>
+            </div>
+          </div>
         </section>
       )}
 
-      {/* ── Processo ── */}
-      <section className="mx-auto max-w-[1600px] border-b border-line">
+      {/* ── Como funciona ── */}
+      <section className="mx-auto max-w-[1180px] px-5 py-20 md:py-28">
         <SectionHead
-          indice="04"
           etiqueta="Como funciona"
-          titulo={
-            <>
-              Do defeito
-              <br />
-              até a entrega
-            </>
-          }
+          titulo="Do defeito até a entrega"
           nota="Quatro etapas, sem surpresa no meio do caminho."
         />
-        <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {PROCESSO.map(([n, titulo, texto], i) => (
-            <li
-              key={n}
-              className={`relative border-line p-4 md:p-6 ${
-                i < 3 ? "border-b lg:border-r lg:border-b-0" : ""
-              } ${i % 2 === 0 ? "sm:border-r" : ""} ${i === 2 ? "sm:border-b lg:border-b-0" : ""}`}
-            >
-              <span aria-hidden className="absolute top-0 left-0 h-px w-10 bg-accent" />
-              <p className="font-mono text-[11px] text-accent">{n}</p>
-              <h3 className="display mt-3 text-[1.5rem] leading-none">{titulo}</h3>
-              <p className="mt-3 max-w-[30ch] text-[13px] text-white/55">{texto}</p>
+
+        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {PROCESSO.map(([titulo, texto], i) => (
+            <li key={titulo} className="spot card p-6">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent font-mono text-[13px] font-bold text-black">
+                {i + 1}
+              </span>
+              <h3 className="display mt-5 text-[1.4rem] leading-none">{titulo}</h3>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-white/55">{texto}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      {/* ── Chamada final ── */}
-      <section className="mx-auto max-w-[1600px]">
-        <div className="grid grid-cols-1 lg:grid-cols-12">
-          <div className="px-4 py-12 md:px-6 md:py-20 lg:col-span-8 lg:border-r lg:border-line">
-            <p className="eyebrow text-white/35">Próximo passo</p>
-            <p className="display mt-5 text-title">
-              Descreva o defeito
-              <br />
-              ou o modelo que
-              <br />
-              você <span className="text-accent">procura</span>
-            </p>
-            <p className="mt-6 max-w-[52ch] text-[14px] text-white/55">
-              A resposta sai no horário comercial, com a informação que você precisa
-              para decidir: prazo, valor e o que exatamente será feito.
-            </p>
-          </div>
+      {/* ── Quem atende ── */}
+      <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
+        <div className="card overflow-hidden">
+          <div className="grid gap-8 p-6 md:grid-cols-[1.2fr_1fr] md:items-center md:p-10">
+            <div>
+              <p className="eyebrow text-accent">Quem atende você</p>
+              <h2 className="display mt-4 max-w-[16ch] text-title">
+                Loja com endereço, bancada e nota fiscal
+              </h2>
+              <p className="mt-5 max-w-[50ch] text-[14.5px] leading-relaxed text-white/55">
+                Não é serviço de garagem nem intermediário. O aparelho fica na loja, sob
+                responsabilidade registrada, e você acompanha tudo pelo WhatsApp.
+              </p>
+            </div>
 
-          <div className="flex flex-col border-t border-line lg:col-span-4 lg:border-t-0">
-            <CtaPanel
-              etiqueta="WhatsApp"
-              titulo="Fale com quem vai mexer no aparelho"
-              acao="Abrir conversa"
+            <dl className="grid grid-cols-3 gap-3">
+              {[
+                [`${site.operacao.anos}`, "anos"],
+                [`${site.operacao.atendimentos}+`, "atendimentos"],
+                [`${site.operacao.garantiaServicoDias}`, "dias de garantia"],
+              ].map(([num, unidade]) => (
+                <div key={unidade} className="rounded-2xl bg-surface-2 p-4 text-center">
+                  <dt className="display text-[clamp(1.7rem,4vw,2.6rem)] leading-none text-accent">
+                    {num}
+                  </dt>
+                  <dd className="mt-2 font-mono text-[10px] leading-tight tracking-[0.08em] text-white/45">
+                    {unidade}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Chamada final ── */}
+      <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
+        <div className="spot card overflow-hidden p-6 text-center md:p-14">
+          <p className="eyebrow text-accent">Próximo passo</p>
+          <h2 className="display mx-auto mt-5 max-w-[18ch] text-title">
+            Descreva o defeito ou o modelo que você procura
+          </h2>
+          <p className="mx-auto mt-5 max-w-[52ch] text-[14.5px] leading-relaxed text-white/55">
+            A resposta sai no horário comercial, com prazo, valor e o que exatamente
+            será feito.
+          </p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <a
               href={waGenerico()}
-              className="flex-1"
-            />
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-14 items-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+            >
+              Chamar no WhatsApp
+            </a>
             <Link
               href="/contato"
-              className="flex items-center justify-between border-t border-line p-4 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors hover:text-accent md:p-6"
+              className="flex h-14 items-center rounded-full bg-surface-2 px-8 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
             >
               Endereço e horário
-              <span aria-hidden>→</span>
             </Link>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { navegacao } from "@/data/site";
 export default function NotFound() {
   return (
     <section className="mx-auto max-w-[1600px]">
-      <div className="grid grid-cols-1 lg:grid-cols-12">
+      <div className="grid grid-cols-1 pt-28 md:pt-36 lg:grid-cols-12">
         <div className="px-4 py-16 md:px-6 md:py-24 lg:col-span-7 lg:border-r lg:border-line">
           <p className="eyebrow text-accent">Erro 404</p>
           <h1 className="display mt-5 text-title">

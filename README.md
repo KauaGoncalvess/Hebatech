@@ -21,8 +21,8 @@ arquivo `src/data/seed.ts` e o painel em `/admin` mostra a página de instruçõ
 1. Crie um projeto em [supabase.com](https://supabase.com) — o plano gratuito
    atende uma loja deste porte.
 2. **SQL Editor** → cole `supabase/schema.sql` inteiro → Run. Isso cria as
-   tabelas (`produtos`, `planos_manutencao`, `configuracoes`, `orcamentos`), as
-   permissões e o bucket de fotos. Pode rodar de novo a qualquer momento: o
+   tabelas (`produtos`, `planos_manutencao`, `configuracoes`, `orcamentos`,
+   `ordens`), as permissões e o bucket de fotos. Pode rodar de novo a qualquer momento: o
    arquivo é idempotente, então é assim que se aplicam as tabelas novas.
 3. **Authentication → Users → Add user**: crie o e-mail e a senha do painel, com
    "Auto Confirm User" marcado.
@@ -46,6 +46,9 @@ máquina, para o `npm run seed`.
 | `/admin/produtos/<id>` | Editar tudo, trocar fotos ou excluir |
 | `/admin/planos` | Planos de manutenção mensal e as regras do contrato |
 | `/admin/planos/<id>` | Mudar valor, itens inclusos, ordem e o selo de mais contratado |
+| `/admin/ordens` | Aparelhos na bancada; avançar etapa com um clique e avisar o cliente no WhatsApp |
+| `/admin/ordens/nova` | Abrir ordem quando o aparelho entra na loja |
+| `/admin/ordens/<id>` | Editar a ordem, lançar o valor orçado e escrever o recado da bancada |
 | `/admin/orcamentos` | Pedidos que vieram do formulário do site, com botão para chamar o cliente no WhatsApp |
 | `/admin/etiqueta/<id>` | Folha para imprimir com QR do produto, para colar no aparelho na vitrine |
 | `/admin/post/<id>` | Baixa a arte do produto pronta para o Instagram, em 1080×1350 |
@@ -59,6 +62,10 @@ máquina, para o `npm run seed`.
   publica o plano como *Sob proposta*. Só um plano por vez pode ficar com o selo
   de mais contratado — o painel cuida disso sozinho. Sem nenhum plano publicado,
   a seção inteira some da página de assistência.
+- **Ordens de serviço**: abra uma quando o aparelho entrar na loja e anote o
+  código no comprovante. O cliente consulta sozinho em `/acompanhar` com esse
+  código **e os quatro últimos dígitos do telefone dele** — por isso o telefone
+  precisa estar certo. Mudar a etapa no painel muda o que ele vê na hora.
 - **Pedidos de orçamento**: o formulário do site grava o pedido *e* abre o
   WhatsApp. Isso pega quem preenche tudo e não chega a mandar a mensagem — na
   prática, a maior fonte de contato perdido. A gravação é secundária de
@@ -94,6 +101,7 @@ em `/admin/planos` — a carga inicial deles está em `src/data/seed-planos.ts`.
 - `/servicos/<slug>` — uma página por área de serviço, com preço, prazo e FAQ
 - `/assistencia` — orçamento por WhatsApp, tabela de preço e regras da casa
 - `/manutencao` — planos de contrato mensal para empresa
+- `/acompanhar` — consulta pública do conserto por código + telefone
 - `/contato` — endereço, canais, horário e mapa
 - `/privacidade` — LGPD
 
@@ -118,6 +126,7 @@ src/
     catalogo.ts      leitura do catálogo, com queda para o seed
     planos.ts        leitura dos planos, com a mesma queda
     orcamentos.ts    grava e lê os pedidos vindos do site (sem queda para seed)
+    ordens.ts        ordens de serviço e a consulta pública de /acompanhar
     supabase/        clientes de servidor e navegador
     whatsapp.ts      montagem das mensagens
   assets/fontes/     .woff lidos pelo gerador de post do Instagram
@@ -137,6 +146,14 @@ supabase/schema.sql  tabelas, permissões e bucket
 - **Dado de cliente não tem queda para seed nem leitura pública.** A tabela
   `orcamentos` tem permissão de mão única: qualquer visitante consegue inserir,
   só quem fez login consegue ler. E `lib/orcamentos.ts` nunca inventa registro.
+- **A consulta de `/acompanhar` não lê a tabela `ordens` direto.** A tabela não
+  tem `select` para visitante; a página chama uma função `security definer` no
+  banco que só devolve algo quando o código **e** os quatro últimos dígitos do
+  telefone batem, e que devolve exclusivamente os campos exibidos — nunca nome
+  nem telefone. A mensagem de erro é a mesma para código inexistente e telefone
+  errado, para não confirmar códigos a quem estiver chutando. Não há rate limit:
+  a proteção é o par de segredos e o mínimo de dado exposto. Se um dia a loja
+  crescer a ponto de isso incomodar, é aqui que se mexe.
 - **Laranja é a única cor de acento.** Desde o redesign de agosto ele também
   aparece como halo de fundo (componente `Aura`) e numa faixa de cor cheia no
   meio da home — decisão consciente da loja, contrariando a regra original de

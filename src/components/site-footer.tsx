@@ -36,6 +36,7 @@ export function SiteFooter() {
               {[
                 ...navegacao,
                 { href: "/manutencao", rotulo: "Manutenção mensal" },
+                { href: "/acompanhar", rotulo: "Acompanhar conserto" },
                 { href: "/privacidade", rotulo: "Privacidade" },
               ].map((item) => (
                 <li key={item.href}>

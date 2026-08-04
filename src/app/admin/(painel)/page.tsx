@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listarProdutos } from "@/lib/catalogo";
 import { contarOrcamentosAbertos } from "@/lib/orcamentos";
+import { contarOrdensAbertas } from "@/lib/ordens";
 import { listarPlanos } from "@/lib/planos";
 import { preco } from "@/lib/format";
 import { CATEGORIAS } from "@/types/produto";
@@ -8,10 +9,11 @@ import { CATEGORIAS } from "@/types/produto";
 export const dynamic = "force-dynamic";
 
 export default async function AdminHome() {
-  const [produtos, todosOsPlanos, orcamentosAbertos] = await Promise.all([
+  const [produtos, todosOsPlanos, orcamentosAbertos, ordensAbertas] = await Promise.all([
     listarProdutos(),
     listarPlanos(),
     contarOrcamentosAbertos(),
+    contarOrdensAbertas(),
   ]);
   const planos = todosOsPlanos.filter((p) => p.ativo);
   const aVenda = produtos.filter((p) => p.disponivel);
@@ -71,6 +73,26 @@ export default async function AdminHome() {
       )}
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <Link
+          href="/admin/ordens"
+          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+        >
+          <span>
+            <span className="eyebrow text-accent">Bancada</span>
+            <span className="display mt-3 block text-sub">Ordens de serviço</span>
+            <span className="mt-2 block text-[13px] text-white/45">
+              {ordensAbertas === null
+                ? "Rode o SQL novo para começar a usar"
+                : ordensAbertas === 0
+                  ? "Nenhum aparelho na bancada"
+                  : `${ordensAbertas} em andamento`}
+            </span>
+          </span>
+          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
+            →
+          </span>
+        </Link>
+
         <Link
           href="/admin/orcamentos"
           className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"

@@ -129,6 +129,74 @@ export function waRetorno(pedido: {
   return `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
 }
 
+/* ── Ordem de serviço ── */
+
+/** Cliente → loja: aprovar o orçamento que apareceu em /acompanhar. */
+export function waAprovarOrcamento(codigo: string, aparelho: string): string {
+  return link(
+    [
+      "Olá, vim pela página de acompanhamento do site da HebaTech.",
+      `Ordem: ${codigo}`,
+      ...(aparelho ? [`Aparelho: ${aparelho}`] : []),
+      "Vi o orçamento e quero aprovar o serviço.",
+    ].join("\n"),
+  );
+}
+
+/** Cliente → loja: perguntar sobre a ordem sem ser para aprovar. */
+export function waSobreOrdem(codigo: string): string {
+  return link(
+    [
+      "Olá, vim pela página de acompanhamento do site da HebaTech.",
+      `Ordem: ${codigo}`,
+      "Queria tirar uma dúvida sobre o meu aparelho.",
+    ].join("\n"),
+  );
+}
+
+/**
+ * Loja → cliente: o aviso de cada etapa, pronto para o técnico só apertar
+ * enviar. Devolve null quando o telefone cadastrado não dá um número válido.
+ */
+export function waAvisoDaOrdem(ordem: {
+  clienteNome: string;
+  clienteTelefone: string;
+  codigo: string;
+  aparelho: string;
+  status: string;
+  valorOrcado: number | null;
+}): string | null {
+  const numero = numeroWhatsApp(ordem.clienteTelefone);
+  if (!numero) return null;
+
+  const primeiroNome = ordem.clienteNome.trim().split(" ")[0];
+  const abertura = `Olá${primeiroNome ? `, ${primeiroNome}` : ""}! Aqui é da ${site.nome}.`;
+  const oAparelho = ordem.aparelho || "seu aparelho";
+
+  const corpo =
+    ordem.status === "pronto"
+      ? [
+          `Seu ${oAparelho} (ordem ${ordem.codigo}) está pronto para retirada.`,
+          `Pode vir buscar no nosso horário: ${site.horario[0].dia}, ${site.horario[0].faixa}.`,
+        ]
+      : ordem.status === "aguardando_aprovacao"
+        ? [
+            `Terminamos o diagnóstico do seu ${oAparelho} (ordem ${ordem.codigo}).`,
+            ordem.valorOrcado !== null
+              ? `O serviço fica em ${preco(ordem.valorOrcado)}.`
+              : "Já tenho o orçamento para te passar.",
+            "Nada é aberto ou trocado sem a sua aprovação. Posso seguir?",
+          ]
+        : ordem.status === "em_reparo"
+          ? [`Seu ${oAparelho} (ordem ${ordem.codigo}) entrou em reparo na bancada.`]
+          : [
+              `Uma atualização sobre o seu ${oAparelho} (ordem ${ordem.codigo}).`,
+              `Você também acompanha por ${site.url}/acompanhar.`,
+            ];
+
+  return `https://wa.me/${numero}?text=${encodeURIComponent([abertura, ...corpo].join(" "))}`;
+}
+
 export type PedidoContrato = {
   plano: string;
   maquinas: string;

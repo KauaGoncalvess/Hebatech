@@ -81,6 +81,18 @@ export default function AssistenciaPage() {
             </li>
           ))}
         </ul>
+
+        {/* Quem já deixou o aparelho não vem aqui pedir orçamento — vem saber se ficou pronto. */}
+        <p className="mt-7 text-[14px] text-white/50">
+          Já deixou o aparelho na loja?{" "}
+          <Link
+            href="/acompanhar"
+            className="text-accent underline underline-offset-4 transition-colors hover:text-white"
+          >
+            Acompanhe o conserto pelo código da ordem
+          </Link>
+          .
+        </p>
         </div>
       </section>
 

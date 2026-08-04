@@ -3,6 +3,7 @@ import { Logo } from "@/components/logo";
 import { SairButton } from "@/components/admin/sair-button";
 
 const SECOES = [
+  { href: "/admin/ordens", rotulo: "Ordens" },
   { href: "/admin/produtos", rotulo: "Produtos" },
   { href: "/admin/planos", rotulo: "Planos" },
   { href: "/admin/orcamentos", rotulo: "Orçamentos" },
@@ -13,7 +14,7 @@ export default function PainelLayout({ children }: { children: React.ReactNode }
   return (
     <>
       <header className="sticky top-0 z-40 bg-ink/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-20 max-w-[1200px] items-center justify-between gap-4 px-5">
+        <div className="mx-auto flex min-h-20 max-w-[1200px] flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-3">
           <Link href="/admin" className="flex items-center gap-4">
             <Logo compacto />
             <span className="hidden font-mono text-[10px] tracking-[0.2em] text-accent uppercase sm:block">
@@ -21,7 +22,8 @@ export default function PainelLayout({ children }: { children: React.ReactNode }
             </span>
           </Link>
 
-          <nav className="flex items-center gap-2">
+          {/* Seis destinos não cabem numa linha no celular: deixa quebrar. */}
+          <nav className="flex flex-wrap items-center gap-2">
             {SECOES.map((s) => (
               <Link
                 key={s.href}

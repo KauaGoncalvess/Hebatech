@@ -6,6 +6,7 @@ import { paraLinha } from "@/lib/produto-mapper";
 import { gerarSlug } from "@/lib/slug";
 import { criarClienteServidor } from "@/lib/supabase/server";
 import { BUCKET_FOTOS } from "@/lib/supabase/config";
+import { STATUS_ORDEM, type StatusOrdem } from "@/types/ordem";
 import {
   CATEGORIAS,
   CONDICOES,
@@ -283,6 +284,99 @@ export async function excluirOrcamento(id: string): Promise<Resultado> {
 
   revalidatePath("/admin/orcamentos");
   return {};
+}
+
+/* ── Ordens de serviço ── */
+
+function lerOrdem(dados: FormData): { linha: Record<string, unknown>; erro?: string } {
+  const codigo = texto(dados, "codigo").toUpperCase();
+  const clienteNome = texto(dados, "clienteNome");
+  const clienteTelefone = texto(dados, "clienteTelefone");
+
+  const statusBruto = texto(dados, "status");
+  const status = STATUS_ORDEM.includes(statusBruto as StatusOrdem)
+    ? statusBruto
+    : "recebido";
+
+  const previsao = texto(dados, "previsao");
+
+  const linha = {
+    codigo,
+    cliente_nome: clienteNome,
+    cliente_telefone: clienteTelefone,
+    equipamento: texto(dados, "equipamento") || "Notebook",
+    marca: texto(dados, "marca"),
+    modelo: texto(dados, "modelo"),
+    defeito: texto(dados, "defeito"),
+    status,
+    valor_orcado: inteiro(dados, "valorOrcado"),
+    observacoes: texto(dados, "observacoes"),
+    previsao: previsao || null,
+  };
+
+  if (!codigo) return { linha, erro: "Informe o código da ordem." };
+  if (!clienteNome) return { linha, erro: "Informe o nome do cliente." };
+  if (clienteTelefone.replace(/\D/g, "").length < 10) {
+    return { linha, erro: "O telefone precisa ter DDD e ao menos 10 dígitos." };
+  }
+  if (linha.valor_orcado !== null && (linha.valor_orcado as number) < 0) {
+    return { linha, erro: "O valor orçado não pode ser negativo." };
+  }
+
+  return { linha };
+}
+
+export async function salvarOrdem(
+  _anterior: Resultado,
+  dados: FormData,
+): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  const { linha, erro } = lerOrdem(dados);
+  if (erro) return { erro };
+
+  const id = texto(dados, "id");
+  const resposta = id
+    ? await supabase.from("ordens").update(linha).eq("id", id)
+    : await supabase.from("ordens").insert(linha);
+
+  if (resposta.error) {
+    const msg = resposta.error.message;
+    if (msg.includes("ordens_codigo_key")) {
+      return { erro: "Já existe uma ordem com esse código." };
+    }
+    return { erro: msg };
+  }
+
+  revalidatePath("/admin/ordens");
+  redirect("/admin/ordens?ok=1");
+}
+
+/** Avanço rápido de etapa, direto da lista. */
+export async function mudarStatusOrdem(
+  id: string,
+  status: StatusOrdem,
+): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  const { error } = await supabase.from("ordens").update({ status }).eq("id", id);
+  if (error) return { erro: error.message };
+
+  revalidatePath("/admin/ordens");
+  return {};
+}
+
+export async function excluirOrdem(id: string): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  const { error } = await supabase.from("ordens").delete().eq("id", id);
+  if (error) return { erro: error.message };
+
+  revalidatePath("/admin/ordens");
+  redirect("/admin/ordens?excluido=1");
 }
 
 export async function sair() {

@@ -206,6 +206,90 @@ create policy "somente admin apaga orcamentos"
   to authenticated
   using (true);
 
+-- ── Ordens de serviço ───────────────────────────────────────────────────────
+-- O aparelho que entrou para conserto. Alimenta a página /acompanhar, onde o
+-- cliente vê em que etapa está sem precisar mandar mensagem perguntando.
+create table if not exists public.ordens (
+  id               uuid primary key default gen_random_uuid(),
+  codigo           text not null unique,
+  cliente_nome     text not null,
+  cliente_telefone text not null,
+  equipamento      text not null default 'Notebook',
+  marca            text not null default '',
+  modelo           text not null default '',
+  defeito          text not null default '',
+  status           text not null default 'recebido'
+                     check (status in ('recebido','diagnosticado','aguardando_aprovacao',
+                                       'em_reparo','pronto','entregue','cancelado')),
+  -- Valor em reais. Nulo enquanto o diagnóstico não fecha um número.
+  valor_orcado     integer check (valor_orcado >= 0),
+  observacoes      text not null default '',
+  previsao         date,
+  criado_em        timestamptz not null default now(),
+  atualizado_em    timestamptz not null default now()
+);
+
+create index if not exists ordens_codigo_idx on public.ordens (codigo);
+create index if not exists ordens_status_idx on public.ordens (status, criado_em desc);
+
+drop trigger if exists ordens_atualizado_em on public.ordens;
+create trigger ordens_atualizado_em
+  before update on public.ordens
+  for each row execute function public.tocar_atualizado_em();
+
+-- Sem política de select para `anon`: nome, telefone e defeito de cliente não
+-- podem ser lidos de fora. A consulta pública de /acompanhar não fala com o
+-- banco pelo navegador — ela passa por server action, que exige o código E os
+-- quatro últimos dígitos do telefone e devolve só os campos liberados.
+alter table public.ordens enable row level security;
+
+drop policy if exists "somente admin le ordens" on public.ordens;
+create policy "somente admin le ordens"
+  on public.ordens for select
+  to authenticated
+  using (true);
+
+drop policy if exists "somente admin edita ordens" on public.ordens;
+create policy "somente admin edita ordens"
+  on public.ordens for all
+  to authenticated
+  using (true)
+  with check (true);
+
+-- A consulta pública precisa passar por baixo da RLS, mas só depois de conferir
+-- código + telefone. Esta função roda com os privilégios do dono da tabela e
+-- devolve exclusivamente o que a página mostra — sem nome e sem telefone.
+create or replace function public.consultar_ordem(p_codigo text, p_ultimos4 text)
+returns table (
+  codigo        text,
+  equipamento   text,
+  marca         text,
+  modelo        text,
+  defeito       text,
+  status        text,
+  valor_orcado  integer,
+  observacoes   text,
+  previsao      date,
+  criado_em     timestamptz,
+  atualizado_em timestamptz
+)
+language sql
+security definer
+set search_path = public
+as $$
+  select o.codigo, o.equipamento, o.marca, o.modelo, o.defeito, o.status,
+         o.valor_orcado, o.observacoes, o.previsao, o.criado_em, o.atualizado_em
+    from public.ordens o
+   where upper(trim(o.codigo)) = upper(trim(p_codigo))
+     and right(regexp_replace(o.cliente_telefone, '\D', '', 'g'), 4)
+         = right(regexp_replace(p_ultimos4, '\D', '', 'g'), 4)
+     and length(regexp_replace(p_ultimos4, '\D', '', 'g')) >= 4
+   limit 1;
+$$;
+
+revoke all on function public.consultar_ordem(text, text) from public;
+grant execute on function public.consultar_ordem(text, text) to anon, authenticated;
+
 -- ── Armazenamento das fotos ─────────────────────────────────────────────────
 insert into storage.buckets (id, name, public)
 values ('produtos', 'produtos', true)

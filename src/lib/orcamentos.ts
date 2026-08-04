@@ -1,6 +1,7 @@
 import "server-only";
 
 import { supabaseConfigurado } from "@/lib/supabase/config";
+import { criarClientePublico } from "@/lib/supabase/publico";
 import { criarClienteServidor } from "@/lib/supabase/server";
 import {
   paraPedido,
@@ -81,7 +82,9 @@ function limpar(valor: string, limite: number): string {
 export async function gravarOrcamento(pedido: NovoOrcamento): Promise<boolean> {
   if (!supabaseConfigurado) return false;
 
-  const supabase = await criarClienteServidor();
+  // Cliente sem cookie: quem manda o formulário não tem sessão, e a RLS já
+  // libera o insert para visitante anônimo.
+  const supabase = criarClientePublico();
   if (!supabase) return false;
 
   const nome = limpar(pedido.nome, 120);

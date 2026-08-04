@@ -4,7 +4,7 @@ import { cache } from "react";
 import { CHAVE_REGRAS, seedPlanos, seedRegras } from "@/data/seed-planos";
 import { paraPlano, type LinhaPlano } from "@/lib/plano-mapper";
 import { supabaseConfigurado } from "@/lib/supabase/config";
-import { criarClienteServidor } from "@/lib/supabase/server";
+import { criarClientePublico } from "@/lib/supabase/publico";
 import type { Plano, RegraManutencao } from "@/types/plano";
 
 /**
@@ -14,7 +14,7 @@ import type { Plano, RegraManutencao } from "@/types/plano";
 const lerDoBanco = cache(async (): Promise<Plano[] | null> => {
   if (!supabaseConfigurado) return null;
 
-  const supabase = await criarClienteServidor();
+  const supabase = criarClientePublico();
   if (!supabase) return null;
 
   const { data, error } = await supabase
@@ -58,7 +58,7 @@ function comoRegras(valor: unknown): RegraManutencao[] {
 export const listarRegras = cache(async (): Promise<RegraManutencao[]> => {
   if (!supabaseConfigurado) return seedRegras;
 
-  const supabase = await criarClienteServidor();
+  const supabase = criarClientePublico();
   if (!supabase) return seedRegras;
 
   const { data, error } = await supabase

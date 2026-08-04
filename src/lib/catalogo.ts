@@ -3,7 +3,7 @@ import "server-only";
 import { cache } from "react";
 import { seedProdutos } from "@/data/seed";
 import { paraProduto, type LinhaProduto } from "@/lib/produto-mapper";
-import { criarClienteServidor } from "@/lib/supabase/server";
+import { criarClientePublico } from "@/lib/supabase/publico";
 import { supabaseConfigurado } from "@/lib/supabase/config";
 import type { CategoriaId, Produto } from "@/types/produto";
 
@@ -15,11 +15,14 @@ import type { CategoriaId, Produto } from "@/types/produto";
  *
  * Devolve `null` quando não há banco ou a consulta falhou. Quem chama decide o
  * que fazer com isso: o site cai para a carga inicial, o painel dá erro.
+ *
+ * Usa o cliente sem cookie: o catálogo é público pela RLS e estas leituras
+ * acontecem na geração estática, onde pedir cookie derruba o build.
  */
 const lerDoBanco = cache(async (): Promise<Produto[] | null> => {
   if (!supabaseConfigurado) return null;
 
-  const supabase = await criarClienteServidor();
+  const supabase = criarClientePublico();
   if (!supabase) return null;
 
   const { data, error } = await supabase

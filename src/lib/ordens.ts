@@ -1,6 +1,7 @@
 import "server-only";
 
 import { supabaseConfigurado } from "@/lib/supabase/config";
+import { criarClientePublico } from "@/lib/supabase/publico";
 import { criarClienteServidor } from "@/lib/supabase/server";
 import {
   paraOrdem,
@@ -102,7 +103,9 @@ export async function consultarOrdem(
 ): Promise<OrdemPublica | null> {
   if (!supabaseConfigurado) return null;
 
-  const supabase = await criarClienteServidor();
+  // Cliente sem cookie: quem consulta é visitante, e a função no banco é
+  // liberada para anônimo justamente porque ela mesma faz a conferência.
+  const supabase = criarClientePublico();
   if (!supabase) return null;
 
   const { data, error } = await supabase.rpc("consultar_ordem", {

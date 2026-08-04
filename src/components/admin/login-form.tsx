@@ -1,14 +1,24 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { criarClienteNavegador } from "@/lib/supabase/browser";
 import { Campo, Entrada } from "./campo";
 
+/**
+ * O destino vem da URL (`?de=`), então é texto de fora. Como o login termina
+ * numa navegação de página inteira, um valor como `//outro-site.com` levaria a
+ * pessoa para longe daqui achando que ainda está na loja. Só passa caminho
+ * interno do painel; qualquer outra coisa vira a capa do painel.
+ */
+function destinoSeguro(bruto: string | null): string {
+  if (!bruto || !bruto.startsWith("/admin") || bruto.startsWith("//")) return "/admin";
+  return bruto;
+}
+
 export function LoginForm() {
-  const router = useRouter();
   const params = useSearchParams();
-  const destino = params.get("de") ?? "/admin";
+  const destino = destinoSeguro(params.get("de"));
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -33,8 +43,16 @@ export function LoginForm() {
       return;
     }
 
-    router.replace(destino);
-    router.refresh();
+    /**
+     * Navegação de página inteira, e não `router.replace`.
+     *
+     * Quem chega aqui quase sempre bateu no /admin antes e foi mandado embora
+     * pelo middleware. O Next guarda esse desvio por alguns minutos, então a
+     * navegação interna reaproveitava a resposta de quando ainda não havia
+     * sessão — o login funcionava e a tela continuava a mesma. Recarregar a
+     * página joga a pergunta de volta para o servidor, agora com o cookie.
+     */
+    window.location.replace(destino);
   }
 
   return (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Aura } from "@/components/aura";
 import Link from "next/link";
 import { PlanosManutencao } from "@/components/planos-manutencao";
 import { SectionHead } from "@/components/section-head";
@@ -43,7 +44,9 @@ export default async function ManutencaoPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
+      <section className="relative overflow-hidden">
+        <Aura forte className="-top-32 -left-24 h-[440px] w-[440px] md:h-[600px] md:w-[600px]" />
+        <div className="relative mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
         <p className="eyebrow text-accent">Para empresa</p>
         <h1 className="display mt-5 max-w-[17ch] text-title">
           Manutenção mensal para quem não tem TI próprio
@@ -66,6 +69,7 @@ export default async function ManutencaoPage() {
             ),
           )}
         </ul>
+        </div>
       </section>
 
       <section className="mx-auto max-w-[1180px] px-5 py-12 md:py-16">

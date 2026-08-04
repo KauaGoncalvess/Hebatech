@@ -27,7 +27,7 @@ export function WhatsappBubble() {
       // página cai num link que ninguém enxerga.
       tabIndex={visivel ? undefined : -1}
       aria-hidden={visivel ? undefined : true}
-      className={`group fixed right-4 bottom-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-black shadow-[0_10px_30px_-8px_rgba(255,107,24,0.6)] transition-all duration-300 hover:bg-white md:right-6 md:bottom-6 md:h-16 md:w-16 ${
+      className={`group fixed right-4 bottom-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-black ring-4 ring-ink/80 shadow-[0_10px_30px_-8px_rgba(255,107,24,0.6)] transition-all duration-300 hover:bg-white md:right-6 md:bottom-6 md:h-16 md:w-16 ${
         visivel ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
     >

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Aura } from "@/components/aura";
 import Link from "next/link";
 import { Suspense } from "react";
 import { CatalogoBrowser } from "@/components/catalogo-browser";
@@ -25,7 +26,9 @@ export default async function ProdutosPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
+      <section className="relative overflow-hidden">
+        <Aura forte className="-top-32 -left-24 h-[440px] w-[440px] md:h-[600px] md:w-[600px]" />
+        <div className="relative mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
         <p className="eyebrow text-accent">Produtos à venda</p>
         <h1 className="display mt-5 max-w-[16ch] text-title">Tudo que sai do nosso balcão</h1>
         <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
@@ -47,6 +50,7 @@ export default async function ProdutosPage() {
             ))}
           </ul>
         )}
+        </div>
       </section>
       <section className="mx-auto max-w-[1180px] px-5 pb-20">
         {/* O filtro lê a barra de endereço, então só existe no cliente. A

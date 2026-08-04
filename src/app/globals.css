@@ -19,15 +19,15 @@
   --font-mono: var(--font-mono-tech), ui-monospace, monospace;
   --font-sans: var(--font-neutral), system-ui, sans-serif;
 
-  --text-display: clamp(2.6rem, 8.5vw, 7rem);
-  --text-display--line-height: 0.88;
-  --text-display--letter-spacing: -0.035em;
+  --text-display: clamp(2.9rem, 9vw, 8rem);
+  --text-display--line-height: 0.86;
+  --text-display--letter-spacing: -0.038em;
 
-  --text-title: clamp(1.9rem, 5.5vw, 3.8rem);
-  --text-title--line-height: 0.92;
-  --text-title--letter-spacing: -0.03em;
+  --text-title: clamp(2.1rem, 6vw, 4.4rem);
+  --text-title--line-height: 0.9;
+  --text-title--letter-spacing: -0.032em;
 
-  --text-sub: clamp(1.35rem, 3vw, 1.9rem);
+  --text-sub: clamp(1.5rem, 3.4vw, 2.2rem);
   --text-sub--line-height: 1;
   --text-sub--letter-spacing: -0.02em;
 
@@ -114,8 +114,9 @@
   }
 
   /**
-   * Brilho que segue o card no hover, como na referência: um halo laranja
-   * atrás e uma borda que acende. Sem cor fora da paleta.
+   * Borda que acende e halo laranja atrás do card, no modelo das referências.
+   * Fica meio aceso parado e acende de vez no hover — é o que dá profundidade
+   * ao preto sem trocar a cor da marca.
    */
   .spot {
     position: relative;
@@ -129,15 +130,15 @@
     padding: 1px;
     background: linear-gradient(
       160deg,
-      color-mix(in oklab, var(--color-accent) 70%, transparent),
-      transparent 45%
+      color-mix(in oklab, var(--color-accent) 85%, transparent),
+      transparent 55%
     );
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
-    opacity: 0;
+    opacity: 0.45;
     transition: opacity 0.35s ease;
     pointer-events: none;
   }
@@ -147,20 +148,49 @@
     inset: 0;
     border-radius: inherit;
     background: radial-gradient(
-      70% 60% at 50% 0%,
-      color-mix(in oklab, var(--color-accent) 18%, transparent),
-      transparent 70%
+      75% 65% at 50% 0%,
+      color-mix(in oklab, var(--color-accent) 30%, transparent),
+      transparent 72%
     );
-    opacity: 0;
+    opacity: 0.25;
     transition: opacity 0.35s ease;
     pointer-events: none;
     z-index: -1;
   }
   .spot:hover::before,
+  .spot:focus-visible::before {
+    opacity: 1;
+  }
   .spot:hover::after,
-  .spot:focus-visible::before,
   .spot:focus-visible::after {
     opacity: 1;
+  }
+
+  /**
+   * Halo laranja de fundo. É o brilho das referências, trazido para a nossa
+   * cor. Precisa de um pai `relative`; fica atrás do conteúdo irmão.
+   */
+  .aura {
+    position: absolute;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    opacity: 0.22;
+    filter: blur(110px);
+    pointer-events: none;
+  }
+  .aura-forte {
+    opacity: 0.34;
+    filter: blur(90px);
+  }
+
+  /** Faixa de cor cheia, no modelo da referência. Texto sempre preto. */
+  .faixa-laranja {
+    background: linear-gradient(
+      120deg,
+      var(--color-accent),
+      color-mix(in oklab, var(--color-accent) 82%, #ffb066)
+    );
+    color: #000;
   }
 }
 

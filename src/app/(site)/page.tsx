@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Aura } from "@/components/aura";
 import { Carrossel } from "@/components/carrossel";
 import { Comparativo } from "@/components/comparativo";
 import { Faq } from "@/components/faq";
@@ -95,6 +96,8 @@ export default async function Home() {
           aria-hidden
           className="absolute inset-0 bg-linear-to-t from-ink via-ink/85 to-ink/30 lg:bg-linear-to-r lg:from-ink lg:via-ink/85 lg:to-ink/20"
         />
+        <Aura forte className="-top-40 -left-32 h-[520px] w-[520px] md:h-[680px] md:w-[680px]" />
+        <Aura className="right-[-10%] bottom-[-30%] h-[420px] w-[420px] md:h-[560px] md:w-[560px]" />
 
         <div className="relative mx-auto max-w-[1180px] px-5 pt-32 pb-14 md:pt-44 md:pb-20">
           <p className="eyebrow text-accent">
@@ -150,7 +153,9 @@ export default async function Home() {
       </section>
 
       {/* ── Três portas ── */}
-      <section className="mx-auto max-w-[1180px] px-5 py-20 md:py-24">
+      <section className="relative overflow-hidden bg-surface/40 py-24 md:py-32">
+        <Aura className="top-[-20%] left-1/2 h-[420px] w-[420px] -translate-x-1/2 md:h-[560px] md:w-[560px]" />
+        <div className="relative mx-auto max-w-[1180px] px-5">
         <SectionHead
           etiqueta="Por onde começar"
           titulo="O que te trouxe até aqui?"
@@ -183,18 +188,48 @@ export default async function Home() {
               </Link>
             </li>
           ))}
-        </ul>
+          </ul>
+        </div>
       </section>
 
       {/* ── Nossos serviços ── */}
-      <section className="mx-auto max-w-[1180px] px-5 py-20 md:py-28">
-        <SectionHead
-          etiqueta="Nossos serviços"
-          titulo="Tudo que a bancada resolve"
-          nota="De limpeza e formatação a reparo de placa e montagem de PC. Qualquer marca, com preço fechado antes de começar."
-        />
+      <section className="relative overflow-hidden py-24 md:py-32">
+        <Aura className="top-1/4 right-[-15%] h-[440px] w-[440px] md:h-[620px] md:w-[620px]" />
+        <div className="relative mx-auto max-w-[1180px] px-5">
+          <SectionHead
+            etiqueta="Nossos serviços"
+            titulo="Tudo que a bancada resolve"
+            nota="De limpeza e formatação a reparo de placa e montagem de PC. Qualquer marca, com preço fechado antes de começar."
+          />
 
-        <ServicoGrade />
+          <ServicoGrade />
+        </div>
+      </section>
+
+      {/* ── Faixa de cor cheia, no modelo da referência ── */}
+      <section className="faixa-laranja relative overflow-hidden">
+        <div className="relative mx-auto grid max-w-[1180px] items-center gap-8 px-5 py-16 md:grid-cols-[1.4fr_auto] md:py-20">
+          <div>
+            <p className="eyebrow text-black/70">Tudo num lugar só</p>
+            <h2 className="display mt-5 max-w-[20ch] text-title text-black">
+              Conserto, venda e contrato na mesma bancada
+            </h2>
+            <p className="mt-6 max-w-[54ch] text-[15px] leading-relaxed text-black/75">
+              Você não precisa de uma loja para consertar, outra para comprar e um
+              técnico avulso para a empresa. Aqui é o mesmo endereço, a mesma nota
+              fiscal e a mesma garantia por escrito.
+            </p>
+          </div>
+
+          <a
+            href={waGenerico()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-16 items-center justify-center rounded-full bg-black px-10 font-mono text-[12px] font-bold tracking-[0.12em] whitespace-nowrap text-white uppercase transition-colors hover:bg-ink"
+          >
+            Falar agora
+          </a>
+        </div>
       </section>
 
       {/* ── Prova: só entra quando houver material real ── */}
@@ -202,8 +237,9 @@ export default async function Home() {
 
       {/* ── Produtos em destaque ── */}
       {destaques.length > 0 && (
-        <section className="bg-surface/40 py-20 md:py-28">
-          <div className="mx-auto max-w-[1180px] px-5">
+        <section className="relative overflow-hidden py-24 md:py-32">
+          <Aura className="top-0 left-[-12%] h-[420px] w-[420px] md:h-[560px] md:w-[560px]" />
+          <div className="relative mx-auto max-w-[1180px] px-5">
             <SectionHead
               etiqueta="À venda na loja"
               titulo="Em destaque nesta semana"
@@ -238,7 +274,8 @@ export default async function Home() {
       )}
 
       {/* ── Como funciona: linha do tempo ── */}
-      <section className="mx-auto max-w-[1180px] px-5 py-20 md:py-28">
+      <section className="bg-surface/40 py-24 md:py-32">
+        <div className="mx-auto max-w-[1180px] px-5">
         <SectionHead
           etiqueta="Como funciona"
           titulo="Do defeito até a entrega"
@@ -261,11 +298,12 @@ export default async function Home() {
               </p>
             </li>
           ))}
-        </ol>
+          </ol>
+        </div>
       </section>
 
       {/* ── Comparativo ── */}
-      <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
+      <section className="relative mx-auto max-w-[1180px] overflow-hidden px-5 py-24 md:py-32">
         <SectionHead
           etiqueta="A diferença"
           titulo="Por que sai daqui sem susto na conta"
@@ -274,7 +312,7 @@ export default async function Home() {
       </section>
 
       {/* ── Perguntas frequentes ── */}
-      <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
+      <section className="mx-auto max-w-[1180px] px-5 pb-24 md:pb-32">
         <SectionHead
           etiqueta="Perguntas frequentes"
           titulo="O que mais perguntam no balcão"
@@ -296,8 +334,9 @@ export default async function Home() {
           className="object-cover object-center brightness-[0.32] saturate-[0.5]"
         />
         <div aria-hidden className="absolute inset-0 bg-ink/70" />
+        <Aura forte className="bottom-[-40%] left-1/2 h-[520px] w-[520px] -translate-x-1/2 md:h-[720px] md:w-[720px]" />
 
-        <div className="relative mx-auto max-w-[1180px] px-5 py-20 text-center md:py-28">
+        <div className="relative mx-auto max-w-[1180px] px-5 py-24 text-center md:py-32">
           <p className="eyebrow text-accent">Próximo passo</p>
           <h2 className="display mx-auto mt-5 max-w-[18ch] text-title">
             Descreva o defeito ou o modelo que você procura

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Aura } from "@/components/aura";
 import { Suspense } from "react";
 import { CatalogoBrowser } from "@/components/catalogo-browser";
 import { ProdutoGrade } from "@/components/produto-grade";
@@ -20,12 +21,15 @@ export default async function NotebooksPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
+      <section className="relative overflow-hidden">
+        <Aura forte className="-top-32 -left-24 h-[440px] w-[440px] md:h-[600px] md:w-[600px]" />
+        <div className="relative mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
         <p className="eyebrow text-accent">Notebooks seminovos</p>
         <h1 className="display mt-5 max-w-[16ch] text-title">Máquina de empresa, revisada item a item</h1>
         <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
           Chassi reforçado, teclado melhor e peça de reposição fácil de achar. Cada aparelho passa por teste de disco, memória, bateria, tela e portas antes de entrar na lista.
         </p>
+        </div>
       </section>
       <section className="mx-auto max-w-[1180px] px-5 pb-20">
         {/* O filtro lê a barra de endereço, então só existe no cliente. A

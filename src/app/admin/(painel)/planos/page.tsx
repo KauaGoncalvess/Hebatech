@@ -29,7 +29,7 @@ export default async function ListaPlanos({ searchParams }: Props) {
           <p className="mt-4 max-w-[54ch] text-[13px] text-white/50">
             Os planos que aparecem em{" "}
             <Link
-              href="/assistencia#manutencao"
+              href="/manutencao"
               target="_blank"
               className="text-accent underline decoration-line underline-offset-4"
             >

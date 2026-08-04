@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { armazenamento, preco } from "@/lib/format";
 import { semAcento } from "@/lib/slug";
 import { waGenerico } from "@/lib/whatsapp";
@@ -128,6 +128,8 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
   const pathname = usePathname();
   const params = useSearchParams();
   const [drawer, setDrawer] = useState(false);
+  const abrirDrawer = useRef<HTMLButtonElement>(null);
+  const painelDrawer = useRef<HTMLDivElement>(null);
 
   /**
    * O filtro mora na barra de endereço, não em estado local. Assim o link
@@ -210,8 +212,35 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
 
   useEffect(() => {
     document.body.style.overflow = drawer ? "hidden" : "";
+    if (!drawer) return;
+
+    // Foco entra na gaveta e volta para o botão que a abriu.
+    const devolverPara = abrirDrawer.current ?? (document.activeElement as HTMLElement | null);
+    painelDrawer.current?.focus();
+
+    const aoTeclar = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDrawer(false);
+      if (e.key !== "Tab") return;
+      const foco = painelDrawer.current?.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (!foco || foco.length === 0) return;
+      const primeiro = foco[0];
+      const ultimo = foco[foco.length - 1];
+      if (e.shiftKey && document.activeElement === primeiro) {
+        e.preventDefault();
+        ultimo.focus();
+      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        e.preventDefault();
+        primeiro.focus();
+      }
+    };
+
+    document.addEventListener("keydown", aoTeclar);
     return () => {
+      document.removeEventListener("keydown", aoTeclar);
       document.body.style.overflow = "";
+      devolverPara?.focus();
     };
   }, [drawer]);
 
@@ -376,8 +405,11 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
 
         <div className="flex items-center gap-2">
           <button
+            ref={abrirDrawer}
             type="button"
             onClick={() => setDrawer(true)}
+            aria-haspopup="dialog"
+            aria-expanded={drawer}
             className="flex items-center gap-2 rounded-full bg-surface-2 px-5 py-3 font-mono text-[11.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 lg:hidden"
           >
             Filtrar
@@ -488,9 +520,18 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
             onClick={() => setDrawer(false)}
             className="flex-1 bg-black/70 backdrop-blur-sm"
           />
-          <div className="flex max-h-[82vh] flex-col rounded-t-[28px] border border-line bg-surface">
+          <div
+            ref={painelDrawer}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-filtro"
+            tabIndex={-1}
+            className="flex max-h-[82vh] flex-col rounded-t-[28px] border border-line bg-surface outline-none"
+          >
             <div className="flex shrink-0 items-center justify-between px-6 py-5">
-              <p className="eyebrow text-white/55">Filtro · {resultado.length} itens</p>
+              <p id="titulo-filtro" className="eyebrow text-white/55">
+                Filtro · {resultado.length} itens
+              </p>
               <div className="flex gap-5">
                 {ativos > 0 && (
                   <button

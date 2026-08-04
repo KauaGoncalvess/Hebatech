@@ -37,7 +37,7 @@ export function SiteFooter() {
             <ul className="mt-5 space-y-3.5">
               {[
                 ...navegacao,
-                { href: "/assistencia#manutencao", rotulo: "Manutenção mensal" },
+                { href: "/manutencao", rotulo: "Manutenção mensal" },
                 { href: "/privacidade", rotulo: "Privacidade" },
               ].map((item) => (
                 <li key={item.href}>

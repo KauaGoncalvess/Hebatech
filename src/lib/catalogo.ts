@@ -66,12 +66,6 @@ export async function listarNotebooks(): Promise<Produto[]> {
   return listarDisponiveis("notebook");
 }
 
-/** Tudo que não é notebook — alimenta a página de produtos gerais. */
-export async function listarOutrosProdutos(): Promise<Produto[]> {
-  const ativos = await listarDisponiveis();
-  return ativos.filter((p) => p.categoria !== "notebook");
-}
-
 export async function listarDestaques(limite = 4): Promise<Produto[]> {
   const ativos = await listarDisponiveis();
   const destacados = ativos.filter((p) => p.destaque);

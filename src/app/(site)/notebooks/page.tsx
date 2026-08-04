@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CatalogoBrowser } from "@/components/catalogo-browser";
+import { ProdutoGrade } from "@/components/produto-grade";
 import { CtaPanel } from "@/components/cta-panel";
 import { listarNotebooks } from "@/lib/catalogo";
 import { waGenerico, waTroca } from "@/lib/whatsapp";
@@ -27,8 +28,10 @@ export default async function NotebooksPage() {
         </p>
       </section>
       <section className="mx-auto max-w-[1180px] px-5 pb-20">
-        {/* O filtro lê a barra de endereço; a página segue estática. */}
-        <Suspense fallback={null}>
+        {/* O filtro lê a barra de endereço, então só existe no cliente. A
+            grade do servidor é o que sai no HTML — sem ela a listagem
+            chegaria vazia para o buscador. */}
+        <Suspense fallback={<ProdutoGrade itens={itens} />}>
           <CatalogoBrowser itens={itens} />
         </Suspense>
       </section>

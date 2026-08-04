@@ -2,31 +2,34 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { CatalogoBrowser } from "@/components/catalogo-browser";
+import { ProdutoGrade } from "@/components/produto-grade";
 import { CtaPanel } from "@/components/cta-panel";
-import { listarOutrosProdutos } from "@/lib/catalogo";
+import { listarDisponiveis } from "@/lib/catalogo";
 import { waGenerico } from "@/lib/whatsapp";
 import { CATEGORIAS } from "@/types/produto";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Produtos à venda — desktops, monitores, peças e periféricos",
+  title: "Produtos à venda — notebooks, PCs, monitores e peças",
   description:
-    "PC montado, monitor, SSD, memória, dock station e periférico com nota fiscal e garantia. Loja física em Sete Lagoas/MG, retirada no balcão.",
+    "Notebook corporativo revisado, PC montado, monitor, SSD, memória e periférico com nota fiscal e garantia. Loja física em Sete Lagoas/MG, retirada no balcão.",
   alternates: { canonical: "/produtos" },
 };
 
 export default async function ProdutosPage() {
-  const itens = await listarOutrosProdutos();
+  // Vitrine única: notebook também entra aqui. Antes esta página excluía
+  // notebook, e quem clicava em "Produtos" atrás de um concluía que não tinha.
+  const itens = await listarDisponiveis();
   const presentes = CATEGORIAS.filter((c) => itens.some((p) => p.categoria === c.id));
 
   return (
     <>
       <section className="mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
         <p className="eyebrow text-accent">Produtos à venda</p>
-        <h1 className="display mt-5 max-w-[16ch] text-title">PC montado, monitor, peça e periférico</h1>
+        <h1 className="display mt-5 max-w-[16ch] text-title">Tudo que sai do nosso balcão</h1>
         <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
-          O que sai do balcão além de notebook. Peça nova vem com nota fiscal e garantia de fábrica; item seminovo passa pela mesma revisão de bancada. Upgrade de SSD e memória já sai com instalação inclusa.
+          Notebook revisado, PC montado, monitor, peça e periférico no mesmo lugar. Item novo vem com nota fiscal e garantia de fábrica; seminovo passa pela revisão completa antes de entrar na lista. Upgrade de SSD e memória já sai com instalação inclusa.
         </p>
 
         {presentes.length > 1 && (
@@ -46,8 +49,10 @@ export default async function ProdutosPage() {
         )}
       </section>
       <section className="mx-auto max-w-[1180px] px-5 pb-20">
-        {/* O filtro lê a barra de endereço; a página segue estática. */}
-        <Suspense fallback={null}>
+        {/* O filtro lê a barra de endereço, então só existe no cliente. A
+            grade do servidor é o que sai no HTML — sem ela a listagem
+            chegaria vazia para o buscador. */}
+        <Suspense fallback={<ProdutoGrade itens={itens} />}>
           <CatalogoBrowser itens={itens} filtrarCategoria />
         </Suspense>
       </section>
@@ -61,7 +66,7 @@ export default async function ProdutosPage() {
             </p>
             <p className="mt-4 max-w-[54ch] text-[14px] leading-relaxed text-white/55">
               PC para jogo, edição, escritório ou ponto de venda. Fechamos a lista de peças com preço item a item, você aprova e a máquina sai montada, testada e com o sistema instalado. <Link href="/notebooks" className="text-accent underline underline-offset-4">
-                Se procura notebook, o estoque está aqui
+                Se procura só notebook, a vitrine é aqui
               </Link>.
             </p>
           </div>

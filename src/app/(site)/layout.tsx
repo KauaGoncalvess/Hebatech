@@ -52,8 +52,7 @@ const jsonLd = {
   url: site.url,
   image: `${site.url}/og.png`,
   logo: `${site.url}/marca/hebatech-selo.png`,
-  telephone: [site.telefoneFixoLink, `+${site.whatsapp}`],
-  email: site.email,
+  telephone: `+${site.whatsapp}`,
   priceRange: "R$$",
   areaServed: {
     "@type": "City",

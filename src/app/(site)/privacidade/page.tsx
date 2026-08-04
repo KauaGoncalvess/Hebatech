@@ -42,7 +42,7 @@ const BLOCOS: [string, string[]][] = [
     "Seus direitos (LGPD)",
     [
       "A Lei Geral de Proteção de Dados garante que você peça acesso, correção ou exclusão dos seus dados, e que saiba com quem eles foram compartilhados.",
-      `Para exercer qualquer um desses direitos, fale com a gente pelo WhatsApp, pelo e-mail ${site.email} ou presencialmente na loja. Respondemos no prazo da lei.`,
+      `Para exercer qualquer um desses direitos, fale com a gente pelo WhatsApp ${site.whatsappVisivel} ou presencialmente na loja. Respondemos no prazo da lei.`,
     ],
   ],
 ];
@@ -82,7 +82,7 @@ export default function PrivacidadePage() {
           <br />
           {enderecoLinha}
           <br />
-          {site.email} · {site.telefoneFixo}
+          WhatsApp {site.whatsappVisivel}
         </p>
       </section>
 

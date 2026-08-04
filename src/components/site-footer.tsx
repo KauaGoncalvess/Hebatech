@@ -4,10 +4,8 @@ import { enderecoLinha, navegacao, site } from "@/data/site";
 import { waGenerico } from "@/lib/whatsapp";
 
 const CONTATO = [
-  { rotulo: "WhatsApp", href: waGenerico(), externo: true },
+  { rotulo: site.whatsappVisivel, href: waGenerico(), externo: true },
   { rotulo: "Instagram", href: site.instagram, externo: true },
-  { rotulo: site.telefoneFixo, href: `tel:${site.telefoneFixoLink}`, externo: false },
-  { rotulo: site.email, href: `mailto:${site.email}`, externo: false },
 ];
 
 export function SiteFooter() {

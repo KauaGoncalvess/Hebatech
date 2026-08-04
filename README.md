@@ -61,12 +61,13 @@ máquina, para o `npm run seed`.
 
 | Campo | Situação |
 | --- | --- |
-| `email`, `url` | **Únicos placeholders que restam.** `url` alimenta `metadataBase`, o sitemap e os canonical — sem o domínio real, todo link absoluto aponta para lugar nenhum |
+| `url` | **Único placeholder que resta.** Alimenta `metadataBase`, o sitemap e os canonical — sem o domínio real, todo link absoluto aponta para lugar nenhum |
 | `whatsapp` / `whatsappVisivel` | `(31) 99961-2371` — confirmado |
 | `endereco` | Av. José Sérvulo Soalheiro, 1625 — Jardim Europa. **Conferir o CEP**: a avenida atravessa mais de um bairro |
-| `telefoneFixo` | `(31) 3771-7333`, tirado do Instagram — confirmar |
 | `operacao.atendimentos` | `3000`, informado pela loja |
 | `horario` | Conferir prazos e horário |
+
+O atendimento é só por **WhatsApp e Instagram**: telefone fixo e e-mail saíram do ar a pedido da loja.
 
 Os preços da tabela de serviço ficam em `src/app/(site)/assistencia/page.tsx`.
 Os planos de manutenção mensal e as regras do contrato são editados no painel,
@@ -74,12 +75,15 @@ em `/admin/planos` — a carga inicial deles está em `src/data/seed-planos.ts`.
 
 ## Páginas
 
-- `/` — prova de operação, três serviços, trilho de destaques, processo
-- `/notebooks` — catálogo de notebooks com filtro técnico
-- `/produtos` — desktops, monitores, peças, periféricos e acessórios
-- `/produtos/<slug>` — página de produto (adapta as seções à categoria)
-- `/assistencia` — orçamento por WhatsApp, tabela de preço, **manutenção mensal**
+- `/` — hero com números, três portas, serviços, destaques, processo, comparativo e FAQ
+- `/produtos` — vitrine única (notebook incluso) com filtro e busca na URL
+- `/notebooks` — mesma vitrine, só notebooks
+- `/produtos/<slug>` — página de produto; vendido continua no ar, marcado
+- `/servicos/<slug>` — uma página por área de serviço, com preço, prazo e FAQ
+- `/assistencia` — orçamento por WhatsApp, tabela de preço e regras da casa
+- `/manutencao` — planos de contrato mensal para empresa
 - `/contato` — endereço, canais, horário e mapa
+- `/privacidade` — LGPD
 
 ## Estrutura
 
@@ -115,9 +119,12 @@ supabase/schema.sql  tabelas, permissões e bucket
   `tailwindcss` e o cliente do Supabase.
 - **O site nunca cai com o banco.** Se o Supabase falhar, `catalogo.ts` devolve o
   catálogo do arquivo em vez de quebrar a página.
-- **Radius zero** em card e botão; raio só no selo e no badge circular.
-- **Laranja cirúrgico**: filete, número, estado ativo de filtro e botão primário.
-  Nunca preenchendo bloco grande de fundo.
+- **Laranja é a única cor de acento.** Desde o redesign de agosto ele também
+  aparece como halo de fundo (componente `Aura`) e numa faixa de cor cheia no
+  meio da home — decisão consciente da loja, contrariando a regra original de
+  "nunca em bloco grande de fundo".
+- **Prova social não se inventa.** `src/data/provas.ts` nasce vazio e a seção só
+  entra no ar quando houver foto, avaliação ou logo de verdade.
 - **Filtro de preço calculado do estoque**, não fixo no código — continua útil
   tanto para notebook de R$ 3.000 quanto para periférico de R$ 129.
 

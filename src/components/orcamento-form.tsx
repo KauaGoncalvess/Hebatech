@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
-import { enderecoLinha, site } from "@/data/site";
+import { enderecoLinha } from "@/data/site";
 import { waOrcamento } from "@/lib/whatsapp";
 
 const TIPOS = ["Notebook", "Desktop", "All in one", "Impressora"];
@@ -236,12 +236,6 @@ export function OrcamentoForm() {
             sábado até meio-dia.
           </p>
           <p className="mt-4 font-mono text-[12.5px] text-white/70">{enderecoLinha}</p>
-          <a
-            href={`tel:${site.telefoneFixoLink}`}
-            className="mt-1 inline-block font-mono text-[12.5px] text-accent"
-          >
-            {site.telefoneFixo}
-          </a>
         </div>
       </aside>
     </div>

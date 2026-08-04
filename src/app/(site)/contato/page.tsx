@@ -4,7 +4,7 @@ import { waGenerico } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contato, endereço e horário",
-  description: `${site.nomeCompleto} fica em ${enderecoLinha}. Telefone ${site.telefoneFixo}, atendimento de segunda a sexta das 8h30 às 18h.`,
+  description: `${site.nomeCompleto} fica em ${enderecoLinha}. Atendimento pelo WhatsApp ${site.whatsappVisivel}, de segunda a sexta das 8h30 às 18h.`,
   alternates: { canonical: "/contato" },
 };
 
@@ -20,24 +20,10 @@ const CANAIS = [
     destaque: true,
   },
   {
-    rotulo: "Telefone fixo",
-    valor: site.telefoneFixo,
-    nota: "Durante o expediente da loja",
-    href: `tel:${site.telefoneFixoLink}`,
-    destaque: false,
-  },
-  {
     rotulo: "Instagram",
     valor: site.instagramHandle,
     nota: "Estoque novo e serviço do dia",
     href: site.instagram,
-    destaque: false,
-  },
-  {
-    rotulo: "E-mail",
-    valor: site.email,
-    nota: "Para nota fiscal e proposta de empresa",
-    href: `mailto:${site.email}`,
     destaque: false,
   },
 ];
@@ -143,7 +129,7 @@ export default function ContatoPage() {
               {[
                 "Peça de modelo raro pode precisar de encomenda — conferimos na hora.",
                 "Produto do estoque fica separado e ligado para você testar na chegada.",
-                "Para empresa, emitimos proposta com prazo e condição por e-mail.",
+                "Para empresa, mandamos a proposta com prazo e condição pelo WhatsApp.",
               ].map((t, i) => (
                 <li key={t} className="flex gap-3 text-[13.5px] text-white/60">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-[10px] font-bold text-black">

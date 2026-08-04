@@ -2,7 +2,9 @@
  * Ponto único de configuração do site.
  * Tudo que muda de tempos em tempos (telefone, endereço, horário) fica aqui.
  *
- * >>> CONFERIR ANTES DE PUBLICAR: whatsapp, telefoneFixo, endereco e mapaQuery.
+ * >>> CONFERIR ANTES DE PUBLICAR: whatsapp, endereco e mapaQuery.
+ * O atendimento é só por WhatsApp e Instagram — não há telefone fixo nem
+ * e-mail publicados.
  */
 
 export const site = {
@@ -16,13 +18,8 @@ export const site = {
   whatsapp: "5531999612371",
   whatsappVisivel: "(31) 99961-2371",
 
-  telefoneFixo: "(31) 3771-7333",
-  telefoneFixoLink: "+553137717333",
-
   instagram: "https://instagram.com/hebatech.informatica",
   instagramHandle: "@hebatech.informatica",
-
-  email: "contato@hebatech.com.br",
 
   endereco: {
     logradouro: "Avenida José Sérvulo Soalheiro, 1625",

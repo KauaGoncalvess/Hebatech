@@ -11,6 +11,7 @@ export function CtaPanel({ etiqueta, titulo, acao, href, className = "" }: Props
   return (
     <a
       href={href}
+      data-origem={etiqueta}
       target="_blank"
       rel="noopener noreferrer"
       className={`spot card group flex flex-col justify-between gap-8 p-6 transition-colors hover:bg-surface-2 md:p-8 ${className}`}

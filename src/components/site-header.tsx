@@ -65,6 +65,7 @@ export function SiteHeader() {
 
         <a
           href={waGenerico()}
+          data-origem="topo"
           target="_blank"
           rel="noopener noreferrer"
           className="hidden rounded-full bg-accent px-5 py-2.5 font-mono text-[11.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white lg:block"
@@ -122,6 +123,7 @@ export function SiteHeader() {
 
           <a
             href={waGenerico()}
+            data-origem="topo"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 flex h-14 items-center justify-center rounded-2xl bg-accent font-mono text-xs font-bold tracking-[0.14em] text-black uppercase"

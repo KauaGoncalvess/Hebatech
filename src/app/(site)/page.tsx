@@ -118,6 +118,7 @@ export default async function Home() {
           <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap">
             <a
               href={waGenerico("assistência técnica")}
+              data-origem="hero"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
@@ -220,6 +221,7 @@ export default async function Home() {
 
           <a
             href={waGenerico()}
+            data-origem="faixa-laranja"
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-16 items-center justify-center rounded-full bg-black px-10 font-mono text-[12px] font-bold tracking-[0.12em] whitespace-nowrap text-white uppercase transition-colors hover:bg-ink"
@@ -340,6 +342,7 @@ export default async function Home() {
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <a
               href={waGenerico()}
+              data-origem="fechamento-home"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-14 items-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"

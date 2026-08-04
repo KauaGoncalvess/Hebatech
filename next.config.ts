@@ -36,6 +36,15 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
 
+  /**
+   * O gerador de post lê os .woff do disco em tempo de execução. Sem declarar
+   * aqui, eles não entram no pacote que sobe para a Vercel e a rota quebra só
+   * em produção.
+   */
+  outputFileTracingIncludes: {
+    "/admin/post/[id]": ["./src/assets/fontes/*.woff"],
+  },
+
   async headers() {
     return [
       {

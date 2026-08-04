@@ -123,6 +123,7 @@ export default async function ManutencaoPage() {
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <a
               href={waGenerico("contrato de manutenção mensal para a minha empresa")}
+              data-origem="manutencao"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-14 items-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"

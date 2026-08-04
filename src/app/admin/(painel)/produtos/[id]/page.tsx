@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DuplicarButton } from "@/components/admin/duplicar-button";
 import { ExcluirButton } from "@/components/admin/excluir-button";
 import { ProdutoForm } from "@/components/admin/produto-form";
 import { buscarPorId } from "@/lib/catalogo";
@@ -31,7 +32,23 @@ export default async function EditarProduto({ params }: Props) {
             Ver no site: /produtos/{produto.slug}
           </Link>
         </div>
-        <ExcluirButton id={produto.id} nome={`${produto.marca} ${produto.modelo}`} />
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href={`/admin/etiqueta/${produto.id}`}
+            className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/60 uppercase transition-colors hover:bg-surface-3 hover:text-white"
+          >
+            Etiqueta
+          </Link>
+          <a
+            href={`/admin/post/${produto.id}`}
+            download={`${produto.slug}.png`}
+            className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/60 uppercase transition-colors hover:bg-surface-3 hover:text-white"
+          >
+            Post do Instagram
+          </a>
+          <DuplicarButton id={produto.id} />
+          <ExcluirButton id={produto.id} nome={`${produto.marca} ${produto.modelo}`} />
+        </div>
       </section>
 
       <ProdutoForm produto={produto} />

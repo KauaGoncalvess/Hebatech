@@ -251,6 +251,7 @@ export default async function ProdutoPage({ params }: Params) {
 
               <a
                 href={waParecido(p)}
+                data-origem="produto-vendido"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
@@ -281,6 +282,7 @@ export default async function ProdutoPage({ params }: Params) {
 
               <a
                 href={waProduto(p)}
+                data-origem="produto"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"

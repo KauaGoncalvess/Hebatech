@@ -99,6 +99,7 @@ export default async function ServicoPage({ params }: Params) {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <a
               href={waGenerico(s.chamada.toLowerCase())}
+              data-origem={`servico:${s.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"

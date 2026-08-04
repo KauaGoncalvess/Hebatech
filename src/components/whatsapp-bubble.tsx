@@ -23,6 +23,7 @@ export function WhatsappBubble() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Falar com um técnico no WhatsApp"
+      data-origem="balao"
       // Invisível também sai da ordem de tabulação: sem isso o Tab no topo da
       // página cai num link que ninguém enxerga.
       tabIndex={visivel ? undefined : -1}

@@ -163,6 +163,54 @@ export async function salvarProduto(
   redirect("/admin/produtos?ok=1");
 }
 
+/**
+ * Copia um produto para servir de base a outro parecido. Cadastrar cinco
+ * ThinkPad quase iguais deixa de ser digitar tudo cinco vezes.
+ *
+ * A cópia nasce fora do ar e com código e endereço novos, para não colidir com
+ * o original nem aparecer no site antes de ser revisada.
+ */
+export async function duplicarProduto(id: string): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  const { data, error } = await supabase
+    .from("produtos")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) return { erro: error.message };
+  if (!data) return { erro: "Produto não encontrado." };
+
+  const sufixo = Date.now().toString(36).slice(-4).toUpperCase();
+  const {
+    id: _id,
+    criado_em: _criado,
+    atualizado_em: _atualizado,
+    ...resto
+  } = data as Record<string, unknown>;
+
+  const copia = {
+    ...resto,
+    codigo: `${String(resto.codigo ?? "HT")}-${sufixo}`,
+    slug: gerarSlug(`${String(resto.slug ?? "produto")}-${sufixo}`),
+    disponivel: false,
+    destaque: false,
+  };
+
+  const { data: nova, error: erroInsert } = await supabase
+    .from("produtos")
+    .insert(copia)
+    .select("id")
+    .single();
+
+  if (erroInsert) return { erro: erroInsert.message };
+
+  revalidatePath("/admin/produtos");
+  redirect(`/admin/produtos/${nova.id}`);
+}
+
 export async function alternarDisponibilidade(
   id: string,
   disponivel: boolean,

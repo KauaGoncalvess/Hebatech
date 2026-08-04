@@ -64,6 +64,7 @@ export function PlanosManutencao({ planos, regras }: Props) {
 
               <a
                 href={waContrato({ plano: `${p.nome} (${p.codigo})`, maquinas: p.faixa })}
+                data-origem={`plano:${p.codigo}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`mt-7 flex h-13 items-center justify-center rounded-full py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors ${

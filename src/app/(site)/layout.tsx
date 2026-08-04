@@ -5,6 +5,7 @@ import "../globals.css";
 import { classesDeFonte } from "../fonts";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { RastroWhatsapp } from "@/components/rastro-whatsapp";
 import { WhatsappBubble } from "@/components/whatsapp-bubble";
 import { site } from "@/data/site";
 
@@ -107,6 +108,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         />
 
         {/* Medição sem cookie e sem dado pessoal, só no site público. */}
+        <RastroWhatsapp />
         <Analytics />
         <SpeedInsights />
       </body>

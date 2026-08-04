@@ -61,7 +61,7 @@ máquina, para o `npm run seed`.
 
 | Campo | Situação |
 | --- | --- |
-| `url` | **Único placeholder que resta.** Alimenta `metadataBase`, o sitemap e os canonical — sem o domínio real, todo link absoluto aponta para lugar nenhum |
+| `url` | `https://hebatech.vercel.app`. Trocar no dia em que houver domínio próprio — alimenta `metadataBase`, o sitemap, os canonical e a prévia dos links |
 | `whatsapp` / `whatsappVisivel` | `(31) 99961-2371` — confirmado |
 | `endereco` | Av. José Sérvulo Soalheiro, 1625 — Jardim Europa. **Conferir o CEP**: a avenida atravessa mais de um bairro |
 | `operacao.atendimentos` | `3000`, informado pela loja |

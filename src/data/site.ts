@@ -12,7 +12,11 @@ export const site = {
   nomeCompleto: "HebaTech Soluções em Informática",
   descricao:
     "Assistência técnica em notebooks e computadores, consultoria e venda de notebooks corporativos seminovos em Sete Lagoas, MG.",
-  url: "https://hebatech.com.br",
+  /**
+   * Endereço público do site. Alimenta metadataBase, canonical, sitemap e a
+   * prévia dos links. Trocar aqui no dia em que houver domínio próprio.
+   */
+  url: "https://hebatech.vercel.app",
 
   /** Número no formato internacional, só dígitos — usado no link wa.me. */
   whatsapp: "5531999612371",

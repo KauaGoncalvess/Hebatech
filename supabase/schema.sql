@@ -12,8 +12,7 @@ create table if not exists public.produtos (
   id                 uuid primary key default gen_random_uuid(),
   codigo             text not null unique,
   slug               text not null unique,
-  categoria          text not null default 'notebook'
-                       check (categoria in ('notebook','desktop','monitor','periferico','peca','acessorio')),
+  categoria          text not null default 'notebook',
   marca              text not null,
   modelo             text not null,
   condicao           text not null default 'seminovo'
@@ -52,6 +51,15 @@ create table if not exists public.produtos (
   criado_em          timestamptz not null default now(),
   atualizado_em      timestamptz not null default now()
 );
+
+-- A lista de categorias fica fora do `create table` de propósito: assim ela é
+-- reaplicada em banco que já existe. `create table if not exists` não alteraria
+-- uma restrição antiga, e categoria nova passaria a ser recusada no salvar sem
+-- ninguém entender por quê. Precisa bater com CATEGORIAS em src/types/produto.ts.
+alter table public.produtos drop constraint if exists produtos_categoria_check;
+alter table public.produtos add constraint produtos_categoria_check
+  check (categoria in ('notebook','desktop','monitor','processador','placa-mae',
+                       'placa-video','peca','periferico','acessorio','limpeza'));
 
 create index if not exists produtos_disponivel_idx on public.produtos (disponivel);
 create index if not exists produtos_categoria_idx  on public.produtos (categoria);

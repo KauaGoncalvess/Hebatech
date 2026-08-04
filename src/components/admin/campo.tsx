@@ -30,14 +30,29 @@ export function Campo({
   );
 }
 
+/**
+ * `autoComplete="off"` vem antes do spread de propósito: é só um padrão, e o
+ * formulário de login o substitui por "username" e "current-password", onde
+ * guardar a senha ajuda.
+ *
+ * No resto do painel ele atrapalha. Quem cadastra cinquenta produtos digita
+ * "i5" cinquenta vezes, e o navegador passa a cobrir o campo seguinte com uma
+ * lista de sugestões a cada clique.
+ */
 export function Entrada(props: React.InputHTMLAttributes<HTMLInputElement>) {
   const { className = "", ...resto } = props;
-  return <input {...resto} className={`${BASE} ${className}`} />;
+  return <input autoComplete="off" {...resto} className={`${BASE} ${className}`} />;
 }
 
 export function AreaTexto(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const { className = "", ...resto } = props;
-  return <textarea {...resto} className={`${BASE} resize-y leading-relaxed ${className}`} />;
+  return (
+    <textarea
+      autoComplete="off"
+      {...resto}
+      className={`${BASE} resize-y leading-relaxed ${className}`}
+    />
+  );
 }
 
 export function Selecao(props: React.SelectHTMLAttributes<HTMLSelectElement>) {

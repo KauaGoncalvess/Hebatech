@@ -1,15 +1,31 @@
 /**
- * Modelo único de produto. Serve para notebook, desktop, monitor, periférico
- * e peça — o que muda entre eles é quais campos técnicos vêm preenchidos.
+ * Modelo único de produto. Serve da máquina inteira ao frasco de álcool
+ * isopropílico — o que muda entre eles é quais campos vêm preenchidos.
+ *
+ * Os campos técnicos (cpu, ram, tela...) são todos opcionais justamente por
+ * isso: um processador preenche `cpuNome` e mais nada; um produto de limpeza
+ * não preenche nenhum e descreve tudo pela ficha livre.
  */
 
+/**
+ * A ordem aqui é a ordem dos filtros e das seções: primeiro a máquina inteira,
+ * depois o que vai dentro dela, por último o que anda junto.
+ *
+ * Processador, placa-mãe e placa de vídeo saíram de dentro de "peça" porque
+ * quem procura uma delas procura por ela, não por "peça" — tanto no filtro da
+ * loja quanto no Google.
+ */
 export const CATEGORIAS = [
   { id: "notebook", rotulo: "Notebook", plural: "Notebooks" },
   { id: "desktop", rotulo: "Desktop", plural: "Desktops e PCs montados" },
   { id: "monitor", rotulo: "Monitor", plural: "Monitores" },
-  { id: "periferico", rotulo: "Periférico", plural: "Periféricos" },
+  { id: "processador", rotulo: "Processador", plural: "Processadores" },
+  { id: "placa-mae", rotulo: "Placa-mãe", plural: "Placas-mãe" },
+  { id: "placa-video", rotulo: "Placa de vídeo", plural: "Placas de vídeo" },
   { id: "peca", rotulo: "Peça", plural: "Peças e upgrades" },
+  { id: "periferico", rotulo: "Periférico", plural: "Periféricos" },
   { id: "acessorio", rotulo: "Acessório", plural: "Acessórios" },
+  { id: "limpeza", rotulo: "Limpeza e cuidado", plural: "Limpeza e cuidado" },
 ] as const;
 
 export type CategoriaId = (typeof CATEGORIAS)[number]["id"];

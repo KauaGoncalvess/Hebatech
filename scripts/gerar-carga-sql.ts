@@ -84,8 +84,50 @@ values (${literal(CHAVE_REGRAS)}, ${valor(seedRegras)})
 on conflict (chave) do nothing;
 `;
 
-const destino = resolve(process.cwd(), "supabase/carga-inicial.sql");
-writeFileSync(destino, sql);
+writeFileSync(resolve(process.cwd(), "supabase/carga-inicial.sql"), sql);
+
+/**
+ * O par do arquivo acima: tira do banco exatamente o que ele põe.
+ *
+ * A carga inicial é catálogo de demonstração — modelo, preço e estado foram
+ * escritos para o site ter o que mostrar antes de existir estoque. Na hora em
+ * que a loja cadastra os aparelhos de verdade, isso precisa sair inteiro, senão
+ * um cliente pergunta por um notebook que nunca existiu.
+ *
+ * Apaga pelos códigos exatos, um a um: assim nada que o lojista cadastrou é
+ * levado junto, mesmo que ele tenha usado o prefixo HT- também.
+ */
+const limpeza = `-- ============================================================================
+-- HebaTech — remover o catálogo de demonstração
+--
+-- Gerado por \`npm run carga-sql\`. Não edite à mão.
+--
+-- Use quando o estoque de verdade estiver cadastrado. Apaga só os ${produtos.length}
+-- produtos e os ${planos.length} planos que vieram da carga inicial, pelos códigos exatos —
+-- nada que você cadastrou é tocado, nem que use o mesmo prefixo.
+--
+-- Não dá para desfazer. Se quiser os exemplos de volta, é só colar de novo o
+-- supabase/carga-inicial.sql.
+-- ============================================================================
+
+delete from public.produtos
+ where codigo in (
+${produtos.map((p) => `   ${literal(String(p.codigo))}`).join(",\n")}
+ );
+
+delete from public.planos_manutencao
+ where codigo in (
+${planos.map((p) => `   ${literal(String(p.codigo))}`).join(",\n")}
+ );
+
+-- As regras do contrato ficam: são texto da casa, não produto de exemplo.
+-- Para apagá-las também, tire o comentário da linha abaixo.
+-- delete from public.configuracoes where chave = ${literal(CHAVE_REGRAS)};
+`;
+
+writeFileSync(resolve(process.cwd(), "supabase/limpar-demonstracao.sql"), limpeza);
+
 console.log(
-  `supabase/carga-inicial.sql: ${produtos.length} produtos, ${planos.length} planos, ${seedRegras.length} regras.`,
+  `carga-inicial.sql: ${produtos.length} produtos, ${planos.length} planos, ${seedRegras.length} regras.\n` +
+    `limpar-demonstracao.sql: remove os mesmos ${produtos.length} produtos e ${planos.length} planos.`,
 );

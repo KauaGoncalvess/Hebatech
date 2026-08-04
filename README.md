@@ -35,6 +35,12 @@ arquivo `src/data/seed.ts` e o painel em `/admin` mostra a página de instruçõ
    - **Com o projeto na máquina**: `npm run seed` (precisa da chave de serviço no
      `.env.local`). Regenere o SQL com `npm run carga-sql` quando o seed mudar.
 
+> **O catálogo inicial é demonstração.** Os 19 produtos têm modelo, preço e
+> estado inventados, só para o site não ficar vazio antes de existir estoque.
+> Quando os aparelhos de verdade estiverem cadastrados, rode
+> `supabase/limpar-demonstracao.sql` no SQL Editor: ele apaga exatamente esses
+> 19 pelos códigos, sem tocar no que a loja cadastrou.
+
 Na Vercel, cadastre apenas `NEXT_PUBLIC_SUPABASE_URL` e
 `NEXT_PUBLIC_SUPABASE_ANON_KEY`. A `SUPABASE_SERVICE_ROLE_KEY` fica só na sua
 máquina, para o `npm run seed`.

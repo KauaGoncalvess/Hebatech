@@ -2,10 +2,16 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { reduzirImagem } from "@/lib/imagem";
 import { BUCKET_FOTOS } from "@/lib/supabase/config";
 import { criarClienteNavegador } from "@/lib/supabase/browser";
 
-const MAX_MB = 8;
+/**
+ * Limite do arquivo que sai da câmera, não do que sobe: foto de celular passa
+ * fácil de 8 MB, e barrar aí obrigaria o lojista a redimensionar na mão. O que
+ * de fato sobe é a versão reduzida, quase sempre abaixo de 400 KB.
+ */
+const MAX_MB = 25;
 const TIPOS = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 
 /**
@@ -42,13 +48,19 @@ export function UploadFotos({
         continue;
       }
 
-      const extensao = arquivo.name.split(".").pop()?.toLowerCase() ?? "jpg";
+      const enviavel = await reduzirImagem(arquivo);
+
+      const extensao = enviavel.name.split(".").pop()?.toLowerCase() ?? "jpg";
       const pasta = (codigo || "sem-codigo").toLowerCase().replace(/[^a-z0-9-]/g, "");
       const caminho = `${pasta}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extensao}`;
 
       const { error } = await supabase.storage
         .from(BUCKET_FOTOS)
-        .upload(caminho, arquivo, { cacheControl: "31536000", upsert: false });
+        .upload(caminho, enviavel, {
+          cacheControl: "31536000",
+          upsert: false,
+          contentType: enviavel.type,
+        });
 
       if (error) {
         setErro(error.message);
@@ -84,7 +96,7 @@ export function UploadFotos({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <span className="eyebrow text-white/45">Fotos do produto</span>
         <span className="font-mono text-[9.5px] text-white/30">
-          A primeira é a capa · JPG, PNG ou WebP até {MAX_MB} MB
+          A primeira é a capa · pode mandar a foto direto do celular
         </span>
       </div>
 
@@ -95,7 +107,7 @@ export function UploadFotos({
           disabled={enviando}
           className="rounded-full border border-accent px-6 py-3 font-mono text-[11.5px] tracking-[0.12em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-40"
         >
-          {enviando ? "Enviando..." : "Escolher fotos"}
+          {enviando ? "Preparando e enviando..." : "Escolher fotos"}
         </button>
         <span className="px-4 font-mono text-[10.5px] text-white/35">
           {fotos.length === 0

@@ -170,3 +170,8 @@ supabase/schema.sql  tabelas, permissões e bucket
 
 Vercel. `npm run build` roda como está; só as duas variáveis `NEXT_PUBLIC_` são
 necessárias em produção.
+
+O `vercel.json` fixa a execução em **gru1 (São Paulo)**, a mesma região do
+projeto no Supabase. Não é detalhe: com o padrão da Vercel (`iad1`, Washington)
+cada consulta do painel atravessava o continente duas vezes, e a diferença era
+de segundos por tela. Se um dia o banco mudar de região, mude aqui junto.

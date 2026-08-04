@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "seed": "tsx scripts/seed.ts",
+    "carga-sql": "tsx scripts/gerar-carga-sql.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ."
   },

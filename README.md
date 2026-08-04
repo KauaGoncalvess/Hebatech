@@ -30,7 +30,10 @@ arquivo `src/data/seed.ts` e o painel em `/admin` mostra a página de instruçõ
    ninguém consiga criar conta sozinho.
 5. Copie `.env.example` para `.env.local` e preencha com os dados de
    **Project Settings → API**.
-6. `npm run seed` sobe o catálogo inicial para o banco.
+6. Suba o catálogo inicial, de um jeito ou de outro:
+   - **Sem instalar nada**: SQL Editor → cole `supabase/carga-inicial.sql` → Run.
+   - **Com o projeto na máquina**: `npm run seed` (precisa da chave de serviço no
+     `.env.local`). Regenere o SQL com `npm run carga-sql` quando o seed mudar.
 
 Na Vercel, cadastre apenas `NEXT_PUBLIC_SUPABASE_URL` e
 `NEXT_PUBLIC_SUPABASE_ANON_KEY`. A `SUPABASE_SERVICE_ROLE_KEY` fica só na sua

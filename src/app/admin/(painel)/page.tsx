@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listarProdutos } from "@/lib/catalogo";
+import { contarOrcamentosAbertos } from "@/lib/orcamentos";
 import { listarPlanos } from "@/lib/planos";
 import { preco } from "@/lib/format";
 import { CATEGORIAS } from "@/types/produto";
@@ -7,7 +8,11 @@ import { CATEGORIAS } from "@/types/produto";
 export const dynamic = "force-dynamic";
 
 export default async function AdminHome() {
-  const [produtos, todosOsPlanos] = await Promise.all([listarProdutos(), listarPlanos()]);
+  const [produtos, todosOsPlanos, orcamentosAbertos] = await Promise.all([
+    listarProdutos(),
+    listarPlanos(),
+    contarOrcamentosAbertos(),
+  ]);
   const planos = todosOsPlanos.filter((p) => p.ativo);
   const aVenda = produtos.filter((p) => p.disponivel);
   const semFoto = aVenda.filter((p) => p.fotos.length === 0);
@@ -65,7 +70,27 @@ export default async function AdminHome() {
         </section>
       )}
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <Link
+          href="/admin/orcamentos"
+          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+        >
+          <span>
+            <span className="eyebrow text-accent">Chegou pelo site</span>
+            <span className="display mt-3 block text-sub">Pedidos de orçamento</span>
+            <span className="mt-2 block text-[13px] text-white/45">
+              {orcamentosAbertos === null
+                ? "Rode o SQL novo para começar a guardar"
+                : orcamentosAbertos === 0
+                  ? "Nenhum esperando retorno"
+                  : `${orcamentosAbertos} esperando retorno`}
+            </span>
+          </span>
+          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
+            →
+          </span>
+        </Link>
+
         <Link
           href="/admin/produtos"
           className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"

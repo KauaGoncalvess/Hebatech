@@ -5,16 +5,18 @@ import { enderecoLinha, site } from "@/data/site";
 export const metadata: Metadata = {
   title: "Privacidade e uso dos seus dados",
   description:
-    "O que a HebaTech faz com o nome, o telefone e as informações do aparelho que você envia pelo site. Nenhum formulário do site grava dado em servidor.",
+    "O que a HebaTech faz com o nome, o telefone e as informações do aparelho que você envia pelo site: o que fica guardado, por quê e por quanto tempo.",
   alternates: { canonical: "/privacidade" },
 };
 
 const BLOCOS: [string, string[]][] = [
   [
-    "O formulário do site não grava nada",
+    "O que o formulário de orçamento guarda",
     [
-      "O formulário de orçamento monta uma mensagem no seu navegador e abre o WhatsApp com o texto pronto. Ele não envia nada para servidor nenhum, não guarda o que você digitou e não cria cadastro.",
-      "Se você fechar a página sem enviar, nada fica registrado em lugar algum.",
+      "Quando você aperta o botão de enviar, duas coisas acontecem ao mesmo tempo: o WhatsApp abre com a mensagem pronta e o pedido fica registrado com a gente. Ficam guardados o nome, o telefone, o tipo de aparelho, a marca, o modelo, o defeito escolhido e os detalhes que você escreveu.",
+      "O motivo é simples e vale a pena ser dito: muita gente preenche, o WhatsApp abre e a mensagem acaba não sendo enviada. Sem esse registro, a gente nunca fica sabendo que você precisava de ajuda e você fica sem resposta.",
+      "Enquanto você está digitando, nada sai do seu navegador. Se fechar a página sem apertar enviar, nada é gravado.",
+      "Usamos esse registro só para retornar o seu contato. Ele fica guardado por até 12 meses e depois é apagado. Se você preferir que a gente apague antes, é só pedir pelo WhatsApp — apagamos na hora e sem perguntar por quê.",
     ],
   ],
   [
@@ -55,8 +57,8 @@ export default function PrivacidadePage() {
         O que fazemos com os seus dados
       </h1>
       <p className="mt-6 max-w-[58ch] text-[15px] leading-relaxed text-white/60">
-        Em uma frase: o site não guarda nada, e o que chega pela conversa é usado
-        só para atender você.
+        Em uma frase: guardamos o pedido de orçamento só para conseguir te
+        retornar, e nada do que chega aqui é usado para outra coisa.
       </p>
 
       <div className="mt-12 grid gap-4">

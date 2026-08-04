@@ -5,6 +5,7 @@ import { SairButton } from "@/components/admin/sair-button";
 const SECOES = [
   { href: "/admin/produtos", rotulo: "Produtos" },
   { href: "/admin/planos", rotulo: "Planos" },
+  { href: "/admin/orcamentos", rotulo: "Orçamentos" },
 ];
 
 /** Moldura das telas autenticadas do painel. A tela de login fica fora daqui. */

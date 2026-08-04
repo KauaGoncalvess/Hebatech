@@ -155,6 +155,57 @@ create policy "somente admin edita configuracoes"
   using (true)
   with check (true);
 
+-- ── Pedidos de orçamento vindos do site ─────────────────────────────────────
+-- Guarda o que a pessoa preencheu no formulário antes de ir para o WhatsApp.
+-- Serve para não perder quem desiste no meio do caminho: o formulário abre a
+-- conversa, mas ninguém garante que ela vai mandar a mensagem.
+create table if not exists public.orcamentos (
+  id         uuid primary key default gen_random_uuid(),
+  nome       text not null,
+  telefone   text not null,
+  tipo       text not null default '',
+  marca      text not null default '',
+  modelo     text not null default '',
+  defeito    text not null default '',
+  descricao  text not null default '',
+  atendido   boolean not null default false,
+  criado_em  timestamptz not null default now()
+);
+
+create index if not exists orcamentos_criado_idx   on public.orcamentos (criado_em desc);
+create index if not exists orcamentos_atendido_idx on public.orcamentos (atendido);
+
+-- Permissão de mão única, diferente do resto do banco: qualquer visitante
+-- consegue INSERIR um pedido, mas ninguém de fora consegue LER a lista. Sem
+-- política de select para `anon`, a tabela fica invisível para quem não fez
+-- login — é dado de cliente, não catálogo.
+alter table public.orcamentos enable row level security;
+
+drop policy if exists "visitante pede orcamento" on public.orcamentos;
+create policy "visitante pede orcamento"
+  on public.orcamentos for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "somente admin le orcamentos" on public.orcamentos;
+create policy "somente admin le orcamentos"
+  on public.orcamentos for select
+  to authenticated
+  using (true);
+
+drop policy if exists "somente admin edita orcamentos" on public.orcamentos;
+create policy "somente admin edita orcamentos"
+  on public.orcamentos for update
+  to authenticated
+  using (true)
+  with check (true);
+
+drop policy if exists "somente admin apaga orcamentos" on public.orcamentos;
+create policy "somente admin apaga orcamentos"
+  on public.orcamentos for delete
+  to authenticated
+  using (true);
+
 -- ── Armazenamento das fotos ─────────────────────────────────────────────────
 insert into storage.buckets (id, name, public)
 values ('produtos', 'produtos', true)

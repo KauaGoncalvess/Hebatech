@@ -20,8 +20,10 @@ arquivo `src/data/seed.ts` e o painel em `/admin` mostra a página de instruçõ
 
 1. Crie um projeto em [supabase.com](https://supabase.com) — o plano gratuito
    atende uma loja deste porte.
-2. **SQL Editor** → cole `supabase/schema.sql` inteiro → Run. Isso cria a tabela
-   `produtos`, as permissões e o bucket de fotos.
+2. **SQL Editor** → cole `supabase/schema.sql` inteiro → Run. Isso cria as
+   tabelas (`produtos`, `planos_manutencao`, `configuracoes`, `orcamentos`), as
+   permissões e o bucket de fotos. Pode rodar de novo a qualquer momento: o
+   arquivo é idempotente, então é assim que se aplicam as tabelas novas.
 3. **Authentication → Users → Add user**: crie o e-mail e a senha do painel, com
    "Auto Confirm User" marcado.
 4. **Authentication → Providers → Email**: desligue *Enable sign ups*, para que
@@ -44,6 +46,9 @@ máquina, para o `npm run seed`.
 | `/admin/produtos/<id>` | Editar tudo, trocar fotos ou excluir |
 | `/admin/planos` | Planos de manutenção mensal e as regras do contrato |
 | `/admin/planos/<id>` | Mudar valor, itens inclusos, ordem e o selo de mais contratado |
+| `/admin/orcamentos` | Pedidos que vieram do formulário do site, com botão para chamar o cliente no WhatsApp |
+| `/admin/etiqueta/<id>` | Folha para imprimir com QR do produto, para colar no aparelho na vitrine |
+| `/admin/post/<id>` | Baixa a arte do produto pronta para o Instagram, em 1080×1350 |
 
 - **Fotos** vão direto do seu computador para o Supabase Storage. A primeira é a
   capa; dá para reordenar e remover. **Sem foto, o site desenha automaticamente
@@ -54,8 +59,15 @@ máquina, para o `npm run seed`.
   publica o plano como *Sob proposta*. Só um plano por vez pode ficar com o selo
   de mais contratado — o painel cuida disso sozinho. Sem nenhum plano publicado,
   a seção inteira some da página de assistência.
+- **Pedidos de orçamento**: o formulário do site grava o pedido *e* abre o
+  WhatsApp. Isso pega quem preenche tudo e não chega a mandar a mensagem — na
+  prática, a maior fonte de contato perdido. A gravação é secundária de
+  propósito: se o banco estiver fora do ar, o WhatsApp abre do mesmo jeito e o
+  pedido só não fica registrado.
 - Ao salvar, as páginas afetadas são revalidadas — a alteração aparece no site em
   segundos, sem publicar de novo.
+- **Duplicar produto** copia o registro com código e endereço novos e já fora do
+  ar, para cadastrar cinco máquinas parecidas sem digitar tudo cinco vezes.
 
 ## Antes de publicar — `src/data/site.ts`
 
@@ -105,8 +117,10 @@ src/
   lib/
     catalogo.ts      leitura do catálogo, com queda para o seed
     planos.ts        leitura dos planos, com a mesma queda
+    orcamentos.ts    grava e lê os pedidos vindos do site (sem queda para seed)
     supabase/        clientes de servidor e navegador
     whatsapp.ts      montagem das mensagens
+  assets/fontes/     .woff lidos pelo gerador de post do Instagram
   middleware.ts      renova a sessão e protege /admin
   types/produto.ts   modelo único de produto
 supabase/schema.sql  tabelas, permissões e bucket
@@ -118,7 +132,11 @@ supabase/schema.sql  tabelas, permissões e bucket
   são código próprio sobre rolagem nativa. As dependências são `next`, `react`,
   `tailwindcss` e o cliente do Supabase.
 - **O site nunca cai com o banco.** Se o Supabase falhar, `catalogo.ts` devolve o
-  catálogo do arquivo em vez de quebrar a página.
+  catálogo do arquivo em vez de quebrar a página. O painel faz o contrário: lê
+  estrito e mostra erro, porque editar um item de arquivo quebraria ao salvar.
+- **Dado de cliente não tem queda para seed nem leitura pública.** A tabela
+  `orcamentos` tem permissão de mão única: qualquer visitante consegue inserir,
+  só quem fez login consegue ler. E `lib/orcamentos.ts` nunca inventa registro.
 - **Laranja é a única cor de acento.** Desde o redesign de agosto ele também
   aparece como halo de fundo (componente `Aura`) e numa faixa de cor cheia no
   meio da home — decisão consciente da loja, contrariando a regra original de

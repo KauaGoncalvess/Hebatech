@@ -85,6 +85,50 @@ export function waOrcamento(o: Orcamento): string {
   return link(linhas.join("\n"));
 }
 
+/**
+ * Número do cliente no formato que o wa.me aceita: só dígitos, com o 55 na
+ * frente. Devolve null quando não dá para confiar no que foi digitado, para o
+ * painel não abrir uma conversa com número errado.
+ */
+export function numeroWhatsApp(telefone: string): string | null {
+  const digitos = telefone.replace(/\D/g, "");
+  if (digitos.startsWith("55") && (digitos.length === 12 || digitos.length === 13)) {
+    return digitos;
+  }
+  if (digitos.length === 10 || digitos.length === 11) return `55${digitos}`;
+  return null;
+}
+
+/**
+ * Conversa com o cliente, não com a loja: é a loja quem puxa o assunto,
+ * retomando o pedido que a pessoa deixou no site.
+ */
+export function waRetorno(pedido: {
+  telefone: string;
+  nome: string;
+  tipo: string;
+  marca: string;
+  modelo: string;
+}): string | null {
+  const numero = numeroWhatsApp(pedido.telefone);
+  if (!numero) return null;
+
+  const aparelho = [pedido.tipo, pedido.marca, pedido.modelo]
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .join(" ");
+
+  const texto = [
+    `Olá${pedido.nome ? `, ${pedido.nome.split(" ")[0]}` : ""}! Aqui é da ${site.nome}.`,
+    aparelho
+      ? `Você pediu um orçamento pelo nosso site para o seu ${aparelho}.`
+      : "Você pediu um orçamento pelo nosso site.",
+    "Posso te passar as informações por aqui mesmo?",
+  ].join(" ");
+
+  return `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+}
+
 export type PedidoContrato = {
   plano: string;
   maquinas: string;

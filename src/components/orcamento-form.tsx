@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { registrarOrcamento } from "@/app/(site)/actions";
 import { enderecoLinha } from "@/data/site";
 import { waOrcamento } from "@/lib/whatsapp";
 
@@ -82,7 +83,7 @@ export function OrcamentoForm() {
     setTentou(true);
     if (!valido) return;
 
-    const url = waOrcamento({
+    const pedido = {
       nome: f.nome.trim(),
       telefone: f.telefone,
       tipo: f.tipo,
@@ -90,10 +91,25 @@ export function OrcamentoForm() {
       modelo: f.modelo.trim() || "não sei informar",
       defeito: f.defeito,
       descricao: f.descricao,
-    });
+    };
+    const url = waOrcamento(pedido);
 
+    // A janela abre agora, ainda dentro do clique. Se eu esperasse a gravação
+    // terminar, o navegador trataria o window.open como popup e bloquearia.
     const janela = window.open(url, "_blank", "noopener,noreferrer");
-    if (!janela) window.location.href = url;
+
+    // O registro é secundário: serve para a loja não perder quem preenche e
+    // não manda a mensagem. Banco fora do ar não pode travar a conversa.
+    const gravando = registrarOrcamento(pedido).catch(() => false);
+
+    if (!janela) {
+      // Popup bloqueado: vamos sair desta aba, o que cortaria a gravação no
+      // meio. Espera um instante — e no máximo isso — antes de navegar.
+      const limite = new Promise((resolve) => setTimeout(resolve, 1200));
+      void Promise.race([gravando, limite]).then(() => {
+        window.location.href = url;
+      });
+    }
   }
 
   const mostrarErro = (campo: keyof typeof INICIAL) => tentou && erros[campo];
@@ -194,7 +210,8 @@ export function OrcamentoForm() {
           <span aria-hidden>→</span>
         </button>
         <p className="mt-4 text-center font-mono text-[11px] text-white/55">
-          Nada é enviado a servidor nenhum. O botão abre o WhatsApp com o texto montado.{" "}
+          O botão abre o WhatsApp com o texto montado. Guardamos o pedido para conseguir
+          te retornar caso a conversa não vá para a frente.{" "}
           <Link href="/privacidade" className="text-accent underline underline-offset-4">
             Como tratamos seus dados
           </Link>

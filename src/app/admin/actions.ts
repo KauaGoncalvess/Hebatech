@@ -258,6 +258,33 @@ export async function excluirProduto(id: string): Promise<Resultado> {
   redirect("/admin/produtos?excluido=1");
 }
 
+/* ── Pedidos de orçamento ── */
+
+export async function marcarOrcamento(
+  id: string,
+  atendido: boolean,
+): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  const { error } = await supabase.from("orcamentos").update({ atendido }).eq("id", id);
+  if (error) return { erro: error.message };
+
+  revalidatePath("/admin/orcamentos");
+  return {};
+}
+
+export async function excluirOrcamento(id: string): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  const { error } = await supabase.from("orcamentos").delete().eq("id", id);
+  if (error) return { erro: error.message };
+
+  revalidatePath("/admin/orcamentos");
+  return {};
+}
+
 export async function sair() {
   const supabase = await criarClienteServidor();
   await supabase?.auth.signOut();

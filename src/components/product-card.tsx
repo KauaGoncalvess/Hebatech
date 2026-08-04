@@ -11,7 +11,7 @@ export function ProductCard({ p }: { p: Produto }) {
   return (
     <Link
       href={`/produtos/${p.slug}`}
-      className="spot card group flex h-full flex-col overflow-hidden transition-colors hover:bg-surface-2"
+      className="spot card flutua group flex h-full flex-col overflow-hidden hover:bg-surface-2"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-ink">
         {p.fotos[0] ? (
@@ -20,7 +20,7 @@ export function ProductCard({ p }: { p: Produto }) {
             alt={`${p.marca} ${p.modelo}`}
             fill
             sizes="(max-width: 640px) 86vw, (max-width: 1100px) 45vw, 30vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            className="flutua-fundo object-cover"
           />
         ) : (
           <ProductRender
@@ -28,7 +28,7 @@ export function ProductCard({ p }: { p: Produto }) {
             marca={p.marca}
             categoria={p.categoria}
             polegadas={p.telaPolegadas}
-            className="h-full w-full transition-transform duration-500 group-hover:scale-[1.04]"
+            className="flutua-fundo h-full w-full"
           />
         )}
 

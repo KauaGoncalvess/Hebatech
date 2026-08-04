@@ -51,7 +51,7 @@ export function Carrossel({ itens, larguraItem, rotulo }: Props) {
         ref={ref}
         onScroll={medir}
         aria-label={rotulo}
-        className="rail -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0"
+        className="rail -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 py-6 md:-mx-2 md:px-2"
       >
         {itens.map((item) => (
           <li key={item.chave} className={`shrink-0 snap-start ${larguraItem}`}>

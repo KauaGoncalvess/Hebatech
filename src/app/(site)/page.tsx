@@ -12,7 +12,7 @@ import { ServicoGrade } from "@/components/servico-grade";
 import { faqJsonLd, perguntas } from "@/data/perguntas";
 import { temProva } from "@/data/provas";
 import { site } from "@/data/site";
-import { listarDestaques, listarNotebooks } from "@/lib/catalogo";
+import { listarDestaques } from "@/lib/catalogo";
 import { numero } from "@/lib/format";
 import { waGenerico } from "@/lib/whatsapp";
 
@@ -67,10 +67,7 @@ const PROCESSO = [
 ];
 
 export default async function Home() {
-  const [destaques, notebooks] = await Promise.all([
-    listarDestaques(8),
-    listarNotebooks(),
-  ]);
+  const destaques = await listarDestaques(8);
 
   const numeros: [string, string][] = [
     [`${numero(site.operacao.atendimentos)}+`, "atendimentos na bancada"],
@@ -257,16 +254,11 @@ export default async function Home() {
 
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
-                href="/notebooks"
-                className="flex items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
-              >
-                {notebooks.length} notebooks
-              </Link>
-              <Link
                 href="/produtos"
-                className="flex items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+                className="flex items-center gap-3 rounded-full bg-accent px-8 py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
               >
                 Todos os produtos
+                <span aria-hidden>→</span>
               </Link>
             </div>
           </div>

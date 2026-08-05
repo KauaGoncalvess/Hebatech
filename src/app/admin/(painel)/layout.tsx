@@ -4,6 +4,7 @@ import { SairButton } from "@/components/admin/sair-button";
 
 const SECOES = [
   { href: "/admin/ordens", rotulo: "Ordens" },
+  { href: "/admin/clientes", rotulo: "Clientes" },
   { href: "/admin/produtos", rotulo: "Produtos" },
   { href: "/admin/planos", rotulo: "Planos" },
   { href: "/admin/orcamentos", rotulo: "Orçamentos" },

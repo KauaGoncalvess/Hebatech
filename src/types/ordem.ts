@@ -73,6 +73,8 @@ export function rotuloStatus(status: StatusOrdem): string {
 export type Ordem = {
   id: string;
   codigo: string;
+  /** Ficha do cliente, quando existe. Nome e telefone ficam na própria ordem. */
+  clienteId: string | null;
   clienteNome: string;
   clienteTelefone: string;
   equipamento: string;
@@ -109,6 +111,7 @@ export type OrdemPublica = Pick<
 export type LinhaOrdem = {
   id: string;
   codigo: string;
+  cliente_id: string | null;
   cliente_nome: string | null;
   cliente_telefone: string | null;
   equipamento: string | null;
@@ -131,6 +134,7 @@ export function paraOrdem(linha: LinhaOrdem): Ordem {
   return {
     id: linha.id,
     codigo: linha.codigo,
+    clienteId: linha.cliente_id,
     clienteNome: linha.cliente_nome ?? "",
     clienteTelefone: linha.cliente_telefone ?? "",
     equipamento: linha.equipamento ?? "",
@@ -146,7 +150,13 @@ export function paraOrdem(linha: LinhaOrdem): Ordem {
   };
 }
 
-export function paraOrdemPublica(linha: Omit<LinhaOrdem, "id">): OrdemPublica {
+/** O que a função `consultar_ordem` devolve: nem id, nem nome, nem telefone. */
+export type LinhaOrdemPublica = Omit<
+  LinhaOrdem,
+  "id" | "cliente_id" | "cliente_nome" | "cliente_telefone"
+>;
+
+export function paraOrdemPublica(linha: LinhaOrdemPublica): OrdemPublica {
   return {
     codigo: linha.codigo,
     equipamento: linha.equipamento ?? "",

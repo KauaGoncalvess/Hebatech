@@ -20,10 +20,25 @@ const BLOCOS: [string, string[]][] = [
     ],
   ],
   [
+    "Se você fizer o cadastro de cliente",
+    [
+      "O cadastro em /cadastro é opcional e não cria senha nem conta. Ele guarda o que você preencher: nome, telefone e, se você quiser informar, CPF ou CNPJ, e-mail, endereço e o recado que escrever.",
+      "Serve para uma coisa só: quando você trouxer um aparelho, a ordem de serviço sair sem você precisar ditar tudo de novo no balcão, e a nota fiscal sair com os dados certos.",
+      "Esses dados ficam guardados enquanto você for cliente da loja. A qualquer momento você pode pedir para ver, corrigir ou apagar — basta falar no WhatsApp, e apagamos sem perguntar por quê.",
+      "O cadastro não te inscreve em lista de propaganda. A gente não manda mensagem em massa.",
+    ],
+  ],
+  [
+    "A ordem de serviço e o acompanhamento",
+    [
+      "Quando o aparelho entra na loja, a ordem de serviço registra nome, telefone, equipamento, defeito, o que foi feito e o valor. É o documento que dá direito à garantia, e por isso é guardado pelo prazo da garantia e das obrigações fiscais.",
+      "A página de acompanhamento mostra só a etapa, o aparelho, a previsão e o recado da bancada — nunca o seu nome nem o seu telefone. Para abrir, é preciso o código da ordem e os quatro últimos dígitos do seu telefone, justamente para que ninguém veja o aparelho de outra pessoa.",
+    ],
+  ],
+  [
     "O que fica com a gente depois que você manda a mensagem",
     [
       `A partir do momento em que você aperta enviar, a conversa passa a ser um atendimento normal de WhatsApp: ficam o seu número, o seu nome e o que você escreveu, dentro do próprio aplicativo. O WhatsApp é da Meta e tem as regras dele.`,
-      "Quando o aparelho entra na loja, registramos nome, telefone, modelo e defeito na ordem de serviço, que é o documento que dá direito à garantia. Guardamos isso pelo prazo da garantia e das obrigações fiscais.",
     ],
   ],
   [

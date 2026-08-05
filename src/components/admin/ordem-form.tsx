@@ -1,16 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { salvarOrdem, type Resultado } from "@/app/admin/actions";
+import { mascararTelefone } from "@/types/cliente";
 import { ETAPA, LINHA_DO_TEMPO, type Ordem } from "@/types/ordem";
+import { BuscaCliente } from "./busca-cliente";
 import { AreaTexto, Bloco, Campo, Entrada, Selecao } from "./campo";
 
 const EQUIPAMENTOS = ["Notebook", "Desktop", "All in one", "Impressora", "Outro"];
 
 const VAZIO: Omit<Ordem, "id" | "criadoEm" | "atualizadoEm"> = {
   codigo: "",
+  clienteId: null,
   clienteNome: "",
   clienteTelefone: "",
   equipamento: "Notebook",
@@ -22,14 +25,6 @@ const VAZIO: Omit<Ordem, "id" | "criadoEm" | "atualizadoEm"> = {
   observacoes: "",
   previsao: null,
 };
-
-/** Sugere OS-<contador do dia> só na abertura, para o técnico não inventar padrão. */
-function codigoSugerido(): string {
-  const agora = new Date();
-  const dia = `${agora.getDate()}`.padStart(2, "0");
-  const mes = `${agora.getMonth() + 1}`.padStart(2, "0");
-  return `OS-${dia}${mes}-${`${agora.getHours()}`.padStart(2, "0")}${`${agora.getMinutes()}`.padStart(2, "0")}`;
-}
 
 function Salvar({ novo }: { novo: boolean }) {
   const { pending } = useFormStatus();
@@ -48,21 +43,34 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
   const o = ordem ?? VAZIO;
   const [estado, acao] = useActionState<Resultado, FormData>(salvarOrdem, {});
 
+  /**
+   * Nome e telefone deixam de ser campos soltos para poderem ser preenchidos
+   * pela busca de ficha. `clienteId` viaja escondido: é o que liga a ordem ao
+   * histórico da pessoa.
+   */
+  const [clienteId, setClienteId] = useState(o.clienteId);
+  const [nome, setNome] = useState(o.clienteNome);
+  const [telefone, setTelefone] = useState(o.clienteTelefone);
+  const [fichaUsada, setFichaUsada] = useState<string | null>(null);
+
   return (
     <form action={acao}>
       {ordem && <input type="hidden" name="id" value={ordem.id} />}
+      <input type="hidden" name="clienteId" value={clienteId ?? ""} />
 
       <Bloco
         indice="01"
         titulo="Quem trouxe"
-        descricao="O telefone é o que o cliente usa para consultar a ordem no site: ele digita o código e os quatro últimos dígitos deste número. Confira antes de salvar."
+        descricao="O telefone é o que o cliente usa para consultar a ordem no site: ele digita o código e os quatro últimos dígitos deste número. Confira antes de salvar — é também por ele que a ficha do cliente é encontrada ou aberta."
       >
-        <Campo rotulo="Código da ordem" nota="Vai no comprovante do cliente" obrigatorio>
+        <Campo
+          rotulo="Código da ordem"
+          nota={ordem ? "Vai no comprovante" : "Deixe vazio para numerar sozinho"}
+        >
           <Entrada
             name="codigo"
-            defaultValue={ordem ? o.codigo : codigoSugerido()}
-            placeholder="OS-1042"
-            required
+            defaultValue={o.codigo}
+            placeholder={ordem ? "" : "OS-2026-0001"}
             onChange={(e) => {
               e.currentTarget.value = e.currentTarget.value.toUpperCase();
             }}
@@ -70,13 +78,23 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
         </Campo>
 
         <Campo rotulo="Nome do cliente" obrigatorio>
-          <Entrada name="clienteNome" defaultValue={o.clienteNome} required />
+          <Entrada
+            name="clienteNome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+          />
         </Campo>
 
-        <Campo rotulo="Telefone" nota="Com DDD" obrigatorio>
+        <Campo
+          rotulo="Telefone"
+          nota={fichaUsada ? "Vindo da ficha" : "Com DDD"}
+          obrigatorio
+        >
           <Entrada
             name="clienteTelefone"
-            defaultValue={o.clienteTelefone}
+            value={telefone}
+            onChange={(e) => setTelefone(mascararTelefone(e.target.value))}
             placeholder="(31) 90000-0000"
             inputMode="tel"
             required
@@ -86,6 +104,35 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
         <Campo rotulo="Previsão de entrega" nota="Opcional, aparece para o cliente">
           <Entrada name="previsao" type="date" defaultValue={o.previsao ?? ""} />
         </Campo>
+
+        {fichaUsada ? (
+          <p className="flex flex-wrap items-center gap-3 rounded-2xl bg-surface-2 p-4 sm:col-span-2">
+            <span className="font-mono text-[11.5px] text-white/60">
+              Ficha vinculada: <span className="text-accent">{fichaUsada}</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                setClienteId(null);
+                setFichaUsada(null);
+              }}
+              className="font-mono text-[10.5px] tracking-[0.1em] text-white/40 uppercase transition-colors hover:text-white"
+            >
+              Desvincular
+            </button>
+          </p>
+        ) : (
+          <BuscaCliente
+            aoEscolher={(c) => {
+              setClienteId(c.id);
+              setNome(c.nome);
+              setTelefone(c.telefone);
+              setFichaUsada(
+                `${c.nome}${c.ordens ? ` · ${c.ordens} ${c.ordens === 1 ? "ordem" : "ordens"}` : ""}`,
+              );
+            }}
+          />
+        )}
       </Bloco>
 
       <Bloco indice="02" titulo="O aparelho">
@@ -142,7 +189,11 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
           />
         </Campo>
 
-        <Campo rotulo="Recado da bancada" className="sm:col-span-2">
+        <Campo
+          rotulo="O que foi feito"
+          nota="O cliente lê isto, e fica no histórico dele"
+          className="sm:col-span-2"
+        >
           <AreaTexto
             name="observacoes"
             rows={4}

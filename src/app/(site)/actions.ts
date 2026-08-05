@@ -1,7 +1,9 @@
 "use server";
 
+import { gravarPreCadastro } from "@/lib/clientes";
 import { gravarOrcamento } from "@/lib/orcamentos";
 import { consultarOrdem } from "@/lib/ordens";
+import { digitosDoTelefone } from "@/types/cliente";
 import type { NovoOrcamento } from "@/types/orcamento";
 import type { OrdemPublica } from "@/types/ordem";
 
@@ -58,6 +60,56 @@ export async function buscarOrdem(
     console.error("Falha na consulta de ordem:", erro);
     return {
       erro: "A consulta está fora do ar neste momento. Chame a gente no WhatsApp que respondemos na hora.",
+    };
+  }
+}
+
+export type EstadoCadastro = { erro?: string; ok?: boolean; jaExiste?: boolean };
+
+/**
+ * Pré-cadastro feito pelo visitante, sem login.
+ *
+ * Serve para adiantar o balcão: quem já preencheu não perde dez minutos
+ * ditando nome, telefone e CPF na hora de deixar o aparelho.
+ *
+ * Telefone repetido não é erro — é sinal de que a pessoa já tem ficha, e a
+ * mensagem trata isso como boa notícia em vez de falha.
+ */
+export async function enviarCadastro(
+  _anterior: EstadoCadastro,
+  dados: FormData,
+): Promise<EstadoCadastro> {
+  const campo = (nome: string) => String(dados.get(nome) ?? "").trim();
+
+  const nome = campo("nome");
+  const telefone = campo("telefone");
+
+  if (!nome) return { erro: "Informe o seu nome." };
+  if (digitosDoTelefone(telefone).length < 10) {
+    return { erro: "Informe o telefone com DDD." };
+  }
+
+  try {
+    const resultado = await gravarPreCadastro({
+      nome,
+      telefone,
+      email: campo("email"),
+      documento: campo("documento"),
+      endereco: campo("endereco"),
+      observacoes: campo("observacoes"),
+    });
+
+    if (resultado === "ja-existe") return { ok: true, jaExiste: true };
+    if (resultado === "falhou") {
+      return {
+        erro: "Não consegui salvar agora. Chame a gente no WhatsApp que resolvemos na hora.",
+      };
+    }
+    return { ok: true };
+  } catch (erro) {
+    console.error("Falha inesperada no pré-cadastro:", erro);
+    return {
+      erro: "Não consegui salvar agora. Chame a gente no WhatsApp que resolvemos na hora.",
     };
   }
 }

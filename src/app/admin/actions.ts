@@ -300,8 +300,9 @@ function lerOrdem(dados: FormData): { linha: Record<string, unknown>; erro?: str
 
   const previsao = texto(dados, "previsao");
 
-  const linha = {
+  const linha: Record<string, unknown> = {
     codigo,
+    cliente_id: texto(dados, "clienteId") || null,
     cliente_nome: clienteNome,
     cliente_telefone: clienteTelefone,
     equipamento: texto(dados, "equipamento") || "Notebook",
@@ -314,7 +315,9 @@ function lerOrdem(dados: FormData): { linha: Record<string, unknown>; erro?: str
     previsao: previsao || null,
   };
 
-  if (!codigo) return { linha, erro: "Informe o código da ordem." };
+  // O código vazio é permitido aqui de propósito: em ordem nova ele significa
+  // "numere para mim". Quem cobra o código preenchido é o salvarOrdem, e só na
+  // edição, onde ele já existe.
   if (!clienteNome) return { linha, erro: "Informe o nome do cliente." };
   if (clienteTelefone.replace(/\D/g, "").length < 10) {
     return { linha, erro: "O telefone precisa ter DDD e ao menos 10 dígitos." };
@@ -337,6 +340,44 @@ export async function salvarOrdem(
   if (erro) return { erro };
 
   const id = texto(dados, "id");
+
+  /**
+   * Numeração automática. É gerada no salvar, e não ao abrir o formulário, para
+   * que ordem começada e abandonada não queime um número — o talão da loja não
+   * pode ter buraco. Quem quiser numerar à mão é só preencher o campo.
+   */
+  if (!id && !linha.codigo) {
+    const { data, error } = await supabase.rpc("proximo_codigo_ordem");
+    if (error || typeof data !== "string") {
+      return {
+        erro: `Não consegui gerar o número da ordem: ${error?.message ?? "resposta vazia"}. Digite um código à mão ou rode o supabase/schema.sql novamente.`,
+      };
+    }
+    linha.codigo = data;
+  }
+
+  if (!linha.codigo) return { erro: "Informe o código da ordem." };
+
+  /**
+   * A ficha do cliente é achada pelo telefone; se não existir, nasce agora.
+   * Assim a base de clientes se forma sozinha do trabalho do dia a dia, sem
+   * ninguém precisar cadastrar duas vezes a mesma pessoa.
+   *
+   * Falhar aqui não pode impedir a ordem de ser aberta: o aparelho já está no
+   * balcão, e nome e telefone ficam gravados na própria ordem de todo jeito.
+   */
+  if (!linha.cliente_id) {
+    try {
+      linha.cliente_id = await fichaDoTelefone(
+        supabase,
+        String(linha.cliente_telefone ?? ""),
+        String(linha.cliente_nome ?? ""),
+      );
+    } catch (falha) {
+      console.error("Não consegui vincular a ficha do cliente:", falha);
+    }
+  }
+
   const resposta = id
     ? await supabase.from("ordens").update(linha).eq("id", id)
     : await supabase.from("ordens").insert(linha);
@@ -350,7 +391,40 @@ export async function salvarOrdem(
   }
 
   revalidatePath("/admin/ordens");
+  revalidatePath("/admin/clientes");
   redirect("/admin/ordens?ok=1");
+}
+
+type ClienteSupabase = NonNullable<Awaited<ReturnType<typeof criarClienteServidor>>>;
+
+/** Devolve o id da ficha desse telefone, criando-a quando ainda não existe. */
+async function fichaDoTelefone(
+  supabase: ClienteSupabase,
+  telefone: string,
+  nome: string,
+): Promise<string | null> {
+  const digitos = telefone.replace(/\D/g, "");
+  if (digitos.length < 10) return null;
+
+  const { data: existente } = await supabase
+    .from("clientes")
+    .select("id")
+    .eq("telefone_digitos", digitos)
+    .maybeSingle();
+
+  if (existente?.id) return existente.id as string;
+
+  const { data: nova, error } = await supabase
+    .from("clientes")
+    .insert({ nome, telefone, origem: "painel", confirmado: true })
+    .select("id")
+    .single();
+
+  if (error) {
+    console.error("Não consegui abrir a ficha do cliente:", error.message);
+    return null;
+  }
+  return nova.id as string;
 }
 
 /** Avanço rápido de etapa, direto da lista. */
@@ -377,6 +451,143 @@ export async function excluirOrdem(id: string): Promise<Resultado> {
 
   revalidatePath("/admin/ordens");
   redirect("/admin/ordens?excluido=1");
+}
+
+/* ── Fichas de cliente ── */
+
+export type ClienteAchado = {
+  id: string;
+  nome: string;
+  telefone: string;
+  documento: string;
+  ordens: number;
+  ultimoAparelho: string;
+};
+
+/**
+ * Busca por nome, telefone ou documento, para a abertura de ordem não obrigar
+ * a redigitar quem já é cliente. Joana que voltou depois de um ano aparece com
+ * o histórico junto, e o atendente só clica.
+ *
+ * Roda no servidor porque a tabela de clientes não é legível de fora.
+ */
+export async function procurarClientes(termo: string): Promise<ClienteAchado[]> {
+  const busca = termo.trim();
+  if (busca.length < 2) return [];
+
+  const supabase = await criarClienteServidor();
+  if (!supabase) return [];
+
+  const digitos = busca.replace(/\D/g, "");
+  // `ilike` já ignora maiúscula; o `%` dos dois lados acha no meio do nome.
+  const filtros = [`nome.ilike.%${busca}%`, `documento.ilike.%${busca}%`];
+  if (digitos.length >= 3) filtros.push(`telefone_digitos.ilike.%${digitos}%`);
+
+  const { data, error } = await supabase
+    .from("clientes")
+    .select("id, nome, telefone, documento")
+    .or(filtros.join(","))
+    .order("nome")
+    .limit(6);
+
+  if (error || !data?.length) {
+    if (error) console.error("Falha ao procurar cliente:", error.message);
+    return [];
+  }
+
+  const ids = data.map((c) => c.id as string);
+  const { data: ordens } = await supabase
+    .from("ordens")
+    .select("cliente_id, equipamento, marca, modelo, criado_em")
+    .in("cliente_id", ids)
+    .order("criado_em", { ascending: false });
+
+  return data.map((c) => {
+    const minhas = (ordens ?? []).filter((o) => o.cliente_id === c.id);
+    const ultima = minhas[0];
+    return {
+      id: c.id as string,
+      nome: (c.nome as string) ?? "",
+      telefone: (c.telefone as string) ?? "",
+      documento: (c.documento as string) ?? "",
+      ordens: minhas.length,
+      ultimoAparelho: ultima
+        ? [ultima.equipamento, ultima.marca, ultima.modelo]
+            .filter(Boolean)
+            .join(" ")
+        : "",
+    };
+  });
+}
+
+export async function salvarCliente(
+  _anterior: Resultado,
+  dados: FormData,
+): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  const nome = texto(dados, "nome");
+  const telefone = texto(dados, "telefone");
+
+  if (!nome) return { erro: "Informe o nome do cliente." };
+  if (telefone.replace(/\D/g, "").length < 10) {
+    return { erro: "O telefone precisa ter DDD e ao menos 10 dígitos." };
+  }
+
+  const linha = {
+    nome,
+    telefone,
+    email: texto(dados, "email"),
+    documento: texto(dados, "documento"),
+    endereco: texto(dados, "endereco"),
+    observacoes: texto(dados, "observacoes"),
+    // Salvar pelo painel é a conferência: o pré-cadastro do site sai da fila.
+    confirmado: true,
+  };
+
+  const id = texto(dados, "id");
+  const resposta = id
+    ? await supabase.from("clientes").update(linha).eq("id", id)
+    : await supabase.from("clientes").insert({ ...linha, origem: "painel" });
+
+  if (resposta.error) {
+    const msg = resposta.error.message;
+    if (msg.includes("clientes_telefone_idx")) {
+      return { erro: "Já existe uma ficha com esse telefone." };
+    }
+    return { erro: msg };
+  }
+
+  revalidatePath("/admin/clientes");
+  redirect("/admin/clientes?ok=1");
+}
+
+export async function excluirCliente(id: string): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  // As ordens desse cliente não são apagadas: o vínculo delas fica nulo, por
+  // conta do `on delete set null`. Histórico de serviço é documento de garantia.
+  const { error } = await supabase.from("clientes").delete().eq("id", id);
+  if (error) return { erro: error.message };
+
+  revalidatePath("/admin/clientes");
+  redirect("/admin/clientes?excluido=1");
+}
+
+export async function confirmarCliente(id: string): Promise<Resultado> {
+  const supabase = await criarClienteServidor();
+  if (!supabase) return { erro: "Supabase não configurado." };
+
+  const { error } = await supabase
+    .from("clientes")
+    .update({ confirmado: true })
+    .eq("id", id);
+  if (error) return { erro: error.message };
+
+  revalidatePath("/admin/clientes");
+  return {};
 }
 
 export async function sair() {

@@ -7,6 +7,7 @@ import {
   paraOrdem,
   paraOrdemPublica,
   type LinhaOrdem,
+  type LinhaOrdemPublica,
   type Ordem,
   type OrdemPublica,
 } from "@/types/ordem";
@@ -42,6 +43,25 @@ export async function listarOrdens(): Promise<Ordem[]> {
   if (error || !data) {
     throw new Error(
       `Não foi possível ler as ordens de serviço: ${error?.message ?? "resposta vazia"}`,
+    );
+  }
+
+  return (data as LinhaOrdem[]).map(paraOrdem);
+}
+
+/** As ordens de um cliente, para a ficha dele mostrar o histórico. */
+export async function listarOrdensDoCliente(clienteId: string): Promise<Ordem[]> {
+  const supabase = await cliente();
+
+  const { data, error } = await supabase
+    .from("ordens")
+    .select("*")
+    .eq("cliente_id", clienteId)
+    .order("criado_em", { ascending: false });
+
+  if (error || !data) {
+    throw new Error(
+      `Não foi possível ler as ordens do cliente: ${error?.message ?? "resposta vazia"}`,
     );
   }
 
@@ -121,5 +141,5 @@ export async function consultarOrdem(
   const linha = Array.isArray(data) ? data[0] : data;
   if (!linha) return null;
 
-  return paraOrdemPublica(linha as Omit<LinhaOrdem, "id">);
+  return paraOrdemPublica(linha as LinhaOrdemPublica);
 }

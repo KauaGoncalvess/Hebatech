@@ -22,7 +22,8 @@ arquivo `src/data/seed.ts` e o painel em `/admin` mostra a página de instruçõ
    atende uma loja deste porte.
 2. **SQL Editor** → cole `supabase/schema.sql` inteiro → Run. Isso cria as
    tabelas (`produtos`, `planos_manutencao`, `configuracoes`, `orcamentos`,
-   `ordens`), as permissões e o bucket de fotos. Pode rodar de novo a qualquer momento: o
+   `ordens`, `clientes`, `contadores`), as permissões, a numeração das ordens e
+   o bucket de fotos. Pode rodar de novo a qualquer momento: o
    arquivo é idempotente, então é assim que se aplicam as tabelas novas.
 3. **Authentication → Users → Add user**: crie o e-mail e a senha do painel, com
    "Auto Confirm User" marcado.
@@ -55,6 +56,8 @@ máquina, para o `npm run seed`.
 | `/admin/produtos/<id>` | Editar tudo, trocar fotos ou excluir |
 | `/admin/planos` | Planos de manutenção mensal e as regras do contrato |
 | `/admin/planos/<id>` | Mudar valor, itens inclusos, ordem e o selo de mais contratado |
+| `/admin/clientes` | Fichas com busca por nome, telefone ou CPF |
+| `/admin/clientes/<id>` | Ficha completa: dados, totais e o histórico de todas as ordens da pessoa |
 | `/admin/ordens` | Aparelhos na bancada; avançar etapa com um clique e avisar o cliente no WhatsApp |
 | `/admin/ordens/nova` | Abrir ordem quando o aparelho entra na loja |
 | `/admin/ordens/<id>` | Editar a ordem, lançar o valor orçado e escrever o recado da bancada |
@@ -71,8 +74,16 @@ máquina, para o `npm run seed`.
   publica o plano como *Sob proposta*. Só um plano por vez pode ficar com o selo
   de mais contratado — o painel cuida disso sozinho. Sem nenhum plano publicado,
   a seção inteira some da página de assistência.
-- **Ordens de serviço**: abra uma quando o aparelho entrar na loja e anote o
-  código no comprovante. O cliente consulta sozinho em `/acompanhar` com esse
+- **Ficha de cliente**: nasce sozinha quando você abre uma ordem para alguém
+  novo, e é encontrada pelo telefone. Ao abrir uma ordem, a busca no topo acha
+  quem já é cliente por nome, telefone ou CPF — clique no cartão e o formulário
+  se preenche, sem criar ficha duplicada. A ficha guarda todas as visitas da
+  pessoa, com defeito, o que foi feito e o aparelho de cada uma.
+- **Ordens de serviço**: o número sai sozinho no formato `OS-2026-0001` e
+  reinicia a cada ano. Ele é gerado ao salvar, não ao abrir o formulário, para
+  que ordem começada e abandonada não deixe buraco no talão. Quem preferir
+  numerar à mão é só preencher o campo. Abra uma quando o aparelho entrar na
+  loja e anote o código no comprovante. O cliente consulta sozinho em `/acompanhar` com esse
   código **e os quatro últimos dígitos do telefone dele** — por isso o telefone
   precisa estar certo. Mudar a etapa no painel muda o que ele vê na hora.
 - **Pedidos de orçamento**: o formulário do site grava o pedido *e* abre o
@@ -111,6 +122,7 @@ em `/admin/planos` — a carga inicial deles está em `src/data/seed-planos.ts`.
 - `/assistencia` — orçamento por WhatsApp, tabela de preço e regras da casa
 - `/manutencao` — planos de contrato mensal para empresa
 - `/acompanhar` — consulta pública do conserto por código + telefone
+- `/cadastro` — pré-cadastro de cliente, sem senha e sem conta
 - `/contato` — endereço, canais, horário e mapa
 - `/privacidade` — LGPD
 
@@ -134,6 +146,7 @@ src/
   lib/
     catalogo.ts      leitura do catálogo, com queda para o seed
     planos.ts        leitura dos planos, com a mesma queda
+    clientes.ts      fichas de cliente e o pré-cadastro público
     orcamentos.ts    grava e lê os pedidos vindos do site (sem queda para seed)
     ordens.ts        ordens de serviço e a consulta pública de /acompanhar
     supabase/        clientes de servidor e navegador

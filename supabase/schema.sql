@@ -214,6 +214,110 @@ create policy "somente admin apaga orcamentos"
   to authenticated
   using (true);
 
+-- ── Clientes ────────────────────────────────────────────────────────────────
+-- Ficha de cliente, sem senha e sem login. O balcão preenche quando o aparelho
+-- entra; o site tem um pré-cadastro para quem quer adiantar isso de casa.
+create table if not exists public.clientes (
+  id            uuid primary key default gen_random_uuid(),
+  nome          text not null,
+  telefone      text not null,
+  -- Só os dígitos, calculado pelo banco. É por ele que a ficha é encontrada e
+  -- que se evita cadastrar a mesma pessoa duas vezes com máscaras diferentes:
+  -- "(31) 99961-2371" e "31999612371" viram a mesma chave.
+  telefone_digitos text generated always as (regexp_replace(telefone, '\D', '', 'g')) stored,
+  email         text not null default '',
+  documento     text not null default '',
+  endereco      text not null default '',
+  observacoes   text not null default '',
+  -- 'site' veio do pré-cadastro público; 'painel' foi a loja quem digitou.
+  origem        text not null default 'painel' check (origem in ('painel','site')),
+  -- Pré-cadastro do site entra por conferir. Quem a loja cadastra já nasce ok.
+  confirmado    boolean not null default true,
+  criado_em     timestamptz not null default now(),
+  atualizado_em timestamptz not null default now()
+);
+
+create unique index if not exists clientes_telefone_idx
+  on public.clientes (telefone_digitos);
+create index if not exists clientes_nome_idx on public.clientes (nome);
+
+drop trigger if exists clientes_atualizado_em on public.clientes;
+create trigger clientes_atualizado_em
+  before update on public.clientes
+  for each row execute function public.tocar_atualizado_em();
+
+-- Mão única, como em `orcamentos`: o visitante consegue se cadastrar, mas
+-- ninguém de fora lê a lista de clientes da loja.
+alter table public.clientes enable row level security;
+
+drop policy if exists "visitante se cadastra" on public.clientes;
+create policy "visitante se cadastra"
+  on public.clientes for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "somente admin le clientes" on public.clientes;
+create policy "somente admin le clientes"
+  on public.clientes for select
+  to authenticated
+  using (true);
+
+drop policy if exists "somente admin edita clientes" on public.clientes;
+create policy "somente admin edita clientes"
+  on public.clientes for update
+  to authenticated
+  using (true)
+  with check (true);
+
+drop policy if exists "somente admin apaga clientes" on public.clientes;
+create policy "somente admin apaga clientes"
+  on public.clientes for delete
+  to authenticated
+  using (true);
+
+-- ── Contadores sequenciais ──────────────────────────────────────────────────
+-- Guarda o número da última ordem de cada ano. Uma linha por ano.
+create table if not exists public.contadores (
+  chave text primary key,
+  valor integer not null default 0
+);
+
+alter table public.contadores enable row level security;
+-- Sem política nenhuma: ninguém lê nem escreve direto. Só a função abaixo mexe.
+
+/**
+ * Devolve o próximo código de ordem: OS-2026-0001, reiniciando a cada ano.
+ *
+ * O insert com `on conflict do update ... returning` é uma operação só no
+ * banco, então dois atendentes abrindo ordem ao mesmo tempo nunca recebem o
+ * mesmo número nem pulam um.
+ *
+ * O ano sai no fuso de São Paulo de propósito: às 22h de 31 de dezembro aqui
+ * já é 1º de janeiro em UTC, e a contagem viraria o ano cedo demais.
+ */
+create or replace function public.proximo_codigo_ordem()
+returns text
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  ano text := to_char(now() at time zone 'America/Sao_Paulo', 'YYYY');
+  n   integer;
+begin
+  insert into public.contadores (chave, valor)
+  values ('ordem_' || ano, 1)
+  on conflict (chave) do update set valor = contadores.valor + 1
+  returning valor into n;
+
+  return 'OS-' || ano || '-' || lpad(n::text, 4, '0');
+end;
+$$;
+
+revoke all on function public.proximo_codigo_ordem() from public;
+-- Só o painel abre ordem, então visitante anônimo não precisa disto.
+grant execute on function public.proximo_codigo_ordem() to authenticated;
+
 -- ── Ordens de serviço ───────────────────────────────────────────────────────
 -- O aparelho que entrou para conserto. Alimenta a página /acompanhar, onde o
 -- cliente vê em que etapa está sem precisar mandar mensagem perguntando.
@@ -236,6 +340,14 @@ create table if not exists public.ordens (
   criado_em        timestamptz not null default now(),
   atualizado_em    timestamptz not null default now()
 );
+
+-- Liga a ordem à ficha do cliente. Fica nulo em ordem antiga e não impede nada:
+-- nome e telefone continuam na própria ordem, para ela nunca depender da ficha.
+-- `on delete set null` para apagar um cliente não levar junto o histórico.
+alter table public.ordens
+  add column if not exists cliente_id uuid references public.clientes(id) on delete set null;
+
+create index if not exists ordens_cliente_idx on public.ordens (cliente_id);
 
 create index if not exists ordens_codigo_idx on public.ordens (codigo);
 create index if not exists ordens_status_idx on public.ordens (status, criado_em desc);

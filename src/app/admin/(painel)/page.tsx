@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listarProdutos } from "@/lib/catalogo";
 import { contarOrcamentosAbertos } from "@/lib/orcamentos";
+import { contarClientesPorConferir } from "@/lib/clientes";
 import { contarOrdensAbertas } from "@/lib/ordens";
 import { listarPlanos } from "@/lib/planos";
 import { preco } from "@/lib/format";
@@ -9,12 +10,14 @@ import { CATEGORIAS } from "@/types/produto";
 export const dynamic = "force-dynamic";
 
 export default async function AdminHome() {
-  const [produtos, todosOsPlanos, orcamentosAbertos, ordensAbertas] = await Promise.all([
-    listarProdutos(),
-    listarPlanos(),
-    contarOrcamentosAbertos(),
-    contarOrdensAbertas(),
-  ]);
+  const [produtos, todosOsPlanos, orcamentosAbertos, ordensAbertas, porConferir] =
+    await Promise.all([
+      listarProdutos(),
+      listarPlanos(),
+      contarOrcamentosAbertos(),
+      contarOrdensAbertas(),
+      contarClientesPorConferir(),
+    ]);
   const planos = todosOsPlanos.filter((p) => p.ativo);
   const aVenda = produtos.filter((p) => p.disponivel);
   const semFoto = aVenda.filter((p) => p.fotos.length === 0);
@@ -86,6 +89,26 @@ export default async function AdminHome() {
                 : ordensAbertas === 0
                   ? "Nenhum aparelho na bancada"
                   : `${ordensAbertas} em andamento`}
+            </span>
+          </span>
+          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
+            →
+          </span>
+        </Link>
+
+        <Link
+          href="/admin/clientes"
+          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+        >
+          <span>
+            <span className="eyebrow text-white/35">Cadastro</span>
+            <span className="display mt-3 block text-sub">Clientes</span>
+            <span className="mt-2 block text-[13px] text-white/45">
+              {porConferir === null
+                ? "Rode o SQL novo para começar a usar"
+                : porConferir === 0
+                  ? "Histórico de serviço por pessoa"
+                  : `${porConferir} pré-cadastro${porConferir === 1 ? "" : "s"} por conferir`}
             </span>
           </span>
           <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">

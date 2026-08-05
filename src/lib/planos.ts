@@ -1,7 +1,10 @@
 import "server-only";
 
 import { cache } from "react";
-import { CHAVE_REGRAS, seedPlanos, seedRegras } from "@/data/seed-planos";
+// `seedRegras` continua servindo de queda: as regras do contrato são texto da
+// própria casa (sem fidelidade, peça à parte, nota fiscal), não preço nem
+// estoque inventado. Mostrá-las com o banco fora do ar não engana ninguém.
+import { CHAVE_REGRAS, seedRegras } from "@/data/seed-planos";
 import { paraPlano, type LinhaPlano } from "@/lib/plano-mapper";
 import { supabaseConfigurado } from "@/lib/supabase/config";
 import { criarClientePublico } from "@/lib/supabase/publico";
@@ -40,8 +43,14 @@ async function carregarTodosEstrito(): Promise<Plano[]> {
   return lista;
 }
 
+/**
+ * Sem queda para a carga inicial, pela mesma razão do catálogo: os valores de
+ * exemplo são inventados, e anunciar mensalidade que a loja não pratica é pior
+ * que não anunciar. A página de manutenção já esconde a seção inteira quando
+ * não há plano publicado.
+ */
 export async function listarPlanosAtivos(): Promise<Plano[]> {
-  const lista = (await lerDoBanco()) ?? seedPlanos;
+  const lista = (await lerDoBanco()) ?? [];
   return lista.filter((p) => p.ativo);
 }
 

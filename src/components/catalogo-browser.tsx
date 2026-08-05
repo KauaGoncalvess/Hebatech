@@ -4,7 +4,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { armazenamento, preco } from "@/lib/format";
 import { semAcento } from "@/lib/slug";
-import { waGenerico } from "@/lib/whatsapp";
 import {
   CATEGORIAS,
   resumoTecnico,
@@ -13,6 +12,7 @@ import {
   type Produto,
 } from "@/types/produto";
 import { ProductCard } from "./product-card";
+import { VitrineVazia } from "./vitrine-vazia";
 
 type Faixa = { id: string; rotulo: string; min: number; max: number };
 
@@ -474,44 +474,36 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
              * esse filtro" numa vitrine sem nenhum produto faz o visitante
              * procurar um filtro que não existe.
              */
-            <div className="card px-6 py-20 text-center">
-              <p className="display text-sub">
-                {itens.length === 0
-                  ? "Vitrine em renovação"
+            <VitrineVazia
+              titulo={
+                itens.length === 0
+                  ? undefined
                   : termos.length
                     ? `Nada para "${busca.trim()}"`
-                    : "Nada com esse filtro"}
-              </p>
-              <p className="mx-auto mt-4 max-w-[44ch] text-[14px] text-white/55">
-                {itens.length === 0
-                  ? "Estamos atualizando os aparelhos anunciados. O estoque da loja continua o mesmo — diga o que você procura no WhatsApp que a gente confere na hora."
-                  : "O estoque gira rápido e nem tudo fica anunciado. Diga o que você procura no WhatsApp — costumamos ter algo chegando na semana."}
-              </p>
-              <div className="mt-7 flex flex-wrap justify-center gap-3">
-                <a
-                  href={waGenerico(
-                    termos.length
-                      ? `procuro ${busca.trim()} e não achei no site`
-                      : "procuro um equipamento que não achei no site",
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-origem="vitrine-vazia"
-                  className="rounded-full bg-accent px-7 py-3.5 font-mono text-[11.5px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+                    : "Nada com esse filtro"
+              }
+              texto={
+                itens.length === 0
+                  ? undefined
+                  : "O estoque gira rápido e nem tudo fica anunciado. Diga o que você procura no WhatsApp — costumamos ter algo chegando na semana."
+              }
+              assunto={
+                termos.length
+                  ? `procuro ${busca.trim()} e não achei no site`
+                  : "procuro um equipamento que não achei no site"
+              }
+              origem={itens.length === 0 ? "vitrine-vazia" : "filtro-sem-resultado"}
+            >
+              {ativos > 0 && (
+                <button
+                  type="button"
+                  onClick={limpar}
+                  className="rounded-full bg-surface-2 px-7 py-3.5 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
                 >
-                  Perguntar no WhatsApp
-                </a>
-                {ativos > 0 && (
-                  <button
-                    type="button"
-                    onClick={limpar}
-                    className="rounded-full bg-surface-2 px-7 py-3.5 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
-                  >
-                    Limpar filtro
-                  </button>
-                )}
-              </div>
-            </div>
+                  Limpar filtro
+                </button>
+              )}
+            </VitrineVazia>
           ) : (
             <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {resultado.map((p) => (

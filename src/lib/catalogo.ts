@@ -1,7 +1,6 @@
 import "server-only";
 
 import { cache } from "react";
-import { seedProdutos } from "@/data/seed";
 import { paraProduto, type LinhaProduto } from "@/lib/produto-mapper";
 import { criarClientePublico } from "@/lib/supabase/publico";
 import { supabaseConfigurado } from "@/lib/supabase/config";
@@ -39,9 +38,24 @@ const lerDoBanco = cache(async (): Promise<Produto[] | null> => {
   return (data as LinhaProduto[]).map(paraProduto);
 });
 
-/** Site público: banco fora do ar não pode derrubar a loja. */
+/**
+ * Site público.
+ *
+ * Já caiu para `seedProdutos` quando o banco falhava, e isso fazia sentido
+ * enquanto não existia banco nenhum: melhor uma vitrine de exemplo que uma
+ * página vazia. Deixou de fazer no dia em que a loja passou a ter catálogo de
+ * verdade — a carga inicial é ficção, e anunciar ficção para quem está
+ * comprando é pior que não anunciar nada. O cliente liga perguntando por um
+ * ThinkPad que nunca existiu.
+ *
+ * Pior ainda: com a queda no lugar, banco vazio e banco fora do ar mostravam
+ * exatamente a mesma tela, e não havia como saber qual dos dois era.
+ *
+ * Agora, sem banco, a vitrine fica vazia — e a tela de vazio diz que está em
+ * renovação e leva para o WhatsApp, que é onde a loja de fato atende.
+ */
 async function carregarTodos(): Promise<Produto[]> {
-  return (await lerDoBanco()) ?? seedProdutos;
+  return (await lerDoBanco()) ?? [];
 }
 
 /**

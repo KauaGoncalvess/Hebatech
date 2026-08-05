@@ -1,5 +1,6 @@
 import type { Produto } from "@/types/produto";
 import { ProductCard } from "./product-card";
+import { VitrineVazia } from "./vitrine-vazia";
 
 /**
  * Grade simples, renderizada no servidor. É o que vai no HTML enquanto o
@@ -7,7 +8,9 @@ import { ProductCard } from "./product-card";
  * lê a página sem executar JavaScript, buscador incluído.
  */
 export function ProdutoGrade({ itens }: { itens: Produto[] }) {
-  if (itens.length === 0) return null;
+  // Sem nada publicado, a mesma lógica vale para o aviso: se ele só existisse
+  // no filtro, a página chegaria em branco antes de hidratar.
+  if (itens.length === 0) return <VitrineVazia />;
 
   return (
     <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

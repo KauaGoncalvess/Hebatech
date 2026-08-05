@@ -38,9 +38,6 @@ export function RegrasForm({ regras }: { regras: RegraManutencao[] }) {
           name="regras"
           rows={6}
           defaultValue={regras.map((r) => `${r.titulo}: ${r.texto}`).join("\n")}
-          placeholder={
-            "Sem fidelidade: Contrato mensal. Você cancela avisando com 30 dias.\nNota fiscal: Emitida todo mês, com o serviço discriminado."
-          }
         />
       </Campo>
 

@@ -46,7 +46,6 @@ export function PlanoForm({ plano }: { plano?: Plano }) {
           <Entrada
             name="codigo"
             defaultValue={p.codigo}
-            placeholder="MP-01"
             required
             onChange={(e) => {
               e.currentTarget.value = e.currentTarget.value.toUpperCase();
@@ -55,18 +54,17 @@ export function PlanoForm({ plano }: { plano?: Plano }) {
         </Campo>
 
         <Campo rotulo="Nome" obrigatorio>
-          <Entrada name="nome" defaultValue={p.nome} placeholder="Essencial" required />
+          <Entrada name="nome" defaultValue={p.nome} required />
         </Campo>
 
         <Campo rotulo="Quantas máquinas" nota="Vai em laranja abaixo do nome">
-          <Entrada name="faixa" defaultValue={p.faixa} placeholder="Até 5 máquinas" />
+          <Entrada name="faixa" defaultValue={p.faixa} />
         </Campo>
 
         <Campo rotulo="Quantas visitas" nota="Aparece abaixo do valor">
           <Entrada
             name="visitas"
             defaultValue={p.visitas}
-            placeholder="1 visita por mês"
           />
         </Campo>
       </Bloco>
@@ -83,7 +81,6 @@ export function PlanoForm({ plano }: { plano?: Plano }) {
             step={1}
             disabled={semPreco}
             defaultValue={p.precoMensal ?? ""}
-            placeholder="390"
             className={semPreco ? "opacity-30" : ""}
           />
         </Campo>
@@ -124,9 +121,6 @@ export function PlanoForm({ plano }: { plano?: Plano }) {
             name="inclui"
             rows={9}
             defaultValue={p.inclui.join("\n")}
-            placeholder={
-              "Visita técnica programada, 1x por mês\nSuporte remoto no horário comercial\nAtualização de Windows e antivírus"
-            }
           />
         </Campo>
       </Bloco>

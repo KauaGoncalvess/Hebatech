@@ -104,7 +104,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             name="marca"
             value={marca}
             onChange={(e) => setMarca(e.target.value)}
-            placeholder="Dell, Lenovo, HP, Acer..."
             required
           />
         </Campo>
@@ -114,7 +113,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             name="modelo"
             value={modelo}
             onChange={(e) => setModelo(e.target.value)}
-            placeholder="Latitude 5490"
             required
           />
         </Campo>
@@ -124,7 +122,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             name="codigo"
             value={codigo}
             onChange={(e) => setCodigo(e.target.value.toUpperCase())}
-            placeholder="HT-L5490"
             required
           />
         </Campo>
@@ -134,7 +131,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             name="slug"
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
-            placeholder={slugSugerido}
           />
           <span className="mt-2 block font-mono text-[10px] text-white/30">
             /produtos/{slugSugerido || "..."}
@@ -150,7 +146,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             name="resumo"
             defaultValue={p.resumo}
             rows={2}
-            placeholder="Chassi sem trincas, tela sem pixel morto, dobradiças firmes."
           />
         </Campo>
       </Bloco>
@@ -163,7 +158,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             min={0}
             step={1}
             defaultValue={p.preco || ""}
-            placeholder="1590"
             required
           />
         </Campo>
@@ -175,7 +169,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             min={0}
             step={1}
             defaultValue={p.precoReferencia ?? ""}
-            placeholder="1890"
           />
         </Campo>
 
@@ -218,17 +211,16 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
           descricao="Alimentam os filtros do catálogo e o resumo do card. Deixe vazio o que não se aplica."
         >
           <Campo rotulo="Família do processador" nota="Filtro: i3, i5, i7, Ryzen 5">
-            <Entrada name="cpuFamilia" defaultValue={p.cpuFamilia ?? ""} placeholder="i5" />
+            <Entrada name="cpuFamilia" defaultValue={p.cpuFamilia ?? ""} />
           </Campo>
           <Campo rotulo="Processador completo">
             <Entrada
               name="cpuNome"
               defaultValue={p.cpuNome ?? ""}
-              placeholder="Intel Core i5-8350U"
             />
           </Campo>
           <Campo rotulo="Memória (GB)">
-            <Entrada name="ramGb" type="number" min={0} defaultValue={p.ramGb ?? ""} placeholder="8" />
+            <Entrada name="ramGb" type="number" min={0} defaultValue={p.ramGb ?? ""} />
           </Campo>
           <Campo rotulo="Armazenamento (GB)">
             <Entrada
@@ -236,14 +228,12 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
               type="number"
               min={0}
               defaultValue={p.armazenamentoGb ?? ""}
-              placeholder="256"
             />
           </Campo>
           <Campo rotulo="Tipo de disco">
             <Entrada
               name="armazenamentoTipo"
               defaultValue={p.armazenamentoTipo ?? ""}
-              placeholder="NVMe"
             />
           </Campo>
           <Campo rotulo="Tela (polegadas)">
@@ -253,14 +243,12 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
               step="0.1"
               min={0}
               defaultValue={p.telaPolegadas ?? ""}
-              placeholder="14"
             />
           </Campo>
           <Campo rotulo="Resolução">
             <Entrada
               name="telaResolucao"
               defaultValue={p.telaResolucao ?? ""}
-              placeholder="1920 x 1080"
             />
           </Campo>
           <Campo rotulo="Saúde da bateria (%)">
@@ -270,7 +258,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
               min={0}
               max={100}
               defaultValue={p.bateriaSaude ?? ""}
-              placeholder="84"
             />
           </Campo>
           <Campo rotulo="Peso (kg)">
@@ -280,7 +267,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
               step="0.01"
               min={0}
               defaultValue={p.pesoKg ?? ""}
-              placeholder="1.63"
             />
           </Campo>
         </Bloco>
@@ -310,9 +296,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             name="ficha"
             rows={10}
             defaultValue={p.ficha.map((f) => `${f.rotulo}: ${f.valor}`).join("\n")}
-            placeholder={
-              "Processador: Intel Core i5-8350U · 4 núcleos / 8 threads\nMemória: 8 GB DDR4 2400 MHz\nArmazenamento: 256 GB SSD NVMe M.2\nTela: 14\" 1920 x 1080 IPS · antirreflexo"
-            }
           />
         </Campo>
       </Bloco>
@@ -340,9 +323,6 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             name="estadoObservacoes"
             rows={5}
             defaultValue={p.estadoObservacoes.join("\n")}
-            placeholder={
-              "Marcas leves de uso na tampa, visíveis apenas contra a luz\nBateria original, 84% de saúde medida no diagnóstico"
-            }
           />
         </Campo>
       </Bloco>

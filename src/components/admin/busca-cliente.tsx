@@ -59,7 +59,6 @@ export function BuscaCliente({
           value={termo}
           onChange={(e) => setTermo(e.target.value)}
           autoComplete="off"
-          placeholder="Joana, 31999612371 ou 000.000.000-00"
           className="mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3 font-mono text-[13.5px] transition-colors placeholder:text-white/40 focus-visible:bg-surface-3"
         />
       </label>

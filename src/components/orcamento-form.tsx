@@ -134,7 +134,6 @@ export function OrcamentoForm() {
               <input
                 value={f.marca}
                 onChange={(e) => set("marca", e.target.value)}
-                placeholder="Dell, Lenovo, HP, Acer..."
                 autoComplete="off"
                 className={CAMPO}
               />
@@ -143,7 +142,6 @@ export function OrcamentoForm() {
               <input
                 value={f.modelo}
                 onChange={(e) => set("modelo", e.target.value)}
-                placeholder="Latitude 5490"
                 autoComplete="off"
                 className={CAMPO}
               />
@@ -172,7 +170,6 @@ export function OrcamentoForm() {
                 value={f.descricao}
                 onChange={(e) => set("descricao", e.target.value)}
                 rows={3}
-                placeholder="Começou depois de uma queda. Liga, mas a imagem fica com listra roxa."
                 className={`${CAMPO} resize-y leading-relaxed`}
               />
             </Campo>
@@ -195,7 +192,6 @@ export function OrcamentoForm() {
                 onChange={(e) => set("telefone", mascararTelefone(e.target.value))}
                 inputMode="tel"
                 autoComplete="tel"
-                placeholder="(31) 90000-0000"
                 className={CAMPO}
               />
             </Campo>

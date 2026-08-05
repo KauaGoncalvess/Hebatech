@@ -68,7 +68,6 @@ export function CadastroForm() {
             required
             inputMode="tel"
             autoComplete="tel"
-            placeholder="(31) 90000-0000"
             className={CAMPO}
             onChange={(e) => {
               e.currentTarget.value = mascararTelefone(e.currentTarget.value);
@@ -88,7 +87,6 @@ export function CadastroForm() {
           <input
             name="endereco"
             autoComplete="street-address"
-            placeholder="Rua, número, bairro"
             className={CAMPO}
           />
         </Campo>
@@ -101,7 +99,6 @@ export function CadastroForm() {
           <textarea
             name="observacoes"
             rows={3}
-            placeholder="Tenho 4 computadores na empresa. Prefiro ser atendido de manhã."
             className={`${CAMPO} resize-y leading-relaxed`}
           />
         </Campo>

@@ -65,16 +65,22 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
       >
         <Campo
           rotulo="Código da ordem"
-          nota={ordem ? "Vai no comprovante" : "Deixe vazio para numerar sozinho"}
+          nota={ordem ? "Vai no comprovante" : "Opcional"}
         >
           <Entrada
             name="codigo"
             defaultValue={o.codigo}
-            placeholder={ordem ? "" : "OS-2026-0001"}
             onChange={(e) => {
               e.currentTarget.value = e.currentTarget.value.toUpperCase();
             }}
           />
+          {/* Frase inteira, e não texto de exemplo dentro do campo: exemplo em
+              campo vazio se confunde com valor já preenchido. */}
+          {!ordem && (
+            <span className="mt-2 block font-mono text-[10px] text-white/30">
+              Deixe vazio e o número sai ao salvar, seguindo a numeração do ano.
+            </span>
+          )}
         </Campo>
 
         <Campo rotulo="Nome do cliente" obrigatorio>
@@ -95,7 +101,6 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
             name="clienteTelefone"
             value={telefone}
             onChange={(e) => setTelefone(mascararTelefone(e.target.value))}
-            placeholder="(31) 90000-0000"
             inputMode="tel"
             required
           />
@@ -147,18 +152,17 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
         </Campo>
 
         <Campo rotulo="Marca">
-          <Entrada name="marca" defaultValue={o.marca} placeholder="Dell" />
+          <Entrada name="marca" defaultValue={o.marca} />
         </Campo>
 
         <Campo rotulo="Modelo">
-          <Entrada name="modelo" defaultValue={o.modelo} placeholder="Latitude 5490" />
+          <Entrada name="modelo" defaultValue={o.modelo} />
         </Campo>
 
         <Campo rotulo="Defeito relatado" nota="Aparece para o cliente">
           <Entrada
             name="defeito"
             defaultValue={o.defeito}
-            placeholder="Não liga depois de uma queda"
           />
         </Campo>
       </Bloco>
@@ -185,7 +189,6 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
             min={0}
             step={1}
             defaultValue={o.valorOrcado ?? ""}
-            placeholder="280"
           />
         </Campo>
 
@@ -198,7 +201,6 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
             name="observacoes"
             rows={4}
             defaultValue={o.observacoes}
-            placeholder="Trocado o conector de carga. Testado por 24h ligado, sem falha."
           />
         </Campo>
       </Bloco>

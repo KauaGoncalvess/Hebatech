@@ -39,7 +39,6 @@ export function AcompanharForm() {
             required
             autoComplete="off"
             autoCapitalize="characters"
-            placeholder="OS-1042"
             className={`${CAMPO} uppercase`}
           />
         </label>
@@ -57,7 +56,6 @@ export function AcompanharForm() {
             inputMode="numeric"
             maxLength={4}
             autoComplete="off"
-            placeholder="2371"
             className={CAMPO}
           />
         </label>

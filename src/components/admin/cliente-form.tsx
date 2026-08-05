@@ -51,7 +51,6 @@ export function ClienteForm({ cliente }: { cliente?: Cliente }) {
           <Entrada
             name="telefone"
             defaultValue={c.telefone}
-            placeholder="(31) 90000-0000"
             inputMode="tel"
             required
             onChange={(e) => {
@@ -74,7 +73,6 @@ export function ClienteForm({ cliente }: { cliente?: Cliente }) {
           <Entrada
             name="endereco"
             defaultValue={c.endereco}
-            placeholder="Rua, número, bairro"
           />
         </Campo>
 
@@ -87,7 +85,6 @@ export function ClienteForm({ cliente }: { cliente?: Cliente }) {
             name="observacoes"
             rows={4}
             defaultValue={c.observacoes}
-            placeholder="Empresa com 8 máquinas. Prefere retirar aos sábados."
           />
         </Campo>
       </Bloco>

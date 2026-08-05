@@ -469,13 +469,23 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
 
         <div>
           {resultado.length === 0 ? (
+            /**
+             * Três vazios diferentes, e confundir os três fica ruim: "nada com
+             * esse filtro" numa vitrine sem nenhum produto faz o visitante
+             * procurar um filtro que não existe.
+             */
             <div className="card px-6 py-20 text-center">
               <p className="display text-sub">
-                {termos.length ? `Nada para "${busca.trim()}"` : "Nada com esse filtro"}
+                {itens.length === 0
+                  ? "Vitrine em renovação"
+                  : termos.length
+                    ? `Nada para "${busca.trim()}"`
+                    : "Nada com esse filtro"}
               </p>
               <p className="mx-auto mt-4 max-w-[44ch] text-[14px] text-white/55">
-                O estoque gira rápido e nem tudo fica anunciado. Diga o que você procura
-                no WhatsApp — costumamos ter algo chegando na semana.
+                {itens.length === 0
+                  ? "Estamos atualizando os aparelhos anunciados. O estoque da loja continua o mesmo — diga o que você procura no WhatsApp que a gente confere na hora."
+                  : "O estoque gira rápido e nem tudo fica anunciado. Diga o que você procura no WhatsApp — costumamos ter algo chegando na semana."}
               </p>
               <div className="mt-7 flex flex-wrap justify-center gap-3">
                 <a
@@ -486,17 +496,20 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-origem="vitrine-vazia"
                   className="rounded-full bg-accent px-7 py-3.5 font-mono text-[11.5px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
                 >
                   Perguntar no WhatsApp
                 </a>
-                <button
-                  type="button"
-                  onClick={limpar}
-                  className="rounded-full bg-surface-2 px-7 py-3.5 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
-                >
-                  Limpar filtro
-                </button>
+                {ativos > 0 && (
+                  <button
+                    type="button"
+                    onClick={limpar}
+                    className="rounded-full bg-surface-2 px-7 py-3.5 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+                  >
+                    Limpar filtro
+                  </button>
+                )}
               </div>
             </div>
           ) : (

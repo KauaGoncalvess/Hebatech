@@ -79,6 +79,11 @@ máquina, para o `npm run seed`.
   quem já é cliente por nome, telefone ou CPF — clique no cartão e o formulário
   se preenche, sem criar ficha duplicada. A ficha guarda todas as visitas da
   pessoa, com defeito, o que foi feito e o aparelho de cada uma.
+- **Apagar ordem não devolve o número.** É de propósito: número que já saiu no
+  comprovante do cliente não pode ser reaproveitado, senão duas ordens diferentes
+  respondem pela mesma consulta em `/acompanhar`. Para acertar o contador depois
+  de apagar ordens de teste, rode `supabase/renumerar-ordens.sql` — ele recoloca
+  a contagem no maior número que ainda existe, sem risco de gerar repetido.
 - **Ordens de serviço**: o número sai sozinho no formato `OS-2026-0001` e
   reinicia a cada ano. Ele é gerado ao salvar, não ao abrir o formulário, para
   que ordem começada e abandonada não deixe buraco no talão. Quem preferir

@@ -318,6 +318,36 @@ revoke all on function public.proximo_codigo_ordem() from public;
 -- Só o painel abre ordem, então visitante anônimo não precisa disto.
 grant execute on function public.proximo_codigo_ordem() to authenticated;
 
+/**
+ * O mesmo número, só para mostrar na tela antes de salvar — sem consumir.
+ *
+ * A tela de abrir ordem precisa exibir qual será o número, e não pode gastá-lo:
+ * formulário aberto e abandonado deixaria buraco na sequência. Então quem
+ * mostra é esta função, que só lê, e quem decide é a `proximo_codigo_ordem`,
+ * no salvar.
+ *
+ * Em teoria dois atendentes abrindo ao mesmo tempo veriam o mesmo número e um
+ * deles salvaria com o seguinte. Vale a troca: o buraco na sequência seria
+ * permanente, e a diferença de um número na tela se resolve ao salvar.
+ */
+create or replace function public.codigo_ordem_previsto()
+returns text
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  ano text := to_char(now() at time zone 'America/Sao_Paulo', 'YYYY');
+  n   integer;
+begin
+  select coalesce(valor, 0) into n from public.contadores where chave = 'ordem_' || ano;
+  return 'OS-' || ano || '-' || lpad((coalesce(n, 0) + 1)::text, 4, '0');
+end;
+$$;
+
+revoke all on function public.codigo_ordem_previsto() from public;
+grant execute on function public.codigo_ordem_previsto() to authenticated;
+
 -- ── Ordens de serviço ───────────────────────────────────────────────────────
 -- O aparelho que entrou para conserto. Alimenta a página /acompanhar, onde o
 -- cliente vê em que etapa está sem precisar mandar mensagem perguntando.

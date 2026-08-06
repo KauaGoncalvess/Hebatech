@@ -6,7 +6,7 @@ import { useFormStatus } from "react-dom";
 import { salvarOrdem, type Resultado } from "@/app/admin/actions";
 import { mascararTelefone } from "@/types/cliente";
 import { ETAPA, LINHA_DO_TEMPO, type Ordem } from "@/types/ordem";
-import { BuscaCliente } from "./busca-cliente";
+import { CampoCliente } from "./campo-cliente";
 import { AreaTexto, Bloco, Campo, Entrada, Selecao } from "./campo";
 
 const EQUIPAMENTOS = ["Notebook", "Desktop", "All in one", "Impressora", "Outro"];
@@ -39,7 +39,14 @@ function Salvar({ novo }: { novo: boolean }) {
   );
 }
 
-export function OrdemForm({ ordem }: { ordem?: Ordem }) {
+export function OrdemForm({
+  ordem,
+  codigoPrevisto,
+}: {
+  ordem?: Ordem;
+  /** Só na abertura: o número que a ordem vai receber ao salvar. */
+  codigoPrevisto?: string | null;
+}) {
   const o = ordem ?? VAZIO;
   const [estado, acao] = useActionState<Resultado, FormData>(salvarOrdem, {});
 
@@ -63,34 +70,48 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
         titulo="Quem trouxe"
         descricao="O telefone é o que o cliente usa para consultar a ordem no site: ele digita o código e os quatro últimos dígitos deste número. Confira antes de salvar — é também por ele que a ficha do cliente é encontrada ou aberta."
       >
-        <Campo
-          rotulo="Código da ordem"
-          nota={ordem ? "Vai no comprovante" : "Opcional"}
-        >
-          <Entrada
-            name="codigo"
-            defaultValue={o.codigo}
-            onChange={(e) => {
-              e.currentTarget.value = e.currentTarget.value.toUpperCase();
-            }}
-          />
-          {/* Frase inteira, e não texto de exemplo dentro do campo: exemplo em
-              campo vazio se confunde com valor já preenchido. */}
-          {!ordem && (
-            <span className="mt-2 block font-mono text-[10px] text-white/30">
-              Deixe vazio e o número sai ao salvar, seguindo a numeração do ano.
-            </span>
+        {/**
+          * O número não é campo: é dado. Editar à mão abriria porta para dois
+          * códigos iguais e para quebrar o acompanhamento de quem já recebeu o
+          * comprovante — a ordem é encontrada por ele em /acompanhar.
+          */}
+        <div className="sm:col-span-2">
+          <span className="eyebrow text-white/55">Número da ordem</span>
+          {o.codigo || codigoPrevisto ? (
+            <p className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="display text-[1.7rem] leading-none text-accent">
+                {o.codigo || codigoPrevisto}
+              </span>
+              <span className="font-mono text-[10.5px] text-white/35">
+                {ordem
+                  ? "vai no comprovante do cliente"
+                  : "reservado para esta ordem, gerado ao salvar"}
+              </span>
+            </p>
+          ) : (
+            <p className="mt-2.5 font-mono text-[11.5px] text-white/40">
+              O número sai ao salvar, seguindo a numeração do ano.
+            </p>
           )}
-        </Campo>
+        </div>
 
-        <Campo rotulo="Nome do cliente" obrigatorio>
-          <Entrada
-            name="clienteNome"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-          />
-        </Campo>
+        <CampoCliente
+          nome={nome}
+          aoDigitar={setNome}
+          vinculado={fichaUsada}
+          aoDesvincular={() => {
+            setClienteId(null);
+            setFichaUsada(null);
+          }}
+          aoEscolher={(c) => {
+            setClienteId(c.id);
+            setNome(c.nome);
+            setTelefone(c.telefone);
+            setFichaUsada(
+              `Ficha de ${c.nome}${c.ordens ? ` · ${c.ordens} ${c.ordens === 1 ? "ordem" : "ordens"}` : ""}`,
+            );
+          }}
+        />
 
         <Campo
           rotulo="Telefone"
@@ -110,34 +131,6 @@ export function OrdemForm({ ordem }: { ordem?: Ordem }) {
           <Entrada name="previsao" type="date" defaultValue={o.previsao ?? ""} />
         </Campo>
 
-        {fichaUsada ? (
-          <p className="flex flex-wrap items-center gap-3 rounded-2xl bg-surface-2 p-4 sm:col-span-2">
-            <span className="font-mono text-[11.5px] text-white/60">
-              Ficha vinculada: <span className="text-accent">{fichaUsada}</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => {
-                setClienteId(null);
-                setFichaUsada(null);
-              }}
-              className="font-mono text-[10.5px] tracking-[0.1em] text-white/40 uppercase transition-colors hover:text-white"
-            >
-              Desvincular
-            </button>
-          </p>
-        ) : (
-          <BuscaCliente
-            aoEscolher={(c) => {
-              setClienteId(c.id);
-              setNome(c.nome);
-              setTelefone(c.telefone);
-              setFichaUsada(
-                `${c.nome}${c.ordens ? ` · ${c.ordens} ${c.ordens === 1 ? "ordem" : "ordens"}` : ""}`,
-              );
-            }}
-          />
-        )}
       </Bloco>
 
       <Bloco indice="02" titulo="O aparelho">

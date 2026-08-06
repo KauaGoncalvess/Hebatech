@@ -68,6 +68,27 @@ export async function listarOrdensDoCliente(clienteId: string): Promise<Ordem[]>
   return (data as LinhaOrdem[]).map(paraOrdem);
 }
 
+/**
+ * Qual será o número da próxima ordem, para a tela já mostrar ao abrir.
+ *
+ * Só lê — quem gasta o número é o salvar. Devolve null se o banco não
+ * responder: nesse caso a tela diz que o número sai ao salvar, em vez de
+ * impedir a loja de abrir a ordem.
+ */
+export async function codigoPrevisto(): Promise<string | null> {
+  if (!supabaseConfigurado) return null;
+
+  const supabase = await criarClienteServidor();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase.rpc("codigo_ordem_previsto");
+  if (error || typeof data !== "string") {
+    if (error) console.error("Falha ao prever o código da ordem:", error.message);
+    return null;
+  }
+  return data;
+}
+
 export async function buscarOrdemPorId(id: string): Promise<Ordem | null> {
   const supabase = await cliente();
 

@@ -20,7 +20,7 @@ export function ExcluirOrdemButton({ id, codigo }: { id: string; codigo: string 
         type="button"
         disabled={pendente}
         onClick={apagar}
-        className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/50 uppercase transition-colors hover:bg-surface-3 hover:text-white disabled:opacity-40"
+        className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/70 uppercase transition-colors hover:bg-surface-3 hover:text-white disabled:opacity-40"
       >
         Excluir
       </button>

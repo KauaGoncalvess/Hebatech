@@ -289,7 +289,6 @@ export async function excluirOrcamento(id: string): Promise<Resultado> {
 /* ── Ordens de serviço ── */
 
 function lerOrdem(dados: FormData): { linha: Record<string, unknown>; erro?: string } {
-  const codigo = texto(dados, "codigo").toUpperCase();
   const clienteNome = texto(dados, "clienteNome");
   const clienteTelefone = texto(dados, "clienteTelefone");
 
@@ -300,8 +299,10 @@ function lerOrdem(dados: FormData): { linha: Record<string, unknown>; erro?: str
 
   const previsao = texto(dados, "previsao");
 
+  // `codigo` não vem do formulário: em ordem nova ele é gerado pelo banco, e em
+  // ordem existente não se mexe. O cliente já recebeu esse número no
+  // comprovante e é por ele que encontra o aparelho em /acompanhar.
   const linha: Record<string, unknown> = {
-    codigo,
     cliente_id: texto(dados, "clienteId") || null,
     cliente_nome: clienteNome,
     cliente_telefone: clienteTelefone,
@@ -315,9 +316,6 @@ function lerOrdem(dados: FormData): { linha: Record<string, unknown>; erro?: str
     previsao: previsao || null,
   };
 
-  // O código vazio é permitido aqui de propósito: em ordem nova ele significa
-  // "numere para mim". Quem cobra o código preenchido é o salvarOrdem, e só na
-  // edição, onde ele já existe.
   if (!clienteNome) return { linha, erro: "Informe o nome do cliente." };
   if (clienteTelefone.replace(/\D/g, "").length < 10) {
     return { linha, erro: "O telefone precisa ter DDD e ao menos 10 dígitos." };
@@ -342,21 +340,19 @@ export async function salvarOrdem(
   const id = texto(dados, "id");
 
   /**
-   * Numeração automática. É gerada no salvar, e não ao abrir o formulário, para
-   * que ordem começada e abandonada não queime um número — o talão da loja não
-   * pode ter buraco. Quem quiser numerar à mão é só preencher o campo.
+   * Numeração automática, gerada no salvar e não ao abrir o formulário: ordem
+   * começada e abandonada não pode queimar um número, senão o talão da loja
+   * fica com buraco.
    */
-  if (!id && !linha.codigo) {
+  if (!id) {
     const { data, error } = await supabase.rpc("proximo_codigo_ordem");
     if (error || typeof data !== "string") {
       return {
-        erro: `Não consegui gerar o número da ordem: ${error?.message ?? "resposta vazia"}. Digite um código à mão ou rode o supabase/schema.sql novamente.`,
+        erro: `Não consegui gerar o número da ordem: ${error?.message ?? "resposta vazia"}. Rode o supabase/schema.sql novamente.`,
       };
     }
     linha.codigo = data;
   }
-
-  if (!linha.codigo) return { erro: "Informe o código da ordem." };
 
   /**
    * A ficha do cliente é achada pelo telefone; se não existir, nasce agora.

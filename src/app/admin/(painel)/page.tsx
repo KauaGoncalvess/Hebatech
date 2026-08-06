@@ -30,55 +30,55 @@ export default async function AdminHome() {
 
   return (
     <>
-      <section className="py-10 md:py-14">
+      <section className="py-8 md:py-14">
         <p className="eyebrow text-accent">Painel</p>
-        <h1 className="display mt-4 text-title">Catálogo</h1>
-        <p className="mt-5 max-w-[54ch] text-[14px] leading-relaxed text-white/55">
-          Tudo que está aqui aparece no site. Ao salvar, a página do produto e as
-          listas são atualizadas na hora — não precisa publicar nada.
+        <h1 className="display mt-3 text-title md:mt-4">A loja hoje</h1>
+        <p className="mt-4 max-w-[54ch] text-[14px] leading-relaxed text-white/55 md:mt-5">
+          Bancada, clientes e catálogo. O que você salva aqui aparece no site na
+          hora — não precisa publicar nada.
         </p>
       </section>
 
-      <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="grid grid-cols-2 gap-2.5 md:gap-4 lg:grid-cols-4">
         {[
           [`${aVenda.length}`, "à venda", "produtos visíveis no site"],
           [`${produtos.length - aVenda.length}`, "fora do ar", "vendidos ou pausados"],
           [`${semFoto.length}`, "sem foto", "usando o desenho técnico"],
           [preco(valorEstoque), "em estoque", "soma dos preços anunciados"],
         ].map(([num, unidade, texto]) => (
-          <div key={unidade} className="spot card p-6">
+          <div key={unidade} className="spot card p-4 md:p-6">
             <dt className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="display text-[clamp(1.8rem,4vw,2.8rem)] leading-none text-accent">
+              <span className="display text-[clamp(1.6rem,7vw,2.8rem)] leading-none text-accent">
                 {num}
               </span>
               <span className="font-mono text-[10px] tracking-[0.14em] text-white/40 uppercase">
                 {unidade}
               </span>
             </dt>
-            <dd className="mt-3 text-[13px] text-white/50">{texto}</dd>
+            <dd className="mt-2 text-[12px] leading-snug text-white/50 md:mt-3 md:text-[13px]">{texto}</dd>
           </div>
         ))}
       </dl>
 
       {porCategoria.length > 0 && (
-        <section className="mt-4">
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <section className="mt-2.5 md:mt-4">
+          <ul className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-6 md:gap-3">
             {porCategoria.map((c) => (
-              <li key={c.id} className="rounded-2xl bg-surface-2 p-4">
+              <li key={c.id} className="rounded-2xl bg-surface-2 p-3 md:p-4">
                 <p className="font-mono text-[10px] tracking-[0.12em] text-white/35 uppercase">
                   {c.rotulo}
                 </p>
-                <p className="display mt-2 text-[1.8rem] leading-none">{c.total}</p>
+                <p className="display mt-1.5 text-[1.5rem] leading-none md:mt-2 md:text-[1.8rem]">{c.total}</p>
               </li>
             ))}
           </ul>
         </section>
       )}
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <div className="mt-2.5 grid gap-2.5 md:mt-4 md:gap-4 md:grid-cols-2 2xl:grid-cols-3">
         <Link
           href="/admin/ordens"
-          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
         >
           <span>
             <span className="eyebrow text-accent">Bancada</span>
@@ -98,7 +98,7 @@ export default async function AdminHome() {
 
         <Link
           href="/admin/clientes"
-          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
         >
           <span>
             <span className="eyebrow text-white/35">Cadastro</span>
@@ -118,7 +118,7 @@ export default async function AdminHome() {
 
         <Link
           href="/admin/orcamentos"
-          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
         >
           <span>
             <span className="eyebrow text-accent">Chegou pelo site</span>
@@ -138,7 +138,7 @@ export default async function AdminHome() {
 
         <Link
           href="/admin/produtos"
-          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
         >
           <span>
             <span className="eyebrow text-white/35">Gerenciar</span>
@@ -154,7 +154,7 @@ export default async function AdminHome() {
 
         <Link
           href="/admin/planos"
-          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
         >
           <span>
             <span className="eyebrow text-white/35">Assistência</span>
@@ -170,7 +170,7 @@ export default async function AdminHome() {
 
         <Link
           href="/admin/produtos/novo"
-          className="spot card group flex items-center justify-between p-6 transition-colors hover:bg-surface-2 lg:p-8"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
         >
           <span>
             <span className="eyebrow text-accent">Cadastrar</span>

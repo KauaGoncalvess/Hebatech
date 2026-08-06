@@ -1,52 +1,13 @@
-import Link from "next/link";
-import { Logo } from "@/components/logo";
-import { SairButton } from "@/components/admin/sair-button";
-
-const SECOES = [
-  { href: "/admin/ordens", rotulo: "Ordens" },
-  { href: "/admin/clientes", rotulo: "Clientes" },
-  { href: "/admin/produtos", rotulo: "Produtos" },
-  { href: "/admin/planos", rotulo: "Planos" },
-  { href: "/admin/orcamentos", rotulo: "Orçamentos" },
-];
+import { PainelNav } from "@/components/admin/painel-nav";
 
 /** Moldura das telas autenticadas do painel. A tela de login fica fora daqui. */
 export default function PainelLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <header className="sticky top-0 z-40 bg-ink/90 backdrop-blur-xl">
-        <div className="mx-auto flex min-h-20 max-w-[1200px] flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-3">
-          <Link href="/admin" className="flex items-center gap-4">
-            <Logo compacto />
-            <span className="hidden font-mono text-[10px] tracking-[0.2em] text-accent uppercase sm:block">
-              Painel
-            </span>
-          </Link>
-
-          {/* Seis destinos não cabem numa linha no celular: deixa quebrar. */}
-          <nav className="flex flex-wrap items-center gap-2">
-            {SECOES.map((s) => (
-              <Link
-                key={s.href}
-                href={s.href}
-                className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[10.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
-              >
-                {s.rotulo}
-              </Link>
-            ))}
-            <Link
-              href="/"
-              target="_blank"
-              className="hidden rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[10.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3 md:block"
-            >
-              Ver site
-            </Link>
-            <SairButton />
-          </nav>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-[1200px] px-5 pb-20">{children}</main>
+      <PainelNav />
+      {/* Até 1600px em telas grandes: o painel é ferramenta de trabalho, e
+          largura sobrando vira listas mais curtas em vez de espaço vazio. */}
+      <main className="mx-auto max-w-[1600px] px-4 pb-20 md:px-6">{children}</main>
     </>
   );
 }

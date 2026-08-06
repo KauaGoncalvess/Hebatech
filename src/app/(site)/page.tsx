@@ -53,7 +53,7 @@ const PORTAS = [
     etiqueta: "Tenho uma empresa",
     titulo: "Preciso de manutenção",
     texto:
-      "De 3 a 30 máquinas, com visita programada, chamado remoto e backup testado por um valor fixo por mês.",
+      "Visita programada, chamado remoto e backup testado por um valor fixo por mês.",
     acao: "Ver os planos",
     href: "/manutencao",
   },

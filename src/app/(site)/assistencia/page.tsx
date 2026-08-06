@@ -16,17 +16,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/assistencia" },
 };
 
-const TABELA = [
-  ["Diagnóstico completo", "Sem custo se você aprovar o reparo", "até 48h"],
-  ["Formatação com backup", "A partir de R$ 120", "1 dia útil"],
-  ["Limpeza interna e pasta térmica", "A partir de R$ 140", "1 dia útil"],
-  ["Upgrade de SSD ou memória", "Mão de obra a partir de R$ 90 + peça", "no mesmo dia"],
-  ["Troca de tela", "Mão de obra a partir de R$ 150 + peça", "2 a 5 dias úteis"],
-  ["Conector de carga", "A partir de R$ 180", "2 a 4 dias úteis"],
-  ["Reparo de placa-mãe", "Sob orçamento após medição", "3 a 7 dias úteis"],
-  ["Recuperação de dados", "Sob orçamento após análise do disco", "2 a 10 dias úteis"],
-];
-
 const REGRAS = [
   {
     titulo: "Você aprova antes",
@@ -101,27 +90,6 @@ export default function AssistenciaPage() {
       </section>
 
       <section className="mx-auto max-w-[1180px] px-5 py-16 md:py-20">
-        <SectionHead
-          etiqueta="Referência de preço"
-          titulo="O que costuma custar e demorar"
-          nota="Valores de partida praticados na loja. O número final só sai depois da medição, e nunca sobe sem você autorizar."
-        />
-
-        <div className="card divide-y divide-line overflow-hidden">
-          {TABELA.map(([servico, valor, prazo]) => (
-            <div
-              key={servico}
-              className="grid gap-2 p-5 transition-colors hover:bg-surface-2 sm:grid-cols-[1.3fr_1.4fr_auto] sm:items-center sm:gap-6"
-            >
-              <p className="text-[14.5px] text-white">{servico}</p>
-              <p className="font-mono text-[12.5px] text-white/55">{valor}</p>
-              <p className="font-mono text-[12.5px] whitespace-nowrap text-accent">{prazo}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-[1180px] px-5 py-16 md:py-20">
         <div className="spot card grid gap-6 p-6 md:grid-cols-[1.3fr_auto] md:items-center md:p-10">
           <div>
             <p className="eyebrow text-accent">Para empresa</p>
@@ -130,7 +98,7 @@ export default function AssistenciaPage() {
             </h2>
             <p className="mt-4 max-w-[56ch] text-[14px] leading-relaxed text-white/55">
               Existe contrato mensal com visita programada, chamado remoto e backup
-              testado, de 3 a 30 máquinas — sai bem mais barato que chamar técnico só
+              testado — sai bem mais barato que chamar técnico só
               quando o trabalho já parou.
             </p>
           </div>

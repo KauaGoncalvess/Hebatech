@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const cidade = `${site.endereco.cidade}/${site.endereco.uf}`;
   return {
     title: `${s.chamada} em ${cidade}`,
-    description: `${s.descricao.slice(0, 150)}… ${s.precoPartida}. Prazo: ${s.prazo}. Loja física em ${cidade}.`,
+    description: `${s.descricao.slice(0, 150)}… Orçamento fechado antes do reparo. Loja física em ${cidade}.`,
     alternates: { canonical: `/servicos/${s.slug}` },
   };
 }
@@ -87,12 +87,17 @@ export default async function ServicoPage({ params }: Params) {
 
           <dl className="mt-8 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-surface-2 p-5">
-              <dt className="eyebrow text-white/50">Preço de partida</dt>
-              <dd className="mt-2 font-mono text-[14px] text-accent">{s.precoPartida}</dd>
+              <dt className="eyebrow text-white/50">Preço</dt>
+              <dd className="mt-2 text-[13.5px] leading-relaxed text-white/70">
+                Fechado depois da medição, e por escrito. Nada é aberto ou trocado
+                antes da sua aprovação.
+              </dd>
             </div>
             <div className="rounded-2xl bg-surface-2 p-5">
               <dt className="eyebrow text-white/50">Prazo</dt>
-              <dd className="mt-2 font-mono text-[14px]">{s.prazo}</dd>
+              <dd className="mt-2 text-[13.5px] leading-relaxed text-white/70">
+                Informado junto do orçamento, quando já se sabe o que o aparelho tem.
+              </dd>
             </div>
           </dl>
 

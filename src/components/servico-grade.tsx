@@ -37,8 +37,8 @@ export function ServicoGrade() {
               </span>
 
               <span className="mt-4 flex flex-1 items-end justify-between gap-2 sm:mt-5 sm:flex-none">
-                <span className="font-mono text-[10px] leading-tight text-white/50 sm:text-[11px]">
-                  {s.precoPartida}
+                <span className="font-mono text-[10px] leading-tight text-white/45 sm:text-[11px]">
+                  Orçamento após a medição
                 </span>
                 <span
                   aria-hidden

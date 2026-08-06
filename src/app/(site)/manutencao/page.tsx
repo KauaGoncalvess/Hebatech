@@ -11,7 +11,7 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Manutenção mensal de computadores para empresa",
-  description: `Contrato de manutenção mensal para empresa sem TI própria em ${site.endereco.cidade}/${site.endereco.uf}. De 3 a 30 máquinas, visita programada, chamado remoto e backup testado. Sem fidelidade.`,
+  description: `Contrato de manutenção mensal para empresa sem TI própria em ${site.endereco.cidade}/${site.endereco.uf}. Visita programada, chamado remoto e backup testado. Sem fidelidade.`,
   alternates: { canonical: "/manutencao" },
 };
 
@@ -52,7 +52,7 @@ export default async function ManutencaoPage() {
           Manutenção mensal para quem não tem TI próprio
         </h1>
         <p className="mt-6 max-w-[58ch] text-[15px] leading-relaxed text-white/65">
-          De 3 a 30 máquinas. Você paga um valor previsível por mês em vez de chamar
+          Você paga um valor previsível por mês em vez de chamar
           técnico só quando o problema já parou o trabalho — com visita programada,
           chamado remoto no horário comercial e backup testado.
         </p>

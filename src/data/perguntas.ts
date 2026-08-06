@@ -12,7 +12,7 @@ export const perguntas: [string, string][] = [
   ],
   [
     "Em quanto tempo fica pronto?",
-    `O diagnóstico sai em até ${site.operacao.prazoDiagnosticoHoras} horas. O prazo do serviço vai junto com o orçamento: formatação em um dia útil, limpeza em um dia útil, troca de tela de dois a cinco dias úteis, conforme a peça.`,
+    `O diagnóstico sai em até ${site.operacao.prazoDiagnosticoHoras} horas. O prazo do serviço vai junto com o orçamento — depende do que o aparelho tem e de a peça estar em estoque, e por isso a gente só promete depois de olhar.`,
   ],
   [
     "Vocês fazem backup antes de formatar?",
@@ -32,7 +32,7 @@ export const perguntas: [string, string][] = [
   ],
   [
     "Atendem empresa?",
-    "Sim. Além do atendimento avulso, temos contrato de manutenção mensal para empresa sem TI própria, de 3 a 30 máquinas, com valor fixo por mês.",
+    "Sim. Além do atendimento avulso, temos contrato de manutenção mensal para empresa sem TI própria, com valor fixo por mês. Os planos e os valores ficam na página de manutenção.",
   ],
   [
     "Nenhum reparo começa sem eu autorizar?",

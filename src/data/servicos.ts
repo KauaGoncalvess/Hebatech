@@ -22,8 +22,6 @@ export type Servico = {
   itens: string[];
   /** Parágrafo de abertura da página do serviço. */
   descricao: string;
-  precoPartida: string;
-  prazo: string;
   perguntas: [string, string][];
   /** Serviço que tem página própria fora de /servicos. */
   href?: string;
@@ -51,8 +49,6 @@ export const servicos: Servico[] = [
     ],
     descricao:
       "Tela trincada, notebook que não carrega mais, teclado com tecla morta, dobradiça solta. Na maioria dos casos a peça sai por bem menos que um aparelho novo — e a gente te diz o valor fechado antes de abrir. Peça de tela, bateria e teclado sai com nota fiscal.",
-    precoPartida: "Mão de obra a partir de R$ 150 + peça",
-    prazo: "2 a 5 dias úteis, conforme a peça",
     perguntas: [
       [
         "Vale mais a pena consertar ou comprar outro?",
@@ -84,8 +80,6 @@ export const servicos: Servico[] = [
     ],
     descricao:
       "Computador que esquenta desliga sozinho, trava em jogo e perde desempenho para se proteger. Quase sempre é poeira acumulada no dissipador e pasta térmica seca. Desmontamos, limpamos por dentro, trocamos a pasta e os thermal pads e medimos a temperatura antes e depois.",
-    precoPartida: "A partir de R$ 140",
-    prazo: "1 dia útil",
     perguntas: [
       [
         "De quanto em quanto tempo preciso fazer?",
@@ -113,8 +107,6 @@ export const servicos: Servico[] = [
     ],
     descricao:
       "Antes de formatar qualquer coisa, copiamos os seus arquivos para um disco da loja e devolvemos junto com o aparelho. Depois vem o Windows limpo, os drivers certos para o seu modelo, os programas do dia a dia e a inicialização enxuta — sem aquele monte de coisa abrindo junto.",
-    precoPartida: "A partir de R$ 120",
-    prazo: "1 dia útil",
     perguntas: [
       [
         "Meus arquivos e fotos se perdem?",
@@ -146,8 +138,6 @@ export const servicos: Servico[] = [
     ],
     descricao:
       "Trocar o HD por SSD é o que mais muda a vida de um computador antigo: liga em segundos, abre programa na hora e para de travar. Conferimos a compatibilidade do seu modelo antes de vender qualquer coisa, e clonamos o sistema para você não perder nada nem precisar reinstalar tudo.",
-    precoPartida: "Mão de obra a partir de R$ 90 + peça",
-    prazo: "No mesmo dia",
     perguntas: [
       [
         "Preciso reinstalar tudo depois?",
@@ -179,8 +169,6 @@ export const servicos: Servico[] = [
     ],
     descricao:
       "Você diz para que vai usar e quanto quer gastar. A gente monta a lista de peças com preço item a item, sem empurrar o que não faz diferença para o seu caso. Depois de aprovada, a máquina sai montada, com cabeamento organizado, testada sob carga e com o sistema instalado.",
-    precoPartida: "Mão de obra de montagem a partir de R$ 200",
-    prazo: "2 a 7 dias úteis, conforme as peças",
     perguntas: [
       [
         "Posso levar minhas peças?",
@@ -208,8 +196,6 @@ export const servicos: Servico[] = [
     ],
     descricao:
       "Wi-Fi que cai no fundo da casa ou da loja quase nunca é culpa da operadora — é posição de roteador, canal congestionado ou parede no caminho. Medimos o sinal no local, ajustamos o que dá para ajustar e, quando precisa, passamos cabo ou instalamos um ponto de acesso onde o sinal morre.",
-    precoPartida: "Visita e diagnóstico a partir de R$ 150",
-    prazo: "Agendado, normalmente no mesmo dia da visita",
     perguntas: [
       [
         "Vocês vão até o local?",
@@ -237,8 +223,6 @@ export const servicos: Servico[] = [
     ],
     descricao:
       "Disco que sumiu do computador, que faz barulho de clique ou arquivo apagado sem querer. Analisamos o disco primeiro e só depois falamos de valor — e o valor sai junto com a lista do que dá para recuperar. Se não der para recuperar, você não paga a recuperação.",
-    precoPartida: "Sob orçamento, após análise do disco",
-    prazo: "2 a 10 dias úteis",
     perguntas: [
       [
         "E se não conseguirem recuperar?",
@@ -270,8 +254,6 @@ export const servicos: Servico[] = [
     ],
     descricao:
       "Empresa que só chama técnico quando o problema já parou o trabalho paga caro duas vezes: na urgência e no tempo parado. O contrato mensal troca isso por um valor previsível, com visita programada, chamado remoto e backup testado.",
-    precoPartida: "A partir de R$ 390 por mês",
-    prazo: "Visita programada, urgência em até 4h úteis",
     perguntas: [],
     href: "/manutencao",
   },

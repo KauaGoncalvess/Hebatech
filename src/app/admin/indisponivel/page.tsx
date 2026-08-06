@@ -17,10 +17,14 @@ export default function PainelIndisponivel() {
     ],
     [
       "04",
-      "Preencha o .env.local",
-      "NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY, copiados de Project Settings → API.",
+      "Cadastre as duas chaves",
+      "NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY, copiadas do Supabase, no serviço onde o site está hospedado. Depois é preciso publicar de novo para elas valerem.",
     ],
-    ["05", "Suba o catálogo inicial", "npm run seed — leva os produtos do arquivo para o banco."],
+    [
+      "05",
+      "Suba o catálogo inicial",
+      "No SQL Editor, cole o supabase/carga-inicial.sql. Só se a loja quiser começar com produtos de exemplo — dá para cadastrar os de verdade direto pelo painel.",
+    ],
   ];
 
   return (
@@ -33,12 +37,21 @@ export default function PainelIndisponivel() {
         <br />
         o banco de dados
       </h1>
-      <p className="mt-6 max-w-[54ch] text-[14px] text-white/60">
-        O site está no ar normalmente com o catálogo do arquivo, mas o painel só
-        funciona depois que o Supabase estiver configurado. São cinco passos.
+      <p className="mt-6 max-w-[54ch] text-[14px] leading-relaxed text-white/60">
+        O site continua no ar e atendendo — só o painel é que não abre até a conexão
+        com o banco ser configurada.
       </p>
 
-      <ol className="mt-10 grid gap-3">
+      {/* Esta página tem dois leitores, e a lista serve a só um deles. Sem dizer
+          isso, quem atende no balcão fica tentando entender instruções que não
+          são para ele. */}
+      <p className="card mt-8 max-w-[60ch] p-5 text-[13.5px] leading-relaxed text-white/70">
+        <span className="font-mono text-accent">Se você é da loja:</span> não há nada
+        para fazer aqui. Avise quem cuida do sistema e mostre esta tela — a lista
+        abaixo é o passo a passo dele.
+      </p>
+
+      <ol className="mt-6 grid gap-3">
         {passos.map(([n, titulo, texto]) => (
           <li key={n} className="card flex gap-5 p-5">
             <span className="font-mono text-[11px] text-accent">{n}</span>

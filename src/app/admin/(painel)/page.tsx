@@ -85,7 +85,7 @@ export default async function AdminHome() {
             <span className="display mt-3 block text-sub">Ordens de serviço</span>
             <span className="mt-2 block text-[13px] text-white/45">
               {ordensAbertas === null
-                ? "Rode o SQL novo para começar a usar"
+                ? "Ainda não disponível — fale com quem cuida do sistema"
                 : ordensAbertas === 0
                   ? "Nenhum aparelho na bancada"
                   : `${ordensAbertas} em andamento`}
@@ -105,7 +105,7 @@ export default async function AdminHome() {
             <span className="display mt-3 block text-sub">Clientes</span>
             <span className="mt-2 block text-[13px] text-white/45">
               {porConferir === null
-                ? "Rode o SQL novo para começar a usar"
+                ? "Ainda não disponível — fale com quem cuida do sistema"
                 : porConferir === 0
                   ? "Histórico de serviço por pessoa"
                   : `${porConferir} pré-cadastro${porConferir === 1 ? "" : "s"} por conferir`}
@@ -125,7 +125,7 @@ export default async function AdminHome() {
             <span className="display mt-3 block text-sub">Pedidos de orçamento</span>
             <span className="mt-2 block text-[13px] text-white/45">
               {orcamentosAbertos === null
-                ? "Rode o SQL novo para começar a guardar"
+                ? "Ainda não disponível — fale com quem cuida do sistema"
                 : orcamentosAbertos === 0
                   ? "Nenhum esperando retorno"
                   : `${orcamentosAbertos} esperando retorno`}

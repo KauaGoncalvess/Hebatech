@@ -37,9 +37,9 @@ export default async function ListaProdutos({ searchParams }: Props) {
       {produtos.length === 0 ? (
         <div className="card px-6 py-20 text-center">
           <p className="display text-sub">Nenhum produto cadastrado</p>
-          <p className="mx-auto mt-4 max-w-[44ch] text-[13px] text-white/55">
-            Rode <code className="font-mono text-accent">npm run seed</code> para subir o
-            catálogo inicial, ou cadastre o primeiro produto pelo botão acima.
+          <p className="mx-auto mt-4 max-w-[46ch] text-[13.5px] leading-relaxed text-white/55">
+            Cadastre o primeiro pelo botão acima. Enquanto não houver nenhum, a vitrine
+            do site avisa que está em renovação e manda quem entrar para o WhatsApp.
           </p>
         </div>
       ) : (

@@ -183,6 +183,38 @@ export default async function AdminHome() {
             →
           </span>
         </Link>
+
+        <Link
+          href="/admin/copia"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
+        >
+          <span>
+            <span className="eyebrow text-white/35">Segurança</span>
+            <span className="display mt-3 block text-sub">Cópia de segurança</span>
+            <span className="mt-2 block text-[13px] text-white/45">
+              Baixe uma vez por mês e guarde fora da loja
+            </span>
+          </span>
+          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
+            →
+          </span>
+        </Link>
+
+        <Link
+          href="/admin/manual"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
+        >
+          <span>
+            <span className="eyebrow text-white/35">Ajuda</span>
+            <span className="display mt-3 block text-sub">Manual do sistema</span>
+            <span className="mt-2 block text-[13px] text-white/45">
+              Como abrir ordem, cadastrar produto e o que fazer se der problema
+            </span>
+          </span>
+          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
+            →
+          </span>
+        </Link>
       </div>
     </>
   );

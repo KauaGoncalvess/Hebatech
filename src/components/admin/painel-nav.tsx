@@ -71,6 +71,14 @@ export function PainelNav() {
             );
           })}
           <span aria-hidden className="mx-1 h-6 w-px bg-line-strong" />
+          {/* O manual fica na barra, não só na capa: quem precisa dele está
+              perdido no meio de uma tela, não na capa do painel. */}
+          <Link
+            href="/admin/manual"
+            className="rounded-full px-4 py-2.5 font-mono text-[10.5px] tracking-[0.12em] text-white/55 uppercase transition-colors hover:bg-surface-2 hover:text-white"
+          >
+            Manual
+          </Link>
           <Link
             href="/"
             target="_blank"
@@ -133,14 +141,22 @@ export function PainelNav() {
             );
           })}
 
-          <div className="mt-2 flex gap-2">
-            <Link
-              href="/"
-              target="_blank"
-              className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-surface-2 font-mono text-[11px] tracking-[0.12em] uppercase"
-            >
-              Ver site
-            </Link>
+          <div className="mt-2 grid gap-2">
+            <div className="flex gap-2">
+              <Link
+                href="/admin/manual"
+                className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-surface-2 font-mono text-[11px] tracking-[0.12em] uppercase"
+              >
+                Manual
+              </Link>
+              <Link
+                href="/"
+                target="_blank"
+                className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-surface-2 font-mono text-[11px] tracking-[0.12em] uppercase"
+              >
+                Ver site
+              </Link>
+            </div>
             <SairButton largo />
           </div>
         </div>

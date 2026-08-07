@@ -440,6 +440,74 @@ $$;
 revoke all on function public.consultar_ordem(text, text) from public;
 grant execute on function public.consultar_ordem(text, text) to anon, authenticated;
 
+-- ── Financeiro ──────────────────────────────────────────────────────────────
+-- Três campos de custo e uma tabela de lançamentos. Nada de plano de contas,
+-- conciliação ou nota fiscal: livro-caixa de loja pequena, que é o que vai ser
+-- usado de verdade. Todos os valores em reais inteiros, como o resto do sistema.
+
+-- Quanto a loja pagou no aparelho. Fica fora do site: é o número que ninguém
+-- de fora pode ver.
+alter table public.produtos
+  add column if not exists custo integer check (custo >= 0);
+
+-- O orçado é o que foi combinado; o cobrado é o que entrou. Separados porque
+-- desconto no fechamento é regra, não exceção.
+alter table public.ordens
+  add column if not exists valor_cobrado integer check (valor_cobrado >= 0);
+alter table public.ordens
+  add column if not exists custo_peca integer check (custo_peca >= 0);
+
+-- Uma tabela só para caixa e para contas a receber/pagar. O que separa os dois
+-- é `pago_em`: preenchido, já entrou ou saiu; nulo, ainda é promessa. Assim a
+-- baixa de uma conta é um update de uma coluna, não uma migração entre tabelas.
+create table if not exists public.lancamentos (
+  id          uuid primary key default gen_random_uuid(),
+  tipo        text not null check (tipo in ('entrada','saida')),
+  valor       integer not null check (valor > 0),
+  descricao   text not null default '',
+  categoria   text not null default 'outros',
+  -- Nulo em lançamento à vista. Preenchido, vira conta a receber ou a pagar.
+  vence_em    date,
+  -- Nulo enquanto não foi pago. É esta coluna que decide se entra no caixa.
+  pago_em     date,
+  cliente_id  uuid references public.clientes(id) on delete set null,
+  ordem_id    uuid references public.ordens(id)  on delete set null,
+  produto_id  uuid references public.produtos(id) on delete set null,
+  criado_em   timestamptz not null default now(),
+  atualizado_em timestamptz not null default now()
+);
+
+create index if not exists lancamentos_pago_idx on public.lancamentos (pago_em desc);
+create index if not exists lancamentos_aberto_idx on public.lancamentos (vence_em) where pago_em is null;
+
+-- Uma ordem gera no máximo dois lançamentos: a entrada do serviço e a saída da
+-- peça. O fechamento da OS roda upsert por esta chave, então salvar a mesma
+-- ordem de novo corrige os valores em vez de duplicar receita e custo.
+drop index if exists public.lancamentos_ordem_idx;
+create unique index if not exists lancamentos_ordem_tipo_idx
+  on public.lancamentos (ordem_id, tipo) where ordem_id is not null;
+
+drop trigger if exists lancamentos_atualizado_em on public.lancamentos;
+create trigger lancamentos_atualizado_em
+  before update on public.lancamentos
+  for each row execute function public.tocar_atualizado_em();
+
+alter table public.lancamentos enable row level security;
+
+-- Sem política para `anon`: faturamento da loja não é dado público.
+drop policy if exists "somente admin le lancamentos" on public.lancamentos;
+create policy "somente admin le lancamentos"
+  on public.lancamentos for select
+  to authenticated
+  using (true);
+
+drop policy if exists "somente admin edita lancamentos" on public.lancamentos;
+create policy "somente admin edita lancamentos"
+  on public.lancamentos for all
+  to authenticated
+  using (true)
+  with check (true);
+
 -- ── Armazenamento das fotos ─────────────────────────────────────────────────
 insert into storage.buckets (id, name, public)
 values ('produtos', 'produtos', true)

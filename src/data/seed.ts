@@ -88,6 +88,8 @@ function notebook(e: EntradaNotebook): Produto {
     condicao: "seminovo",
     preco: e.preco,
     precoReferencia: e.precoReferencia ?? null,
+    // Carga de exemplo não tem compra real por trás, então não tem custo.
+    custo: null,
     destaque: e.destaque ?? false,
     disponivel: true,
     resumo: e.resumo,
@@ -139,6 +141,8 @@ function produto(e: EntradaSimples): Produto {
     condicao: e.condicao ?? "seminovo",
     preco: e.preco,
     precoReferencia: e.precoReferencia ?? null,
+    // Carga de exemplo não tem compra real por trás, então não tem custo.
+    custo: null,
     destaque: e.destaque ?? false,
     disponivel: true,
     resumo: e.resumo,

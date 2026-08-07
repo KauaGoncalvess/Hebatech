@@ -83,6 +83,10 @@ export type Ordem = {
   defeito: string;
   status: StatusOrdem;
   valorOrcado: number | null;
+  /** O que a loja realmente recebeu. Desconto no fechamento é regra, não exceção. */
+  valorCobrado: number | null;
+  /** O que a peça custou. Com ele o sistema sabe a margem do serviço. */
+  custoPeca: number | null;
   observacoes: string;
   previsao: string | null;
   criadoEm: string;
@@ -120,6 +124,8 @@ export type LinhaOrdem = {
   defeito: string | null;
   status: string | null;
   valor_orcado: number | null;
+  valor_cobrado: number | null;
+  custo_peca: number | null;
   observacoes: string | null;
   previsao: string | null;
   criado_em: string;
@@ -143,6 +149,10 @@ export function paraOrdem(linha: LinhaOrdem): Ordem {
     defeito: linha.defeito ?? "",
     status: comoStatus(linha.status),
     valorOrcado: linha.valor_orcado,
+    // `?? null` porque instalação que ainda não rodou o SQL novo devolve a
+    // linha sem estas colunas, e `undefined` quebraria o formulário.
+    valorCobrado: linha.valor_cobrado ?? null,
+    custoPeca: linha.custo_peca ?? null,
     observacoes: linha.observacoes ?? "",
     previsao: linha.previsao,
     criadoEm: linha.criado_em,
@@ -153,7 +163,13 @@ export function paraOrdem(linha: LinhaOrdem): Ordem {
 /** O que a função `consultar_ordem` devolve: nem id, nem nome, nem telefone. */
 export type LinhaOrdemPublica = Omit<
   LinhaOrdem,
-  "id" | "cliente_id" | "cliente_nome" | "cliente_telefone"
+  | "id"
+  | "cliente_id"
+  | "cliente_nome"
+  | "cliente_telefone"
+  // Custo e valor cobrado são conta da loja: a página pública nunca os recebe.
+  | "valor_cobrado"
+  | "custo_peca"
 >;
 
 export function paraOrdemPublica(linha: LinhaOrdemPublica): OrdemPublica {

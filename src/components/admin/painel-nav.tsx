@@ -9,6 +9,7 @@ import { SairButton } from "./sair-button";
 const SECOES = [
   { href: "/admin/ordens", rotulo: "Ordens" },
   { href: "/admin/clientes", rotulo: "Clientes" },
+  { href: "/admin/financeiro", rotulo: "Caixa" },
   { href: "/admin/produtos", rotulo: "Produtos" },
   { href: "/admin/planos", rotulo: "Planos" },
   { href: "/admin/orcamentos", rotulo: "Orçamentos" },

@@ -49,6 +49,8 @@ export type Produto = {
   condicao: Condicao;
   preco: number;
   precoReferencia: number | null;
+  /** Quanto a loja pagou. Nunca sai para o site — é conta interna. */
+  custo: number | null;
   destaque: boolean;
   disponivel: boolean;
   resumo: string;

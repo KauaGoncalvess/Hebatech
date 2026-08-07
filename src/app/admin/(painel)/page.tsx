@@ -3,6 +3,7 @@ import { listarProdutos } from "@/lib/catalogo";
 import { contarOrcamentosAbertos } from "@/lib/orcamentos";
 import { contarClientesPorConferir } from "@/lib/clientes";
 import { contarOrdensAbertas } from "@/lib/ordens";
+import { resumoDoMes } from "@/lib/financeiro";
 import { listarPlanos } from "@/lib/planos";
 import { preco } from "@/lib/format";
 import { CATEGORIAS } from "@/types/produto";
@@ -10,13 +11,14 @@ import { CATEGORIAS } from "@/types/produto";
 export const dynamic = "force-dynamic";
 
 export default async function AdminHome() {
-  const [produtos, todosOsPlanos, orcamentosAbertos, ordensAbertas, porConferir] =
+  const [produtos, todosOsPlanos, orcamentosAbertos, ordensAbertas, porConferir, caixa] =
     await Promise.all([
       listarProdutos(),
       listarPlanos(),
       contarOrcamentosAbertos(),
       contarOrdensAbertas(),
       contarClientesPorConferir(),
+      resumoDoMes(),
     ]);
   const planos = todosOsPlanos.filter((p) => p.ativo);
   const aVenda = produtos.filter((p) => p.disponivel);
@@ -177,6 +179,26 @@ export default async function AdminHome() {
             <span className="display mt-3 block text-sub">Novo produto</span>
             <span className="mt-2 block text-[13px] text-white/45">
               Notebook, PC, monitor, peça ou periférico
+            </span>
+          </span>
+          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
+            →
+          </span>
+        </Link>
+
+        <Link
+          href="/admin/financeiro"
+          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
+        >
+          <span>
+            <span className="eyebrow text-accent">Dinheiro</span>
+            <span className="display mt-3 block text-sub">Caixa</span>
+            <span className="mt-2 block text-[13px] text-white/45">
+              {caixa === null
+                ? "Ainda não disponível — fale com quem cuida do sistema"
+                : caixa.aReceberVencido > 0
+                  ? `${preco(caixa.aReceberVencido)} vencido para receber`
+                  : `${preco(caixa.saldoDoMes)} de saldo no mês`}
             </span>
           </span>
           <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">

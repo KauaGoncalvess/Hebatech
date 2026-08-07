@@ -55,7 +55,22 @@ const lerDoBanco = cache(async (): Promise<Produto[] | null> => {
  * renovação e leva para o WhatsApp, que é onde a loja de fato atende.
  */
 async function carregarTodos(): Promise<Produto[]> {
-  return (await lerDoBanco()) ?? [];
+  const lista = (await lerDoBanco()) ?? [];
+
+  /**
+   * O custo sai aqui, e não na consulta.
+   *
+   * Estes produtos vão parar em componente cliente — card da vitrine, ficha,
+   * relacionados — e tudo que entra num componente cliente é serializado no
+   * HTML da página. Quem abrisse "ver código-fonte" leria por quanto a loja
+   * comprou cada aparelho.
+   *
+   * Filtrar na consulta resolveria isto, mas duplicaria o `select` e deixaria
+   * o painel e o site lendo colunas diferentes da mesma tabela. Aqui a regra
+   * fica num lugar só: o site nunca vê custo; o painel, que usa o caminho
+   * estrito abaixo, vê.
+   */
+  return lista.map((p) => ({ ...p, custo: null }));
 }
 
 /**

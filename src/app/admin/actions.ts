@@ -6,6 +6,7 @@ import { paraLinha } from "@/lib/produto-mapper";
 import { gerarSlug } from "@/lib/slug";
 import { criarClienteServidor } from "@/lib/supabase/server";
 import { BUCKET_FOTOS } from "@/lib/supabase/config";
+import { hojeNaLoja } from "@/types/lancamento";
 import { STATUS_ORDEM, type StatusOrdem } from "@/types/ordem";
 import {
   CATEGORIAS,
@@ -95,6 +96,7 @@ function lerFormulario(dados: FormData): { produto: Omit<Produto, "id">; erro?: 
     condicao,
     preco: preco ?? 0,
     precoReferencia: inteiro(dados, "precoReferencia"),
+    custo: inteiro(dados, "custo"),
     destaque: dados.get("destaque") === "on",
     disponivel: dados.get("disponivel") === "on",
     resumo: texto(dados, "resumo"),
@@ -312,6 +314,8 @@ function lerOrdem(dados: FormData): { linha: Record<string, unknown>; erro?: str
     defeito: texto(dados, "defeito"),
     status,
     valor_orcado: inteiro(dados, "valorOrcado"),
+    valor_cobrado: inteiro(dados, "valorCobrado"),
+    custo_peca: inteiro(dados, "custoPeca"),
     observacoes: texto(dados, "observacoes"),
     previsao: previsao || null,
   };
@@ -375,8 +379,8 @@ export async function salvarOrdem(
   }
 
   const resposta = id
-    ? await supabase.from("ordens").update(linha).eq("id", id)
-    : await supabase.from("ordens").insert(linha);
+    ? await supabase.from("ordens").update(linha).eq("id", id).select("id").maybeSingle()
+    : await supabase.from("ordens").insert(linha).select("id").maybeSingle();
 
   if (resposta.error) {
     const msg = resposta.error.message;
@@ -386,12 +390,93 @@ export async function salvarOrdem(
     return { erro: msg };
   }
 
+  await lancarOrdemNoCaixa(supabase, resposta.data?.id ?? id, linha);
+
   revalidatePath("/admin/ordens");
   revalidatePath("/admin/clientes");
+  revalidatePath("/admin/financeiro");
   redirect("/admin/ordens?ok=1");
 }
 
 type ClienteSupabase = NonNullable<Awaited<ReturnType<typeof criarClienteServidor>>>;
+
+/**
+ * Serviço entregue vira dinheiro no caixa sozinho.
+ *
+ * Sem isto o dono digitaria o mesmo valor duas vezes — na ordem e no caixa — e
+ * na terceira semana pararia de digitar no caixa. O índice único em `ordem_id`
+ * garante que salvar a mesma ordem de novo corrija o valor em vez de duplicar
+ * a receita.
+ *
+ * Só lança o que está entregue e com valor: ordem em andamento é trabalho, não
+ * é caixa. E falhar aqui nunca derruba o salvar da ordem — o aparelho já foi
+ * entregue, o registro do caixa é o que pode esperar.
+ */
+async function lancarOrdemNoCaixa(
+  supabase: ClienteSupabase,
+  ordemId: string | null,
+  linha: Record<string, unknown>,
+) {
+  if (!ordemId) return;
+
+  const cobrado = linha.valor_cobrado as number | null;
+  const entregue = linha.status === "entregue";
+
+  try {
+    if (!entregue || !cobrado) {
+      // Voltou de "entregue" ou zerou o valor: o lançamento não pode ficar.
+      await supabase.from("lancamentos").delete().eq("ordem_id", ordemId);
+      return;
+    }
+
+    const aparelho = [linha.equipamento, linha.marca, linha.modelo]
+      .map((p) => String(p ?? "").trim())
+      .filter(Boolean)
+      .join(" ");
+
+    const hoje = hojeNaLoja();
+
+    await supabase.from("lancamentos").upsert(
+      {
+        ordem_id: ordemId,
+        cliente_id: linha.cliente_id ?? null,
+        tipo: "entrada",
+        categoria: "servico",
+        valor: cobrado,
+        descricao: [linha.cliente_nome, aparelho].filter(Boolean).join(" — "),
+        pago_em: hoje,
+      },
+      { onConflict: "ordem_id,tipo" },
+    );
+
+    // A peça é saída separada: entra e sai são linhas diferentes no caixa,
+    // senão a loja perde a noção do que fatura e do que gasta. Mesma chave de
+    // conflito, então resalvar corrige em vez de duplicar.
+    const custo = linha.custo_peca as number | null;
+    if (custo) {
+      await supabase.from("lancamentos").upsert(
+        {
+          ordem_id: ordemId,
+          cliente_id: linha.cliente_id ?? null,
+          tipo: "saida",
+          categoria: "peca",
+          valor: custo,
+          descricao: `Peça — ${aparelho || "serviço"}`,
+          pago_em: hoje,
+        },
+        { onConflict: "ordem_id,tipo" },
+      );
+    } else {
+      await supabase
+        .from("lancamentos")
+        .delete()
+        .eq("ordem_id", ordemId)
+        .eq("tipo", "saida");
+    }
+  } catch (falha) {
+    console.error("Não consegui lançar a ordem no caixa:", falha);
+  }
+}
 
 /** Devolve o id da ficha desse telefone, criando-a quando ainda não existe. */
 async function fichaDoTelefone(

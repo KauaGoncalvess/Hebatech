@@ -31,6 +31,7 @@ const TABELAS = [
   { nome: "clientes", rotulo: "Clientes", mostrar: true },
   { nome: "ordens", rotulo: "Ordens de serviço", mostrar: true },
   { nome: "orcamentos", rotulo: "Pedidos de orçamento", mostrar: true },
+  { nome: "lancamentos", rotulo: "Caixa", mostrar: true },
 ] as const;
 
 type Linha = Record<string, unknown>;

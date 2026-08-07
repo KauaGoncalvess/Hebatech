@@ -78,6 +78,34 @@ const CATALOGO: Bloco[] = [
   },
 ];
 
+const DINHEIRO: Bloco[] = [
+  {
+    titulo: "Fechar o serviço com o valor certo",
+    passos: [
+      "Na ordem existem três campos de dinheiro: valor orçado (o que foi combinado), valor cobrado (o que o cliente pagou de fato) e custo da peça (o que você gastou).",
+      "Preencha o cobrado e o custo antes de marcar como Entregue.",
+      "Assim que a ordem sai como Entregue, ela entra sozinha no caixa: o serviço como entrada, a peça como saída. Não precisa lançar de novo.",
+      "Se corrigir o valor depois e salvar de novo, o caixa se corrige junto — não duplica.",
+    ],
+  },
+  {
+    titulo: "Lançar o que não vem de ordem de serviço",
+    passos: [
+      "Caixa, depois Lançar. Escolha se entrou ou saiu dinheiro, o valor e do que se trata.",
+      "Se for fiado, carnê ou boleto a vencer, desmarque \u201cjá recebi\u201d e ponha a data de vencimento. Fica em aberto até você dar baixa.",
+      "Na lista, o botão Recebi ou Paguei dá a baixa. O que passou do vencimento aparece marcado como vencido.",
+    ],
+  },
+  {
+    titulo: "Saber quanto está parado na prateleira",
+    passos: [
+      "No cadastro do produto existe o campo Custo — quanto você pagou. Ele nunca aparece no site.",
+      "Com o custo preenchido, a tela do Caixa mostra o lucro que ainda está na prateleira.",
+      "É o número que ajuda a decidir baixar o preço do que está encalhado há meses.",
+    ],
+  },
+];
+
 const CUIDADOS: Bloco[] = [
   {
     titulo: "Cópia de segurança — todo mês, sem falta",
@@ -174,6 +202,7 @@ export default function ManualPage() {
 
         <Secao titulo="Bancada" blocos={OPERACAO} />
         <Secao titulo="Catálogo" blocos={CATALOGO} />
+        <Secao titulo="Dinheiro" blocos={DINHEIRO} />
         <Secao titulo="Cuidados" blocos={CUIDADOS} />
 
         <section className="break-inside-avoid">

@@ -11,6 +11,7 @@ export type LinhaProduto = {
   condicao: string;
   preco: number;
   preco_referencia: number | null;
+  custo: number | null;
   destaque: boolean;
   disponivel: boolean;
   resumo: string | null;
@@ -63,6 +64,8 @@ export function paraProduto(linha: LinhaProduto): Produto {
     condicao: linha.condicao === "novo" ? "novo" : "seminovo",
     preco: linha.preco,
     precoReferencia: linha.preco_referencia,
+    // `?? null`: instalação sem o SQL novo devolve a linha sem esta coluna.
+    custo: linha.custo ?? null,
     destaque: linha.destaque,
     disponivel: linha.disponivel,
     resumo: linha.resumo ?? "",
@@ -95,6 +98,7 @@ export function paraLinha(p: Omit<Produto, "id">): Omit<LinhaProduto, "id"> {
     condicao: p.condicao,
     preco: p.preco,
     preco_referencia: p.precoReferencia,
+    custo: p.custo,
     destaque: p.destaque,
     disponivel: p.disponivel,
     resumo: p.resumo,

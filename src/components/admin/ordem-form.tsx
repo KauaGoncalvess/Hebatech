@@ -22,6 +22,8 @@ const VAZIO: Omit<Ordem, "id" | "criadoEm" | "atualizadoEm"> = {
   defeito: "",
   status: "recebido",
   valorOrcado: null,
+  valorCobrado: null,
+  custoPeca: null,
   observacoes: "",
   previsao: null,
 };
@@ -184,6 +186,37 @@ export function OrdemForm({
             defaultValue={o.valorOrcado ?? ""}
           />
         </Campo>
+
+        {/*
+          Orçado é o que foi combinado; cobrado é o que entrou. Separados porque
+          desconto no fechamento é regra, não exceção — e é o cobrado, não o
+          orçado, que vira dinheiro no caixa quando a ordem sai como entregue.
+        */}
+        <Campo rotulo="Valor cobrado (R$)" nota="O que o cliente pagou de fato">
+          <Entrada
+            name="valorCobrado"
+            type="number"
+            min={0}
+            step={1}
+            defaultValue={o.valorCobrado ?? ""}
+          />
+        </Campo>
+
+        <Campo rotulo="Custo da peça (R$)" nota="O que você pagou. Não aparece pro cliente">
+          <Entrada
+            name="custoPeca"
+            type="number"
+            min={0}
+            step={1}
+            defaultValue={o.custoPeca ?? ""}
+          />
+        </Campo>
+
+        <p className="sm:col-span-2 -mt-1 rounded-2xl bg-surface-2 px-4 py-3 text-[12.5px] leading-relaxed text-white/45">
+          Quando a ordem for marcada como <strong className="text-white/70">entregue</strong>{" "}
+          e tiver valor cobrado, ela entra no caixa sozinha — a peça como saída,
+          o serviço como entrada. Não precisa lançar de novo no financeiro.
+        </p>
 
         <Campo
           rotulo="O que foi feito"

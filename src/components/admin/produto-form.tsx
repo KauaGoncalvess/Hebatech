@@ -18,6 +18,7 @@ const VAZIO: Omit<Produto, "id"> = {
   condicao: "seminovo",
   preco: 0,
   precoReferencia: null,
+  custo: null,
   destaque: false,
   disponivel: true,
   resumo: "",
@@ -169,6 +170,18 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             min={0}
             step={1}
             defaultValue={p.precoReferencia ?? ""}
+          />
+        </Campo>
+
+        {/* Nunca sai para o site: é o que decide se vale baixar o preço do que
+            está parado há quatro meses na prateleira. */}
+        <Campo rotulo="Custo (R$)" nota="Quanto você pagou. Só você vê">
+          <Entrada
+            name="custo"
+            type="number"
+            min={0}
+            step={1}
+            defaultValue={p.custo ?? ""}
           />
         </Campo>
 

@@ -40,7 +40,7 @@ export default function AcompanharPage() {
           <h1 className="display mt-5 max-w-[16ch] text-title">
             Onde está o meu aparelho
           </h1>
-          <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+          <p className="mt-6 max-w-[56ch] text-corpo-g leading-relaxed text-texto-3">
             Deixou o aparelho na bancada? Consulte a etapa aqui, a qualquer hora, sem
             precisar mandar mensagem perguntando se já ficou pronto.
           </p>
@@ -53,14 +53,14 @@ export default function AcompanharPage() {
               target="_blank"
               rel="noopener noreferrer"
               data-origem="acompanhar-rodape"
-              className="inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+              className="inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
             >
               Não achei meu código
               <span aria-hidden>→</span>
             </a>
             <Link
               href="/assistencia"
-              className="inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+              className="inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
             >
               Pedir um orçamento
               <span aria-hidden>→</span>

@@ -94,8 +94,8 @@ export function UploadFotos({
       <input type="hidden" name="fotos" value={fotos.join("\n")} />
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="eyebrow text-white/45">Fotos do produto</span>
-        <span className="font-mono text-[9.5px] text-white/30">
+        <span className="eyebrow text-texto-3">Fotos do produto</span>
+        <span className="font-mono text-rotulo text-texto-3">
           A primeira é a capa · pode mandar a foto direto do celular
         </span>
       </div>
@@ -105,11 +105,11 @@ export function UploadFotos({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={enviando}
-          className="rounded-full border border-accent px-6 py-3 font-mono text-[11.5px] tracking-[0.12em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-40"
+          className="rounded-full border border-accent px-6 py-3 font-mono text-rotulo tracking-[0.12em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-40"
         >
           {enviando ? "Preparando e enviando..." : "Escolher fotos"}
         </button>
-        <span className="px-4 font-mono text-[10.5px] text-white/35">
+        <span className="px-4 font-mono text-rotulo text-texto-3">
           {fotos.length === 0
             ? "Sem foto — o site mostra o desenho técnico"
             : `${fotos.length} ${fotos.length === 1 ? "foto" : "fotos"}`}
@@ -125,7 +125,7 @@ export function UploadFotos({
         className="sr-only"
       />
 
-      {erro && <p className="mt-3 font-mono text-[11px] text-accent">{erro}</p>}
+      {erro && <p className="mt-3 font-mono text-rotulo text-accent">{erro}</p>}
 
       {fotos.length > 0 && (
         <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -141,7 +141,7 @@ export function UploadFotos({
                   className="object-cover"
                 />
                 {i === 0 && (
-                  <span className="absolute top-2 left-2 bg-accent px-2 py-0.5 font-mono text-[9px] font-bold tracking-[0.12em] text-black uppercase">
+                  <span className="absolute top-2 left-2 bg-accent px-2 py-0.5 font-mono text-rotulo font-bold tracking-[0.12em] text-black uppercase">
                     Capa
                   </span>
                 )}
@@ -152,7 +152,7 @@ export function UploadFotos({
                   onClick={() => mover(i, -1)}
                   disabled={i === 0}
                   aria-label="Mover para trás"
-                  className="flex-1 py-2.5 font-mono text-[12px] text-white/60 hover:text-accent disabled:text-white/15"
+                  className="flex-1 py-2.5 font-mono text-nota text-texto-3 hover:text-accent disabled:text-texto-3 disabled:opacity-45"
                 >
                   ←
                 </button>
@@ -161,7 +161,7 @@ export function UploadFotos({
                   onClick={() => mover(i, 1)}
                   disabled={i === fotos.length - 1}
                   aria-label="Mover para frente"
-                  className="flex-1 py-2.5 font-mono text-[12px] text-white/60 hover:text-accent disabled:text-white/15"
+                  className="flex-1 py-2.5 font-mono text-nota text-texto-3 hover:text-accent disabled:text-texto-3 disabled:opacity-45"
                 >
                   →
                 </button>
@@ -169,7 +169,7 @@ export function UploadFotos({
                   type="button"
                   onClick={() => remover(i)}
                   aria-label="Remover foto"
-                  className="flex-1 py-2.5 font-mono text-[10px] tracking-[0.1em] text-white/50 uppercase hover:text-accent"
+                  className="flex-1 py-2.5 font-mono text-rotulo tracking-[0.1em] text-texto-3 uppercase hover:text-accent"
                 >
                   Tirar
                 </button>

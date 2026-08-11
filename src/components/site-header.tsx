@@ -49,10 +49,10 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 aria-current={on ? "page" : undefined}
-                className={`rounded-full px-4 py-2.5 font-mono text-[11.5px] tracking-[0.1em] uppercase transition-colors ${
+                className={`rounded-full px-4 py-2.5 font-mono text-rotulo tracking-[0.1em] uppercase transition-colors ${
                   on
                     ? "bg-surface-3 text-white"
-                    : "text-white/55 hover:bg-surface-2 hover:text-white"
+                    : "text-texto-3 hover:bg-surface-2 hover:text-white"
                 }`}
               >
                 {item.rotulo}
@@ -68,7 +68,7 @@ export function SiteHeader() {
           data-origem="topo"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden rounded-full bg-accent px-5 py-2.5 font-mono text-[11.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white lg:block"
+          className="hidden rounded-full bg-accent px-5 py-2.5 font-mono text-rotulo font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-accent-hover lg:block"
         >
           Orçamento
         </a>
@@ -114,7 +114,7 @@ export function SiteHeader() {
                 <span className={`display text-sub ${on ? "text-accent" : "text-white"}`}>
                   {item.rotulo}
                 </span>
-                <span aria-hidden className="font-mono text-white/45">
+                <span aria-hidden className="font-mono text-texto-3">
                   →
                 </span>
               </Link>

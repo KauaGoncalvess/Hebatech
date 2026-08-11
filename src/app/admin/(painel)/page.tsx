@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { CabecalhoPainel } from "@/components/admin/cabecalho-painel";
+import { CartaoNumero } from "@/components/admin/cartao-numero";
 import { listarProdutos } from "@/lib/catalogo";
 import { contarOrcamentosAbertos } from "@/lib/orcamentos";
 import { contarClientesPorConferir } from "@/lib/clientes";
@@ -6,238 +8,191 @@ import { contarOrdensAbertas } from "@/lib/ordens";
 import { resumoDoMes } from "@/lib/financeiro";
 import { listarPlanos } from "@/lib/planos";
 import { preco } from "@/lib/format";
-import { CATEGORIAS } from "@/types/produto";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Capa do painel.
+ *
+ * Era oito cartões de navegação de ~300px de altura, um por destino — os
+ * mesmos destinos que já estão na barra e na gaveta. No celular davam perto de
+ * 2.400px de rolagem só para repetir o menu, e como todos acendiam com o mesmo
+ * halo laranja, nada tinha prioridade sobre nada.
+ *
+ * Agora a tela responde uma pergunta só: o que precisa de mim hoje? Em cima, o
+ * que pede ação; no meio, os números da loja; embaixo, uma fileira compacta de
+ * começos — que existe porque abrir a gaveta no celular é um toque a mais, não
+ * porque a capa precise repetir a navegação.
+ */
 export default async function AdminHome() {
-  const [produtos, todosOsPlanos, orcamentosAbertos, ordensAbertas, porConferir, caixa] =
-    await Promise.all([
-      listarProdutos(),
-      listarPlanos(),
-      contarOrcamentosAbertos(),
-      contarOrdensAbertas(),
-      contarClientesPorConferir(),
-      resumoDoMes(),
-    ]);
+  const [
+    produtos,
+    todosOsPlanos,
+    orcamentosAbertos,
+    ordensAbertas,
+    porConferir,
+    caixa,
+  ] = await Promise.all([
+    listarProdutos(),
+    listarPlanos(),
+    contarOrcamentosAbertos(),
+    contarOrdensAbertas(),
+    contarClientesPorConferir(),
+    resumoDoMes(),
+  ]);
+
   const planos = todosOsPlanos.filter((p) => p.ativo);
   const aVenda = produtos.filter((p) => p.disponivel);
   const semFoto = aVenda.filter((p) => p.fotos.length === 0);
-  const valorEstoque = aVenda.reduce((soma, p) => soma + p.preco, 0);
 
-  const porCategoria = CATEGORIAS.map((c) => ({
-    ...c,
-    total: aVenda.filter((p) => p.categoria === c.id).length,
-  })).filter((c) => c.total > 0);
+  /**
+   * Só entra o que pede ação hoje. Contagem em zero some da fileira em vez de
+   * ocupar espaço avisando que não há nada — a ausência já é a informação, e é
+   * o que faz a fileira valer um olhar quando tem alguma coisa nela.
+   */
+  const atencao = [
+    ordensAbertas
+      ? {
+          rotulo: "Na bancada",
+          valor: String(ordensAbertas),
+          nota: "aparelhos em andamento",
+          href: "/admin/ordens",
+          tom: "acento" as const,
+        }
+      : null,
+    porConferir
+      ? {
+          rotulo: "Pré-cadastros",
+          valor: String(porConferir),
+          nota: "esperando conferência",
+          href: "/admin/clientes",
+          tom: "acento" as const,
+        }
+      : null,
+    orcamentosAbertos
+      ? {
+          rotulo: "Orçamentos",
+          valor: String(orcamentosAbertos),
+          nota: "esperando retorno",
+          href: "/admin/orcamentos",
+          tom: "acento" as const,
+        }
+      : null,
+    caixa && caixa.aReceberVencido > 0
+      ? {
+          rotulo: "Vencido",
+          valor: preco(caixa.aReceberVencido),
+          nota: "a receber, já passou do prazo",
+          href: "/admin/financeiro",
+          tom: "alerta" as const,
+        }
+      : null,
+    semFoto.length
+      ? {
+          rotulo: "Sem foto",
+          valor: String(semFoto.length),
+          nota: "usando o desenho técnico",
+          href: "/admin/produtos",
+          tom: "neutro" as const,
+        }
+      : null,
+  ].filter((c) => c !== null);
+
+  const numeros = [
+    { rotulo: "À venda", valor: String(aVenda.length), tom: "neutro" as const },
+    {
+      rotulo: "Saldo do mês",
+      valor: caixa ? preco(caixa.saldoDoMes) : "—",
+      tom: (caixa && caixa.saldoDoMes < 0 ? "neutro" : "acento") as
+        | "neutro"
+        | "acento",
+    },
+    {
+      rotulo: "Planos no ar",
+      valor: String(planos.length),
+      tom: "neutro" as const,
+    },
+  ];
+
+  const atalhos = [
+    { href: "/admin/ordens/nova", rotulo: "Abrir ordem", destaque: true },
+    { href: "/admin/produtos/novo", rotulo: "Novo produto" },
+    { href: "/admin/financeiro/novo", rotulo: "Lançar no caixa" },
+    { href: "/admin/clientes/novo", rotulo: "Novo cliente" },
+    { href: "/admin/copia", rotulo: "Cópia de segurança" },
+    { href: "/admin/manual", rotulo: "Manual" },
+  ];
 
   return (
     <>
-      <section className="py-8 md:py-14">
-        <p className="eyebrow text-accent">Painel</p>
-        <h1 className="display mt-3 text-title md:mt-4">A loja hoje</h1>
-        <p className="mt-4 max-w-[54ch] text-[14px] leading-relaxed text-white/55 md:mt-5">
-          Bancada, clientes e catálogo. O que você salva aqui aparece no site na
-          hora — não precisa publicar nada.
-        </p>
-      </section>
+      <CabecalhoPainel
+        titulo="A loja hoje"
+        nota="O que você salva aqui aparece no site na hora."
+      />
 
-      <dl className="grid grid-cols-2 gap-2.5 md:gap-4 lg:grid-cols-4">
-        {[
-          [`${aVenda.length}`, "à venda", "produtos visíveis no site"],
-          [`${produtos.length - aVenda.length}`, "fora do ar", "vendidos ou pausados"],
-          [`${semFoto.length}`, "sem foto", "usando o desenho técnico"],
-          [preco(valorEstoque), "em estoque", "soma dos preços anunciados"],
-        ].map(([num, unidade, texto]) => (
-          <div key={unidade} className="spot card p-4 md:p-6">
-            <dt className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="display text-[clamp(1.6rem,7vw,2.8rem)] leading-none text-accent">
-                {num}
-              </span>
-              <span className="font-mono text-[10px] tracking-[0.14em] text-white/40 uppercase">
-                {unidade}
-              </span>
-            </dt>
-            <dd className="mt-2 text-[12px] leading-snug text-white/50 md:mt-3 md:text-[13px]">{texto}</dd>
-          </div>
-        ))}
-      </dl>
-
-      {porCategoria.length > 0 && (
-        <section className="mt-2.5 md:mt-4">
-          <ul className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-6 md:gap-3">
-            {porCategoria.map((c) => (
-              <li key={c.id} className="rounded-2xl bg-surface-2 p-3 md:p-4">
-                <p className="font-mono text-[10px] tracking-[0.12em] text-white/35 uppercase">
-                  {c.rotulo}
-                </p>
-                <p className="display mt-1.5 text-[1.5rem] leading-none md:mt-2 md:text-[1.8rem]">{c.total}</p>
+      {atencao.length > 0 ? (
+        <section>
+          <h2 className="eyebrow mb-3 text-texto-3">Pede atenção</h2>
+          <ul className="grid grid-cols-2 gap-2.5 md:gap-3 lg:grid-cols-4">
+            {atencao.map((c) => (
+              <li key={c.rotulo}>
+                <Link
+                  href={c.href}
+                  className="block rounded-card transition-opacity hover:opacity-80"
+                >
+                  <CartaoNumero
+                    rotulo={c.rotulo}
+                    valor={c.valor}
+                    nota={c.nota}
+                    tom={c.tom}
+                  />
+                </Link>
               </li>
             ))}
           </ul>
         </section>
+      ) : (
+        <p className="card px-6 py-8 text-center text-nota text-texto-3">
+          Nada esperando por você agora — bancada vazia, cadastros conferidos e
+          orçamentos respondidos.
+        </p>
       )}
 
-      <div className="mt-2.5 grid gap-2.5 md:mt-4 md:gap-4 md:grid-cols-2 2xl:grid-cols-3">
-        <Link
-          href="/admin/ordens"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-accent">Bancada</span>
-            <span className="display mt-3 block text-sub">Ordens de serviço</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              {ordensAbertas === null
-                ? "Ainda não disponível — fale com quem cuida do sistema"
-                : ordensAbertas === 0
-                  ? "Nenhum aparelho na bancada"
-                  : `${ordensAbertas} em andamento`}
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
+      <section className="mt-6">
+        <h2 className="eyebrow mb-3 text-texto-3">A loja em números</h2>
+        <ul className="grid grid-cols-3 gap-2.5 md:gap-3">
+          {numeros.map((n) => (
+            <li key={n.rotulo}>
+              <CartaoNumero
+                rotulo={n.rotulo}
+                valor={n.valor}
+                tom={n.tom}
+                compacto
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
 
-        <Link
-          href="/admin/clientes"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-white/35">Cadastro</span>
-            <span className="display mt-3 block text-sub">Clientes</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              {porConferir === null
-                ? "Ainda não disponível — fale com quem cuida do sistema"
-                : porConferir === 0
-                  ? "Histórico de serviço por pessoa"
-                  : `${porConferir} pré-cadastro${porConferir === 1 ? "" : "s"} por conferir`}
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/admin/orcamentos"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-accent">Chegou pelo site</span>
-            <span className="display mt-3 block text-sub">Pedidos de orçamento</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              {orcamentosAbertos === null
-                ? "Ainda não disponível — fale com quem cuida do sistema"
-                : orcamentosAbertos === 0
-                  ? "Nenhum esperando retorno"
-                  : `${orcamentosAbertos} esperando retorno`}
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/admin/produtos"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-white/35">Gerenciar</span>
-            <span className="display mt-3 block text-sub">Lista de produtos</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              Editar preço, trocar foto, tirar do ar
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/admin/planos"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-white/35">Assistência</span>
-            <span className="display mt-3 block text-sub">Manutenção mensal</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              {planos.length} {planos.length === 1 ? "plano publicado" : "planos publicados"}
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/admin/produtos/novo"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-accent">Cadastrar</span>
-            <span className="display mt-3 block text-sub">Novo produto</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              Notebook, PC, monitor, peça ou periférico
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/admin/financeiro"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-accent">Dinheiro</span>
-            <span className="display mt-3 block text-sub">Caixa</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              {caixa === null
-                ? "Ainda não disponível — fale com quem cuida do sistema"
-                : caixa.aReceberVencido > 0
-                  ? `${preco(caixa.aReceberVencido)} vencido para receber`
-                  : `${preco(caixa.saldoDoMes)} de saldo no mês`}
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/admin/copia"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-white/35">Segurança</span>
-            <span className="display mt-3 block text-sub">Cópia de segurança</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              Baixe uma vez por mês e guarde fora da loja
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
-
-        <Link
-          href="/admin/manual"
-          className="spot card group flex items-center justify-between gap-3 p-5 transition-colors hover:bg-surface-2 md:p-6 lg:p-8"
-        >
-          <span>
-            <span className="eyebrow text-white/35">Ajuda</span>
-            <span className="display mt-3 block text-sub">Manual do sistema</span>
-            <span className="mt-2 block text-[13px] text-white/45">
-              Como abrir ordem, cadastrar produto e o que fazer se der problema
-            </span>
-          </span>
-          <span aria-hidden className="font-mono text-lg text-white/30 group-hover:text-accent">
-            →
-          </span>
-        </Link>
-      </div>
+      <section className="mt-6">
+        <h2 className="eyebrow mb-3 text-texto-3">Começar agora</h2>
+        <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:gap-3">
+          {atalhos.map((a) => (
+            <li key={a.href}>
+              <Link
+                href={a.href}
+                className={`toque w-full rounded-2xl px-4 text-center font-mono text-rotulo tracking-[0.1em] uppercase transition-colors ${
+                  a.destaque
+                    ? "bg-accent font-bold text-black hover:bg-accent-hover"
+                    : "bg-surface-2 text-texto-2 hover:bg-surface-3 hover:text-texto"
+                }`}
+              >
+                {a.rotulo}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
     </>
   );
 }

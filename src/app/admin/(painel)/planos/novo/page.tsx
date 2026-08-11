@@ -5,10 +5,10 @@ export const dynamic = "force-dynamic";
 export default function NovoPlano() {
   return (
     <>
-      <section className="py-10 md:py-12">
+      <section className="py-7 md:py-9">
         <p className="eyebrow text-accent">Manutenção mensal</p>
         <h1 className="display mt-3 text-title">Novo plano</h1>
-        <p className="mt-4 max-w-[54ch] text-[13px] text-white/50">
+        <p className="mt-4 max-w-[54ch] text-nota text-texto-3">
           Código e nome bastam para salvar. Deixe o valor em branco marcando “sem
           valor fixo” se o plano for sob proposta.
         </p>

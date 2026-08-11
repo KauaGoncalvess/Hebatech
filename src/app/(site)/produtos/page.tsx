@@ -31,7 +31,7 @@ export default async function ProdutosPage() {
         <div className="relative mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
         <p className="eyebrow text-accent">Produtos à venda</p>
         <h1 className="display mt-5 max-w-[16ch] text-title">Tudo que sai do nosso balcão</h1>
-        <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+        <p className="mt-6 max-w-[56ch] text-corpo-g leading-relaxed text-texto-3">
           Notebook revisado, PC montado, monitor, peça e periférico no mesmo lugar. Item novo vem com nota fiscal e garantia de fábrica; seminovo passa pela revisão completa antes de entrar na lista. Upgrade de SSD e memória já sai com instalação inclusa.
         </p>
 
@@ -40,7 +40,7 @@ export default async function ProdutosPage() {
             {presentes.map((c) => (
               <li
                 key={c.id}
-                className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[11.5px] text-white/60"
+                className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-rotulo text-texto-3"
               >
                 {c.plural}
                 <span className="ml-2 text-accent">
@@ -64,11 +64,11 @@ export default async function ProdutosPage() {
       <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
           <div className="card p-6 md:p-8">
-            <p className="eyebrow text-white/50">Montagem sob medida</p>
+            <p className="eyebrow text-texto-3">Montagem sob medida</p>
             <p className="display mt-4 max-w-[20ch] text-sub">
               Diga o uso e a faixa de preço que montamos a configuração
             </p>
-            <p className="mt-4 max-w-[54ch] text-[14px] leading-relaxed text-white/55">
+            <p className="mt-4 max-w-[54ch] text-corpo leading-relaxed text-texto-3">
               PC para jogo, edição, escritório ou ponto de venda. Fechamos a lista de peças com preço item a item, você aprova e a máquina sai montada, testada e com o sistema instalado. <Link href="/notebooks" className="text-accent underline underline-offset-4">
                 Se procura só notebook, a vitrine é aqui
               </Link>.

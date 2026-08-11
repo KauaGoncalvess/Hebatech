@@ -42,7 +42,7 @@ function mascararTelefone(valor: string): string {
 }
 
 const CAMPO =
-  "mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3.5 font-mono text-[13.5px] transition-colors placeholder:text-white/55 focus-visible:bg-surface-3";
+  "mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3.5 font-mono text-nota transition-colors placeholder:text-texto-3 focus-visible:bg-surface-3";
 
 export function OrcamentoForm() {
   const [f, setF] = useState(INICIAL);
@@ -161,7 +161,7 @@ export function OrcamentoForm() {
             ))}
           </div>
           {mostrarErro("defeito") && (
-            <p className="mt-3 font-mono text-[11.5px] text-accent">{erros.defeito}</p>
+            <p className="mt-3 font-mono text-rotulo text-accent">{erros.defeito}</p>
           )}
 
           <div className="mt-5">
@@ -200,12 +200,12 @@ export function OrcamentoForm() {
 
         <button
           type="submit"
-          className="mt-8 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+          className="mt-8 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-accent font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
         >
           Enviar pelo WhatsApp
           <span aria-hidden>→</span>
         </button>
-        <p className="mt-4 text-center font-mono text-[11px] text-white/55">
+        <p className="mt-4 text-center font-mono text-rotulo text-texto-3">
           O botão abre o WhatsApp com o texto montado. Guardamos o pedido para conseguir
           te retornar caso a conversa não vá para a frente.{" "}
           <Link href="/privacidade" className="text-accent underline underline-offset-4">
@@ -218,22 +218,22 @@ export function OrcamentoForm() {
       {/* Prévia da mensagem */}
       <aside className="space-y-4">
         <div className="card p-6">
-          <p className="eyebrow text-white/45">Prévia da mensagem</p>
-          <pre className="mt-4 overflow-x-auto font-mono text-[12px] leading-[1.9] whitespace-pre-wrap text-white/70">
+          <p className="eyebrow text-texto-3">Prévia da mensagem</p>
+          <pre className="mt-4 overflow-x-auto font-mono text-nota leading-[1.9] whitespace-pre-wrap text-texto-2">
             {previa}
           </pre>
         </div>
 
         <div className="card p-6">
-          <p className="eyebrow text-white/45">O que acontece depois</p>
+          <p className="eyebrow text-texto-3">O que acontece depois</p>
           <ol className="mt-4 space-y-3">
             {[
               "Respondemos no horário comercial com uma estimativa e o prazo.",
               "Valor fechado só depois do diagnóstico de bancada, em até 48h.",
               "Nenhum reparo começa sem a sua autorização por escrito.",
             ].map((t, i) => (
-              <li key={t} className="flex gap-3 text-[13.5px] text-white/60">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-[10px] font-bold text-black">
+              <li key={t} className="flex gap-3 text-nota text-texto-3">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-rotulo font-bold text-black">
                   {i + 1}
                 </span>
                 {t}
@@ -243,12 +243,12 @@ export function OrcamentoForm() {
         </div>
 
         <div className="card p-6">
-          <p className="eyebrow text-white/45">Prefere resolver direto</p>
-          <p className="mt-4 text-[13.5px] leading-relaxed text-white/55">
+          <p className="eyebrow text-texto-3">Prefere resolver direto</p>
+          <p className="mt-4 text-nota leading-relaxed text-texto-3">
             Traga o aparelho na loja sem agendar, de segunda a sexta das 8h30 às 18h e
             sábado até meio-dia.
           </p>
-          <p className="mt-4 font-mono text-[12.5px] text-white/70">{enderecoLinha}</p>
+          <p className="mt-4 font-mono text-nota text-texto-2">{enderecoLinha}</p>
         </div>
       </aside>
     </div>
@@ -270,10 +270,10 @@ function Bloco({
     <fieldset className={ultimo ? "" : "mb-8 border-b border-line pb-8"}>
       <legend className="sr-only">{titulo}</legend>
       <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-surface-3 font-mono text-[11px] text-accent">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-surface-3 font-mono text-rotulo text-accent">
           {numero}
         </span>
-        <span className="font-mono text-[12px] tracking-[0.12em] uppercase">{titulo}</span>
+        <span className="font-mono text-nota tracking-[0.12em] uppercase">{titulo}</span>
       </div>
       {children}
     </fieldset>
@@ -294,10 +294,10 @@ function Pastilha({
       type="button"
       onClick={onClick}
       aria-pressed={ativo}
-      className={`rounded-full px-4 py-2.5 text-[13px] transition-colors ${
+      className={`rounded-full px-4 py-2.5 text-nota transition-colors ${
         ativo
           ? "bg-accent font-medium text-black"
-          : "bg-surface-2 text-white/70 hover:bg-surface-3 hover:text-white"
+          : "bg-surface-2 text-texto-2 hover:bg-surface-3 hover:text-white"
       }`}
     >
       {rotulo}
@@ -321,14 +321,14 @@ function Campo({
   return (
     <label className="block">
       <span className="flex items-baseline justify-between gap-3">
-        <span className="eyebrow text-white/55">
+        <span className="eyebrow text-texto-3">
           {rotulo}
           {obrigatorio && <span className="text-accent"> *</span>}
         </span>
         {erro ? (
-          <span className="font-mono text-[10px] text-accent">{erro}</span>
+          <span className="font-mono text-rotulo text-accent">{erro}</span>
         ) : (
-          nota && <span className="font-mono text-[10px] text-white/45">{nota}</span>
+          nota && <span className="font-mono text-rotulo text-texto-3">{nota}</span>
         )}
       </span>
       {children}

@@ -26,11 +26,11 @@ export function ExcluirClienteButton({ id, nome }: { id: string; nome: string })
         type="button"
         disabled={pendente}
         onClick={apagar}
-        className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/70 uppercase transition-colors hover:bg-surface-3 hover:text-white disabled:opacity-40"
+        className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-rotulo tracking-[0.12em] text-texto-2 uppercase transition-colors hover:bg-surface-3 hover:text-white disabled:opacity-40"
       >
         Excluir
       </button>
-      {erro && <span className="font-mono text-[11px] text-accent">{erro}</span>}
+      {erro && <span className="font-mono text-rotulo text-accent">{erro}</span>}
     </span>
   );
 }

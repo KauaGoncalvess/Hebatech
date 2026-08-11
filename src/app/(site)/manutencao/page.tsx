@@ -51,7 +51,7 @@ export default async function ManutencaoPage() {
         <h1 className="display mt-5 max-w-[17ch] text-title">
           Manutenção mensal para quem não tem TI próprio
         </h1>
-        <p className="mt-6 max-w-[58ch] text-[15px] leading-relaxed text-white/65">
+        <p className="mt-6 max-w-[58ch] text-corpo-g leading-relaxed text-texto-2">
           Você paga um valor previsível por mês em vez de chamar
           técnico só quando o problema já parou o trabalho — com visita programada,
           chamado remoto no horário comercial e backup testado.
@@ -62,7 +62,7 @@ export default async function ManutencaoPage() {
             (t) => (
               <li
                 key={t}
-                className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[11.5px] text-white/60"
+                className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-rotulo text-texto-3"
               >
                 {t}
               </li>
@@ -79,9 +79,9 @@ export default async function ManutencaoPage() {
         />
         <div className="grid gap-4 md:grid-cols-3">
           {DORES.map(([titulo, texto]) => (
-            <article key={titulo} className="spot card p-6">
+            <article key={titulo} className="card p-6">
               <h3 className="display max-w-[18ch] text-[1.4rem] leading-[0.95]">{titulo}</h3>
-              <p className="mt-4 text-[13.5px] leading-relaxed text-white/55">{texto}</p>
+              <p className="mt-4 text-nota leading-relaxed text-texto-3">{texto}</p>
             </article>
           ))}
         </div>
@@ -103,7 +103,7 @@ export default async function ManutencaoPage() {
             <h2 className="display mt-4 max-w-[20ch] text-sub">
               Monte o contrato conforme o tamanho da sua empresa
             </h2>
-            <p className="mt-4 max-w-[56ch] text-[14px] leading-relaxed text-white/55">
+            <p className="mt-4 max-w-[56ch] text-corpo leading-relaxed text-texto-3">
               Diga quantas máquinas você tem e o que mais te atrapalha hoje. Voltamos com
               uma proposta com escopo, prazo de atendimento e valor mensal.
             </p>
@@ -117,7 +117,7 @@ export default async function ManutencaoPage() {
           <h2 className="display mx-auto mt-5 max-w-[20ch] text-title">
             Conte quantas máquinas você tem
           </h2>
-          <p className="mx-auto mt-5 max-w-[52ch] text-[14.5px] leading-relaxed text-white/55">
+          <p className="mx-auto mt-5 max-w-[52ch] text-corpo leading-relaxed text-texto-3">
             A partir daí montamos a proposta com escopo e valor fechado, sem compromisso.
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
@@ -126,13 +126,13 @@ export default async function ManutencaoPage() {
               data-origem="manutencao"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-14 items-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+              className="flex h-14 items-center rounded-full bg-accent px-8 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
             >
               Pedir proposta
             </a>
             <Link
               href="/assistencia"
-              className="flex h-14 items-center rounded-full bg-surface-2 px-8 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+              className="flex h-14 items-center rounded-full bg-surface-2 px-8 font-mono text-nota tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
             >
               Atendimento avulso
             </Link>

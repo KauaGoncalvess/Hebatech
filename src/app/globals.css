@@ -1,19 +1,57 @@
 @import "tailwindcss";
 
 @theme {
-  /* Base preta, superfícies em cinza frio. Nada de linha como estrutura. */
+  /**
+   * Base preta, superfícies em cinza levemente quente — o neutro puxa para o
+   * lado do laranja da marca em vez de brigar com ele.
+   *
+   * As superfícies subiram um degrau em relação à primeira versão. O cartão
+   * ficava a 1.06:1 do fundo: no papel era um objeto, na tela de celular sob a
+   * luz da loja era uma parede plana de texto. Quem carrega o limite agora é
+   * `line-strong`, a 2.96:1 do fundo — o mínimo da WCAG 1.4.11 para contorno de
+   * componente, sem clarear o cartão a ponto de perder a base preta.
+   */
   --color-ink: #050505;
-  --color-surface: #0e0f11;
-  --color-surface-2: #16181b;
-  --color-surface-3: #1e2125;
+  --color-surface: #131619;
+  --color-surface-2: #1c2025;
+  --color-surface-3: #272c31;
 
-  /* Contornos existem só para dar borda ao painel, nunca para dividir grade. */
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-line-strong: rgba(255, 255, 255, 0.16);
+  /* `line` divide por dentro; `line-strong` desenha o limite do componente. */
+  --color-line: rgba(255, 255, 255, 0.14);
+  --color-line-strong: rgba(255, 255, 255, 0.34);
+
+  /**
+   * Três níveis de texto, não treze.
+   *
+   * A versão anterior tinha 13 opacidades de branco espalhadas pelo JSX, e as
+   * seis mais escuras reprovavam no contraste mínimo: `white/35` dava 3.05:1
+   * onde o mínimo é 4.5. Como quase tudo era rótulo de 10-13px, a conta pior
+   * caía justamente no texto menor.
+   *
+   * Aqui o pior caso — nível 3 sobre a superfície mais clara — é 5.77:1. A
+   * diferença entre um rótulo e um corpo de texto passa a vir do tamanho, da
+   * caixa alta e do espacejamento, não de apagar a cor.
+   */
+  --color-texto: #ffffff;
+  --color-texto-2: rgba(255, 255, 255, 0.72);
+  --color-texto-3: rgba(255, 255, 255, 0.58);
 
   /* Acento único da marca, amostrado do logo. */
   --color-accent: #ff6b18;
   --color-accent-deep: #c05810;
+  /* Clareamento do próprio acento, para hover não jogar o botão para branco. */
+  --color-accent-hover: #ff8542;
+
+  /**
+   * Cor de estado, separada da cor da marca de propósito.
+   *
+   * O laranja marcava ao mesmo tempo "entrou dinheiro" (bom) e "vencido"
+   * (ruim) — o acento não pode carregar os dois sentidos. Aqui o laranja fica
+   * com o que é da marca e do positivo; verde e vermelho respondem só por
+   * estado, e nunca aparecem como enfeite.
+   */
+  --color-ok: #4ade80;
+  --color-alerta: #f87171;
 
   --font-display: var(--font-condensed), "Arial Narrow", sans-serif;
   --font-mono: var(--font-mono-tech), ui-monospace, monospace;
@@ -31,8 +69,22 @@
   --text-sub--line-height: 1;
   --text-sub--letter-spacing: -0.02em;
 
+  /**
+   * Escala fechada de texto de interface. Substitui os 30 tamanhos arbitrários
+   * (`text-[13px]`, `text-[13.5px]`, `text-[14px]`…) que existiam antes: meio
+   * pixel de diferença não comunica hierarquia, só impede manutenção.
+   */
+  --text-rotulo: 0.6875rem; /* 11px — sobrancelha, chip, metadado em caixa alta */
+  --text-nota: 0.8125rem; /* 13px — apoio, legenda, texto secundário */
+  --text-corpo: 0.875rem; /* 14px — corpo padrão da interface */
+  --text-corpo-g: 0.9375rem; /* 15px — leitura longa */
+  --text-numero: 1.5rem; /* 24px — valor em destaque dentro de cartão */
+
   --radius-card: 18px;
   --radius-panel: 24px;
+
+  /** Altura mínima de qualquer coisa que se toca com o dedo. */
+  --spacing-toque: 2.75rem; /* 44px */
 
   --breakpoint-xs: 26rem;
 }
@@ -102,11 +154,27 @@
     font-weight: 800;
   }
 
-  /* Painel padrão: preenchimento suave e contorno quase invisível. */
+  /**
+   * Cartão. O contorno usa `line-strong` porque é ele que define o limite do
+   * componente — com a borda a 8% que havia antes, cartão e fundo ficavam a
+   * 1.16:1 e a estrutura existia só no código.
+   */
   .card {
     background-color: var(--color-surface);
-    border: 1px solid var(--color-line);
+    border: 1px solid var(--color-line-strong);
     border-radius: var(--radius-card);
+  }
+
+  /**
+   * Qualquer coisa que se aperta com o dedo. 44px é o mínimo — os botões de
+   * avançar etapa e dar baixa estavam com 32px, e são justamente os que o
+   * balcão usa dezenas de vezes por dia, em pé, com o celular na mão.
+   */
+  .toque {
+    min-height: var(--spacing-toque);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Trilho horizontal com encaixe — carrossel sem biblioteca. */

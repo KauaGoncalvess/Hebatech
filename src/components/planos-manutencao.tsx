@@ -22,20 +22,20 @@ export function PlanosManutencao({ planos, regras }: Props) {
           return (
             <article
               key={p.id}
-              className={`spot card flex flex-col p-6 ${p.destaque ? "bg-surface-2" : ""}`}
+              className={`card flex flex-col p-6 ${p.destaque ? "bg-surface-2" : ""}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="font-mono text-[11px] tracking-[0.14em] text-white/50">
+                  <p className="font-mono text-rotulo tracking-[0.14em] text-texto-3">
                     {p.codigo}
                   </p>
                   <h3 className="display mt-2 text-sub">{p.nome}</h3>
                   {p.faixa && (
-                    <p className="mt-2 font-mono text-[12px] text-accent">{p.faixa}</p>
+                    <p className="mt-2 font-mono text-nota text-accent">{p.faixa}</p>
                   )}
                 </div>
                 {p.destaque && (
-                  <span className="shrink-0 rounded-full bg-accent px-3 py-1.5 font-mono text-[9.5px] font-bold tracking-[0.1em] text-black uppercase">
+                  <span className="shrink-0 rounded-full bg-accent px-3 py-1.5 font-mono text-rotulo font-bold tracking-[0.1em] text-black uppercase">
                     Mais contratado
                   </span>
                 )}
@@ -44,7 +44,7 @@ export function PlanosManutencao({ planos, regras }: Props) {
               <div className="mt-6">
                 <p className="display text-[2.4rem] leading-none">{valor}</p>
                 {p.visitas && (
-                  <p className="mt-2 font-mono text-[11.5px] text-white/45">
+                  <p className="mt-2 font-mono text-rotulo text-texto-3">
                     {p.precoMensal === null ? p.visitas : `por mês · ${p.visitas}`}
                   </p>
                 )}
@@ -52,7 +52,7 @@ export function PlanosManutencao({ planos, regras }: Props) {
 
               <ul className="mt-6 space-y-2.5 border-t border-line pt-6">
                 {p.inclui.map((item) => (
-                  <li key={item} className="flex gap-3 text-[13.5px] text-white/70">
+                  <li key={item} className="flex gap-3 text-nota text-texto-2">
                     <span
                       aria-hidden
                       className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
@@ -67,9 +67,9 @@ export function PlanosManutencao({ planos, regras }: Props) {
                 data-origem={`plano:${p.codigo}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`mt-7 flex h-13 items-center justify-center rounded-full py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors ${
+                className={`mt-7 flex h-13 items-center justify-center rounded-full py-4 font-mono text-nota tracking-[0.12em] uppercase transition-colors ${
                   p.destaque
-                    ? "bg-accent font-bold text-black hover:bg-white"
+                    ? "bg-accent font-bold text-black hover:bg-accent-hover"
                     : "bg-surface-2 hover:bg-surface-3"
                 }`}
               >
@@ -85,7 +85,7 @@ export function PlanosManutencao({ planos, regras }: Props) {
           {regras.map((r) => (
             <div key={r.titulo} className="rounded-2xl bg-surface-2 p-5">
               <dt className="eyebrow text-accent">{r.titulo}</dt>
-              <dd className="mt-3 text-[13px] leading-relaxed text-white/55">{r.texto}</dd>
+              <dd className="mt-3 text-nota leading-relaxed text-texto-3">{r.texto}</dd>
             </div>
           ))}
         </dl>

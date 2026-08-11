@@ -7,6 +7,8 @@ import {
   desfazerBaixa,
 } from "@/app/admin/financeiro-actions";
 import { preco } from "@/lib/format";
+import { BotaoAcao } from "./botao-acao";
+import { EtiquetaEstado } from "./etiqueta-estado";
 import { hojeNaLoja, rotuloCategoria, type Lancamento } from "@/types/lancamento";
 
 const dia = new Intl.DateTimeFormat("pt-BR", {
@@ -45,22 +47,34 @@ export function LinhaLancamento({ l }: { l: Lancamento }) {
       }`}
     >
       <div className="min-w-0 sm:flex-1">
-        <p className="flex flex-wrap items-center gap-x-2 font-mono text-[9.5px] tracking-[0.16em] text-white/35 uppercase">
-          {l.pagoEm ? formatarDia(l.pagoEm) : l.venceEm ? `vence ${formatarDia(l.venceEm)}` : "sem prazo"}
-          <span className="text-white/15">/</span>
+        <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase">
+          <span className="tabular-nums">
+            {l.pagoEm
+              ? formatarDia(l.pagoEm)
+              : l.venceEm
+                ? `vence ${formatarDia(l.venceEm)}`
+                : "sem prazo"}
+          </span>
+          <span aria-hidden className="h-3 w-px bg-line-strong" />
           {rotuloCategoria(l.categoria)}
-          {vencido && <span className="text-accent">· vencido</span>}
-          {aberto && !vencido && <span className="text-white/50">· em aberto</span>}
         </p>
-        <p className="mt-1 text-[13.5px] leading-snug text-white sm:truncate">
+        <p className="mt-1.5 text-corpo leading-snug text-texto sm:truncate">
           {l.descricao}
         </p>
+        {/* Em aberto e vencido deixam de ser texto colorido e viram estado. */}
+        {aberto && (
+          <p className="mt-2">
+            <EtiquetaEstado tom={vencido ? "alerta" : "andamento"}>
+              {vencido ? "Vencido" : "Em aberto"}
+            </EtiquetaEstado>
+          </p>
+        )}
       </div>
 
       <div className="flex items-center justify-between gap-3 sm:justify-end">
         <span
           className={`display shrink-0 text-[1.35rem] leading-none tabular-nums ${
-            aberto ? "text-white/40" : entrada ? "text-accent" : "text-white/70"
+            aberto ? "text-texto-3" : entrada ? "text-accent" : "text-texto-2"
           }`}
         >
           {entrada ? "+" : "−"}
@@ -68,34 +82,34 @@ export function LinhaLancamento({ l }: { l: Lancamento }) {
         </span>
 
         {aberto ? (
-          <button
+          <BotaoAcao
+            variante="principal"
             type="button"
             onClick={() => enviar(darBaixa)}
             disabled={pendente}
-            className="rounded-full bg-accent px-4 py-2.5 font-mono text-[9.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
           >
             {entrada ? "Recebi" : "Paguei"}
-          </button>
+          </BotaoAcao>
         ) : (
-          <button
+          <BotaoAcao
             type="button"
             onClick={() => enviar(desfazerBaixa)}
             disabled={pendente}
-            className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] text-white/55 uppercase transition-colors hover:bg-surface-3 disabled:opacity-50"
           >
             Desfazer
-          </button>
+          </BotaoAcao>
         )}
 
-        <button
+        <BotaoAcao
+          variante="perigo"
           type="button"
           onClick={apagar}
           disabled={pendente}
           aria-label={`Apagar ${l.descricao}`}
-          className="rounded-full bg-surface-2 px-3 py-2.5 font-mono text-[11px] text-white/35 transition-colors hover:bg-surface-3 hover:text-white disabled:opacity-50"
+          className="px-4"
         >
           ✕
-        </button>
+        </BotaoAcao>
       </div>
     </li>
   );

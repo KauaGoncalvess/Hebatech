@@ -34,7 +34,7 @@ function Salvar({ novo }: { novo: boolean }) {
     <button
       type="submit"
       disabled={pending}
-      className="flex h-13 items-center justify-center rounded-full bg-accent px-8 py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
+      className="flex h-13 items-center justify-center rounded-full bg-accent px-8 py-4 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover disabled:opacity-50"
     >
       {pending ? "Salvando..." : novo ? "Abrir ordem" : "Salvar ordem"}
     </button>
@@ -78,20 +78,20 @@ export function OrdemForm({
           * comprovante — a ordem é encontrada por ele em /acompanhar.
           */}
         <div className="sm:col-span-2">
-          <span className="eyebrow text-white/55">Número da ordem</span>
+          <span className="eyebrow text-texto-3">Número da ordem</span>
           {o.codigo || codigoPrevisto ? (
             <p className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="display text-[1.7rem] leading-none text-accent">
                 {o.codigo || codigoPrevisto}
               </span>
-              <span className="font-mono text-[10.5px] text-white/35">
+              <span className="font-mono text-rotulo text-texto-3">
                 {ordem
                   ? "vai no comprovante do cliente"
                   : "reservado para esta ordem, gerado ao salvar"}
               </span>
             </p>
           ) : (
-            <p className="mt-2.5 font-mono text-[11.5px] text-white/40">
+            <p className="mt-2.5 font-mono text-rotulo text-texto-3">
               O número sai ao salvar, seguindo a numeração do ano.
             </p>
           )}
@@ -212,8 +212,8 @@ export function OrdemForm({
           />
         </Campo>
 
-        <p className="sm:col-span-2 -mt-1 rounded-2xl bg-surface-2 px-4 py-3 text-[12.5px] leading-relaxed text-white/45">
-          Quando a ordem for marcada como <strong className="text-white/70">entregue</strong>{" "}
+        <p className="sm:col-span-2 -mt-1 rounded-2xl bg-surface-2 px-4 py-3 text-nota leading-relaxed text-texto-3">
+          Quando a ordem for marcada como <strong className="text-texto-2">entregue</strong>{" "}
           e tiver valor cobrado, ela entra no caixa sozinha — a peça como saída,
           o serviço como entrada. Não precisa lançar de novo no financeiro.
         </p>
@@ -235,11 +235,11 @@ export function OrdemForm({
         <Salvar novo={!ordem} />
         <Link
           href="/admin/ordens"
-          className="flex h-13 items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+          className="flex h-13 items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-nota tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
         >
           Cancelar
         </Link>
-        {estado.erro && <p className="font-mono text-[11.5px] text-accent">{estado.erro}</p>}
+        {estado.erro && <p className="font-mono text-rotulo text-accent">{estado.erro}</p>}
       </div>
     </form>
   );

@@ -16,7 +16,7 @@ export default async function EditarProduto({ params }: Props) {
 
   return (
     <>
-      <section className="flex flex-wrap items-end justify-between gap-4 py-10 md:py-12">
+      <section className="flex flex-wrap items-end justify-between gap-4 py-7 md:py-9">
         <div>
           <p className="eyebrow text-accent">
             {produto.codigo} · {produto.disponivel ? "à venda" : "fora do ar"}
@@ -27,7 +27,7 @@ export default async function EditarProduto({ params }: Props) {
           <Link
             href={`/produtos/${produto.slug}`}
             target="_blank"
-            className="mt-4 inline-block font-mono text-[11px] text-white/45 underline underline-offset-4 transition-colors hover:text-accent"
+            className="mt-4 inline-block font-mono text-rotulo text-texto-3 underline underline-offset-4 transition-colors hover:text-accent"
           >
             Ver no site: /produtos/{produto.slug}
           </Link>
@@ -35,14 +35,14 @@ export default async function EditarProduto({ params }: Props) {
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href={`/admin/etiqueta/${produto.id}`}
-            className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/60 uppercase transition-colors hover:bg-surface-3 hover:text-white"
+            className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase transition-colors hover:bg-surface-3 hover:text-white"
           >
             Etiqueta
           </Link>
           <a
             href={`/admin/post/${produto.id}`}
             download={`${produto.slug}.png`}
-            className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/60 uppercase transition-colors hover:bg-surface-3 hover:text-white"
+            className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase transition-colors hover:bg-surface-3 hover:text-white"
           >
             Post do Instagram
           </a>

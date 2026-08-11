@@ -148,15 +148,15 @@ const PROBLEMAS = [
 function Secao({ titulo, blocos }: { titulo: string; blocos: Bloco[] }) {
   return (
     <section className="break-inside-avoid">
-      <h2 className="mt-10 border-b-2 border-black pb-2 text-[15px] font-bold tracking-[0.1em] uppercase">
+      <h2 className="mt-10 border-b-2 border-black pb-2 text-corpo-g font-bold tracking-[0.1em] uppercase">
         {titulo}
       </h2>
       {blocos.map((b) => (
         <div key={b.titulo} className="mt-6 break-inside-avoid">
-          <h3 className="text-[15.5px] font-bold">{b.titulo}</h3>
+          <h3 className="text-corpo-g font-bold">{b.titulo}</h3>
           <ol className="mt-2 grid gap-1.5">
             {b.passos.map((p, i) => (
-              <li key={p} className="flex gap-3 text-[13px] leading-relaxed">
+              <li key={p} className="flex gap-3 text-nota leading-relaxed">
                 <span className="w-4 shrink-0 text-right font-bold tabular-nums">
                   {i + 1}.
                 </span>
@@ -177,23 +177,23 @@ export default function ManualPage() {
         <div className="flex flex-wrap gap-3 print:hidden">
           <Link
             href="/admin"
-            className="rounded-full bg-black/5 px-5 py-3 font-mono text-[11px] tracking-[0.12em] uppercase"
+            className="rounded-full bg-black/5 px-5 py-3 font-mono text-rotulo tracking-[0.12em] uppercase"
           >
             ← Voltar ao painel
           </Link>
-          <span className="rounded-full bg-black/5 px-5 py-3 font-mono text-[11px] tracking-[0.12em] uppercase">
+          <span className="rounded-full bg-black/5 px-5 py-3 font-mono text-rotulo tracking-[0.12em] uppercase">
             Para imprimir: Ctrl + P
           </span>
         </div>
 
         <header className="mt-8 border-b-4 border-black pb-5">
-          <p className="font-mono text-[11px] tracking-[0.2em] uppercase">
+          <p className="font-mono text-rotulo tracking-[0.2em] uppercase">
             {site.nomeCompleto}
           </p>
           <h1 className="mt-2 text-[34px] leading-none font-bold tracking-tight">
             Manual do sistema
           </h1>
-          <p className="mt-3 max-w-[62ch] text-[13.5px] leading-relaxed">
+          <p className="mt-3 max-w-[62ch] text-nota leading-relaxed">
             Como usar o painel da loja no dia a dia. Guarde esta folha na gaveta
             do balcão. O painel fica em{" "}
             <strong>{site.url.replace("https://", "")}/admin</strong>.
@@ -206,24 +206,24 @@ export default function ManualPage() {
         <Secao titulo="Cuidados" blocos={CUIDADOS} />
 
         <section className="break-inside-avoid">
-          <h2 className="mt-10 border-b-2 border-black pb-2 text-[15px] font-bold tracking-[0.1em] uppercase">
+          <h2 className="mt-10 border-b-2 border-black pb-2 text-corpo-g font-bold tracking-[0.1em] uppercase">
             Se der problema
           </h2>
           <dl className="mt-6 grid gap-5">
             {PROBLEMAS.map((p) => (
               <div key={p.q} className="break-inside-avoid">
-                <dt className="text-[14px] font-bold">{p.q}</dt>
-                <dd className="mt-1 text-[13px] leading-relaxed">{p.a}</dd>
+                <dt className="text-corpo font-bold">{p.q}</dt>
+                <dd className="mt-1 text-nota leading-relaxed">{p.a}</dd>
               </div>
             ))}
           </dl>
         </section>
 
         <section className="mt-10 break-inside-avoid border-2 border-black p-5">
-          <h2 className="text-[15px] font-bold tracking-[0.1em] uppercase">
+          <h2 className="text-corpo-g font-bold tracking-[0.1em] uppercase">
             Onde ficam as chaves da casa
           </h2>
-          <p className="mt-3 max-w-[62ch] text-[13px] leading-relaxed">
+          <p className="mt-3 max-w-[62ch] text-nota leading-relaxed">
             O sistema depende de quatro contas, todas no nome da loja. Anote os
             acessos aqui e guarde esta folha em lugar seguro — sem elas ninguém
             consegue mexer no sistema, nem você.
@@ -236,15 +236,15 @@ export default function ManualPage() {
               ["Registro.br", "o endereço do site na internet, renova todo ano"],
             ].map(([nome, oque]) => (
               <li key={nome} className="flex flex-wrap items-end gap-x-3 gap-y-1">
-                <span className="text-[13px] font-bold">{nome}</span>
-                <span className="text-[12px]">({oque})</span>
+                <span className="text-nota font-bold">{nome}</span>
+                <span className="text-nota">({oque})</span>
                 <span className="min-w-[160px] flex-1 border-b border-dotted border-black/50" />
               </li>
             ))}
           </ul>
         </section>
 
-        <p className="mt-8 pb-10 text-[11.5px] text-black/50">
+        <p className="mt-8 pb-10 text-rotulo text-black/50">
           Dúvida que não está aqui? Guarde o contato de quem entregou o sistema.
         </p>
       </div>

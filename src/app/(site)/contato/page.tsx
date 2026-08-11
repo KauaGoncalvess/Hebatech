@@ -37,7 +37,7 @@ export default function ContatoPage() {
       <h1 className="display mt-5 max-w-[15ch] text-title">
         Loja física, endereço fixo e bancada própria
       </h1>
-      <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+      <p className="mt-6 max-w-[56ch] text-corpo-g leading-relaxed text-texto-3">
         Você pode trazer o aparelho sem agendar. Para conferir um produto do estoque,
         avise antes pelo WhatsApp — assim ele fica separado e testado na sua chegada.
       </p>
@@ -51,22 +51,22 @@ export default function ContatoPage() {
                   href={c.href}
                   target={c.href.startsWith("http") ? "_blank" : undefined}
                   rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className={`spot card group flex items-center justify-between gap-4 p-5 transition-colors ${
+                  className={`card group flex items-center justify-between gap-4 p-5 transition-colors ${
                     c.destaque ? "hover:bg-accent hover:text-black" : "hover:bg-surface-2"
                   }`}
                 >
                   <span>
-                    <span className="eyebrow text-white/50 group-hover:text-inherit">
+                    <span className="eyebrow text-texto-3 group-hover:text-inherit">
                       {c.rotulo}
                     </span>
-                    <span className="mt-2 block font-mono text-[15px]">{c.valor}</span>
-                    <span className="mt-1 block text-[12.5px] text-white/45 group-hover:text-inherit">
+                    <span className="mt-2 block font-mono text-corpo-g">{c.valor}</span>
+                    <span className="mt-1 block text-nota text-texto-3 group-hover:text-inherit">
                       {c.nota}
                     </span>
                   </span>
                   <span
                     aria-hidden
-                    className="font-mono text-lg text-white/45 transition-transform group-hover:translate-x-1 group-hover:text-inherit"
+                    className="font-mono text-lg text-texto-3 transition-transform group-hover:translate-x-1 group-hover:text-inherit"
                   >
                     →
                   </span>
@@ -76,14 +76,14 @@ export default function ContatoPage() {
           </ul>
 
           <div className="card p-6">
-            <p className="eyebrow text-white/50">Horário de funcionamento</p>
+            <p className="eyebrow text-texto-3">Horário de funcionamento</p>
             <ul className="mt-4 space-y-3">
               {site.horario.map((h) => (
                 <li key={h.dia} className="flex items-baseline justify-between gap-4">
-                  <span className="text-[14px] text-white/70">{h.dia}</span>
+                  <span className="text-corpo text-texto-2">{h.dia}</span>
                   <span
-                    className={`font-mono text-[13px] ${
-                      h.faixa === "Fechado" ? "text-white/50" : "text-accent"
+                    className={`font-mono text-nota ${
+                      h.faixa === "Fechado" ? "text-texto-3" : "text-accent"
                     }`}
                   >
                     {h.faixa}
@@ -107,16 +107,16 @@ export default function ContatoPage() {
               />
             </div>
             <div className="p-5">
-              <p className="eyebrow text-white/50">Endereço</p>
-              <p className="mt-2 font-mono text-[13.5px] text-white/80">{enderecoLinha}</p>
-              <p className="mt-1 font-mono text-[12.5px] text-white/45">
+              <p className="eyebrow text-texto-3">Endereço</p>
+              <p className="mt-2 font-mono text-nota text-texto-2">{enderecoLinha}</p>
+              <p className="mt-1 font-mono text-nota text-texto-3">
                 CEP {site.endereco.cep}
               </p>
               <a
                 href={rotaHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 flex h-12 items-center justify-center rounded-full bg-surface-2 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+                className="mt-5 flex h-12 items-center justify-center rounded-full bg-surface-2 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
               >
                 Traçar rota no Google Maps
               </a>
@@ -124,15 +124,15 @@ export default function ContatoPage() {
           </div>
 
           <div className="card p-6">
-            <p className="eyebrow text-white/50">Antes de vir</p>
+            <p className="eyebrow text-texto-3">Antes de vir</p>
             <ul className="mt-4 space-y-3">
               {[
                 "Peça de modelo raro pode precisar de encomenda — conferimos na hora.",
                 "Produto do estoque fica separado e ligado para você testar na chegada.",
                 "Para empresa, mandamos a proposta com prazo e condição pelo WhatsApp.",
               ].map((t, i) => (
-                <li key={t} className="flex gap-3 text-[13.5px] text-white/60">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-[10px] font-bold text-black">
+                <li key={t} className="flex gap-3 text-nota text-texto-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-rotulo font-bold text-black">
                     {i + 1}
                   </span>
                   {t}
@@ -152,7 +152,7 @@ export default function ContatoPage() {
           href={waGenerico()}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-8 inline-flex h-14 items-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+          className="mt-8 inline-flex h-14 items-center rounded-full bg-accent px-8 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
         >
           Abrir conversa
         </a>

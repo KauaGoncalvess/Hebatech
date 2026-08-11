@@ -98,6 +98,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
 
         <SiteHeader />
         <main id="conteudo">{children}</main>
+        {/* Espaço para o balão fixo do WhatsApp não cobrir o fim da página. */}
+        <div aria-hidden className="h-20 md:h-24" />
         <SiteFooter />
         <WhatsappBubble />
 

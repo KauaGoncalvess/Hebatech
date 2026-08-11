@@ -25,11 +25,11 @@ export default async function EditarOrdem({ params }: Props) {
 
   return (
     <>
-      <section className="flex flex-wrap items-end justify-between gap-4 py-10 md:py-12">
+      <section className="flex flex-wrap items-end justify-between gap-4 py-7 md:py-9">
         <div>
           <p className="eyebrow text-accent">Ordem {ordem.codigo}</p>
           <h1 className="display mt-3 text-title">{aparelhoDe(ordem) || "Aparelho"}</h1>
-          <p className="mt-3 font-mono text-[12px] text-white/45">
+          <p className="mt-3 font-mono text-nota text-texto-3">
             {ordem.clienteNome} · {ordem.clienteTelefone}
           </p>
         </div>
@@ -40,7 +40,7 @@ export default async function EditarOrdem({ params }: Props) {
               href={aviso}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/60 uppercase transition-colors hover:bg-surface-3 hover:text-white"
+              className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase transition-colors hover:bg-surface-3 hover:text-white"
             >
               Avisar o cliente
             </a>

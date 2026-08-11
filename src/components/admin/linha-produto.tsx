@@ -39,23 +39,23 @@ export function LinhaProduto({ p }: { p: Produto }) {
             className="object-cover"
           />
         ) : (
-          <span className="flex h-full items-center justify-center font-mono text-[8px] tracking-[0.1em] text-white/25">
+          <span className="flex h-full items-center justify-center font-mono text-rotulo tracking-[0.1em] text-texto-3">
             SEM FOTO
           </span>
         )}
       </div>
 
       <div className="min-w-0">
-        <p className="flex flex-wrap items-center gap-x-2 font-mono text-[9.5px] tracking-[0.16em] text-white/35 uppercase">
+        <p className="flex flex-wrap items-center gap-x-2 font-mono text-rotulo tracking-[0.16em] text-texto-3 uppercase">
           {p.codigo}
-          <span className="text-white/15">/</span>
+          <span aria-hidden className="h-3 w-px bg-line-strong" />
           {rotuloCategoria(p.categoria)}
           {p.destaque && <span className="text-accent">· destaque</span>}
         </p>
-        <p className="font-mono text-[13px] leading-snug text-white">
+        <p className="font-mono text-nota leading-snug text-white">
           {p.marca} {p.modelo}
         </p>
-        <p className="mt-0.5 font-mono text-[12px] text-accent">{preco(p.preco)}</p>
+        <p className="mt-0.5 font-mono text-nota text-accent">{preco(p.preco)}</p>
       </div>
 
       <div className="col-span-2 flex items-center gap-2 sm:col-span-1">
@@ -63,20 +63,20 @@ export function LinhaProduto({ p }: { p: Produto }) {
           type="button"
           disabled={pendente}
           onClick={alternar}
-          className="flex-1 rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40 sm:flex-none"
+          className="flex-1 rounded-full bg-surface-2 px-4 py-2.5 font-mono text-rotulo tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40 sm:flex-none"
         >
           {p.disponivel ? "Tirar do ar" : "Publicar"}
         </button>
         <Link
           href={`/admin/produtos/${p.id}`}
-          className="flex-1 rounded-full bg-accent px-4 py-2.5 text-center font-mono text-[9.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white sm:flex-none"
+          className="flex-1 rounded-full bg-accent px-4 py-2.5 text-center font-mono text-rotulo font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-accent-hover sm:flex-none"
         >
           Editar
         </Link>
       </div>
 
       {erro && (
-        <p role="alert" className="col-span-2 font-mono text-[11px] text-accent sm:col-span-3">
+        <p role="alert" className="col-span-2 font-mono text-rotulo text-accent sm:col-span-3">
           Não deu para mudar: {erro}
         </p>
       )}

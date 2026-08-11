@@ -48,7 +48,7 @@ export function PainelNav() {
       <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-4 px-4 md:h-20 md:px-6">
         <Link href="/admin" className="flex shrink-0 items-center gap-3.5">
           <Logo compacto />
-          <span className="hidden font-mono text-[10px] tracking-[0.2em] text-accent uppercase sm:block">
+          <span className="hidden font-mono text-rotulo tracking-[0.2em] text-accent uppercase sm:block">
             Painel
           </span>
         </Link>
@@ -61,10 +61,10 @@ export function PainelNav() {
                 key={s.href}
                 href={s.href}
                 aria-current={on ? "page" : undefined}
-                className={`rounded-full px-4 py-2.5 font-mono text-[10.5px] tracking-[0.12em] uppercase transition-colors ${
+                className={`toque rounded-full px-4 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors ${
                   on
-                    ? "bg-surface-3 text-white"
-                    : "text-white/55 hover:bg-surface-2 hover:text-white"
+                    ? "bg-surface-3 text-texto"
+                    : "text-texto-3 hover:bg-surface-2 hover:text-texto"
                 }`}
               >
                 {s.rotulo}
@@ -76,14 +76,14 @@ export function PainelNav() {
               perdido no meio de uma tela, não na capa do painel. */}
           <Link
             href="/admin/manual"
-            className="rounded-full px-4 py-2.5 font-mono text-[10.5px] tracking-[0.12em] text-white/55 uppercase transition-colors hover:bg-surface-2 hover:text-white"
+            className="toque rounded-full px-4 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase transition-colors hover:bg-surface-2 hover:text-texto"
           >
             Manual
           </Link>
           <Link
             href="/"
             target="_blank"
-            className="rounded-full px-4 py-2.5 font-mono text-[10.5px] tracking-[0.12em] text-white/55 uppercase transition-colors hover:bg-surface-2 hover:text-white"
+            className="toque rounded-full px-4 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase transition-colors hover:bg-surface-2 hover:text-texto"
           >
             Ver site
           </Link>
@@ -129,13 +129,13 @@ export function PainelNav() {
                 }`}
               >
                 <span
-                  className={`font-mono text-[14px] tracking-[0.06em] ${
-                    on ? "text-accent" : "text-white"
+                  className={`font-mono text-corpo tracking-[0.06em] ${
+                    on ? "text-accent" : "text-texto"
                   }`}
                 >
                   {s.rotulo}
                 </span>
-                <span aria-hidden className="font-mono text-white/40">
+                <span aria-hidden className="font-mono text-texto-3">
                   →
                 </span>
               </Link>
@@ -146,14 +146,14 @@ export function PainelNav() {
             <div className="flex gap-2">
               <Link
                 href="/admin/manual"
-                className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-surface-2 font-mono text-[11px] tracking-[0.12em] uppercase"
+                className="toque h-12 flex-1 rounded-2xl bg-surface-2 font-mono text-rotulo tracking-[0.12em] uppercase"
               >
                 Manual
               </Link>
               <Link
                 href="/"
                 target="_blank"
-                className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-surface-2 font-mono text-[11px] tracking-[0.12em] uppercase"
+                className="toque h-12 flex-1 rounded-2xl bg-surface-2 font-mono text-rotulo tracking-[0.12em] uppercase"
               >
                 Ver site
               </Link>

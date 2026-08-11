@@ -38,15 +38,15 @@ export function ProvaSocial() {
           }`}
         >
           {avaliacoes.map((a) => (
-            <li key={`${a.nome}-${a.texto.slice(0, 20)}`} className="spot card flex flex-col p-6">
-              <p className="font-mono text-[13px] tracking-[0.14em] text-accent">
+            <li key={`${a.nome}-${a.texto.slice(0, 20)}`} className="card flex flex-col p-6">
+              <p className="font-mono text-nota tracking-[0.14em] text-accent">
                 {"★".repeat(Math.round(a.nota))}
-                <span className="text-white/25">{"★".repeat(5 - Math.round(a.nota))}</span>
+                <span className="text-texto-3">{"★".repeat(5 - Math.round(a.nota))}</span>
               </p>
-              <p className="mt-5 flex-1 text-[14px] leading-relaxed text-white/70">
+              <p className="mt-5 flex-1 text-corpo leading-relaxed text-texto-2">
                 “{a.texto}”
               </p>
-              <p className="mt-6 font-mono text-[11.5px] tracking-[0.1em] text-white/55 uppercase">
+              <p className="mt-6 font-mono text-rotulo tracking-[0.1em] text-texto-3 uppercase">
                 {a.nome} · {a.origem}
               </p>
             </li>
@@ -56,7 +56,7 @@ export function ProvaSocial() {
 
       {empresas.length > 0 && (
         <div className="card mt-4 p-6 md:p-8">
-          <p className="eyebrow text-white/50">Empresas que atendemos</p>
+          <p className="eyebrow text-texto-3">Empresas que atendemos</p>
           <ul className="mt-6 flex flex-wrap items-center gap-x-10 gap-y-6">
             {empresas.map((e) =>
               e.logo ? (
@@ -72,7 +72,7 @@ export function ProvaSocial() {
               ) : (
                 <li
                   key={e.nome}
-                  className="font-mono text-[13px] tracking-[0.08em] text-white/60 uppercase"
+                  className="font-mono text-nota tracking-[0.08em] text-texto-3 uppercase"
                 >
                   {e.nome}
                 </li>

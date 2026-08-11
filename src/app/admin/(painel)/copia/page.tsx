@@ -36,10 +36,9 @@ export default async function CopiaPage() {
 
   return (
     <>
-      <section className="py-10 md:py-12">
-        <p className="eyebrow text-accent">Segurança</p>
-        <h1 className="display mt-3 text-title">Cópia de segurança</h1>
-        <p className="mt-4 max-w-[58ch] text-[13.5px] leading-relaxed text-white/55">
+      <section className="py-7 md:py-9">
+        <h1 className="display text-[clamp(1.9rem,6vw,2.8rem)] leading-none">Cópia de segurança</h1>
+        <p className="mt-4 max-w-[58ch] text-nota leading-relaxed text-texto-3">
           Baixa um arquivo com tudo que está no sistema neste momento: clientes,
           ordens de serviço, produtos e orçamentos. É a sua garantia de não
           perder nada.
@@ -49,14 +48,14 @@ export default async function CopiaPage() {
       <div className="grid gap-3 lg:grid-cols-[1.15fr_1fr] lg:gap-4">
         <div className="spot card flex flex-col justify-between gap-8 p-6 md:p-8">
           <div>
-            <p className="eyebrow text-white/35">Vai entrar no arquivo</p>
+            <p className="eyebrow text-texto-3">Vai entrar no arquivo</p>
             <ul className="mt-5 grid gap-3">
               {contagens.map((c) => (
                 <li key={c.rotulo} className="flex items-baseline gap-3">
                   <span className="display min-w-[2.5ch] text-[1.9rem] leading-none text-accent">
                     {c.n}
                   </span>
-                  <span className="text-[13.5px] text-white/55">{c.rotulo}</span>
+                  <span className="text-nota text-texto-3">{c.rotulo}</span>
                 </li>
               ))}
             </ul>
@@ -69,14 +68,14 @@ export default async function CopiaPage() {
           <a
             href="/admin/copia/baixar"
             download
-            className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-[12px] tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+            className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-nota tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
           >
             Baixar a cópia agora
           </a>
         </div>
 
         <div className="card p-6 md:p-8">
-          <p className="eyebrow text-white/35">Como usar</p>
+          <p className="eyebrow text-texto-3">Como usar</p>
 
           <ol className="mt-5 grid gap-5">
             {[
@@ -98,12 +97,12 @@ export default async function CopiaPage() {
               ],
             ].map(([titulo, texto], i) => (
               <li key={titulo} className="flex gap-4">
-                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface-2 font-mono text-[11px] text-accent">
+                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface-2 font-mono text-rotulo text-accent">
                   {i + 1}
                 </span>
                 <span>
-                  <span className="block text-[14px] font-medium">{titulo}</span>
-                  <span className="mt-1 block text-[13px] leading-relaxed text-white/50">
+                  <span className="block text-corpo font-medium">{titulo}</span>
+                  <span className="mt-1 block text-nota leading-relaxed text-texto-3">
                     {texto}
                   </span>
                 </span>
@@ -111,7 +110,7 @@ export default async function CopiaPage() {
             ))}
           </ol>
 
-          <p className="mt-7 border-t border-line pt-6 text-[12.5px] leading-relaxed text-white/40">
+          <p className="mt-7 border-t border-line pt-6 text-nota leading-relaxed text-texto-3">
             O arquivo tem nome e telefone de cliente. Trate como trata a agenda
             da loja: não repasse para quem não trabalha aqui.
           </p>

@@ -6,7 +6,7 @@ export default function NotFound() {
     <section className="mx-auto max-w-[1180px] px-5 pt-32 pb-20 md:pt-40 md:pb-28">
       <p className="eyebrow text-accent">Erro 404</p>
       <h1 className="display mt-5 max-w-[12ch] text-title">Esta página não existe</h1>
-      <p className="mt-6 max-w-[48ch] text-[15px] leading-relaxed text-white/60">
+      <p className="mt-6 max-w-[48ch] text-corpo-g leading-relaxed text-texto-3">
         O endereço pode ter mudado ou o produto que você procurava já foi vendido. O
         estoque gira rápido.
       </p>
@@ -16,12 +16,12 @@ export default function NotFound() {
           <Link
             key={item.href}
             href={item.href}
-            className="spot card group flex items-center justify-between p-5 transition-colors hover:bg-surface-2"
+            className="card group flex items-center justify-between p-5 transition-colors hover:bg-surface-2"
           >
             <span className="display text-[1.4rem] leading-none">{item.rotulo}</span>
             <span
               aria-hidden
-              className="font-mono text-white/45 transition-transform group-hover:translate-x-1 group-hover:text-accent"
+              className="font-mono text-texto-3 transition-transform group-hover:translate-x-1 group-hover:text-accent"
             >
               →
             </span>

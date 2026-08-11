@@ -13,12 +13,12 @@ function Salvar({ salvo }: { salvo: boolean }) {
       <button
         type="submit"
         disabled={pending}
-        className="flex h-12 items-center rounded-full border border-accent px-7 font-mono text-[11.5px] tracking-[0.12em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-50"
+        className="flex h-12 items-center rounded-full border border-accent px-7 font-mono text-rotulo tracking-[0.12em] text-accent uppercase transition-colors hover:bg-accent hover:text-black disabled:opacity-50"
       >
         {pending ? "Salvando..." : "Salvar regras"}
       </button>
       {salvo && !pending && (
-        <p className="font-mono text-[11px] text-accent">Regras atualizadas.</p>
+        <p className="font-mono text-rotulo text-accent">Regras atualizadas.</p>
       )}
     </div>
   );
@@ -44,7 +44,7 @@ export function RegrasForm({ regras }: { regras: RegraManutencao[] }) {
       <div className="mt-5">
         <Salvar salvo={salvo} />
         {estado.erro && (
-          <p className="mt-3 font-mono text-[11.5px] text-accent">{estado.erro}</p>
+          <p className="mt-3 font-mono text-rotulo text-accent">{estado.erro}</p>
         )}
       </div>
     </form>

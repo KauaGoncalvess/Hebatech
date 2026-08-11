@@ -45,7 +45,7 @@ function Salvar() {
     <button
       type="submit"
       disabled={pending}
-      className="flex h-13 items-center justify-center rounded-full bg-accent px-8 py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
+      className="flex h-13 items-center justify-center rounded-full bg-accent px-8 py-4 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover disabled:opacity-50"
     >
       {pending ? "Salvando..." : "Salvar produto"}
     </button>
@@ -133,7 +133,7 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
           />
-          <span className="mt-2 block font-mono text-[10px] text-white/30">
+          <span className="mt-2 block font-mono text-rotulo text-texto-3">
             /produtos/{slugSugerido || "..."}
           </span>
         </Campo>
@@ -344,12 +344,12 @@ export function ProdutoForm({ produto }: { produto?: Produto }) {
         <Salvar />
         <Link
           href="/admin/produtos"
-          className="flex h-13 items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+          className="flex h-13 items-center rounded-full bg-surface-2 px-7 py-4 font-mono text-nota tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
         >
           Cancelar
         </Link>
         {estado.erro && (
-          <p className="font-mono text-[11.5px] text-accent">{estado.erro}</p>
+          <p className="font-mono text-rotulo text-accent">{estado.erro}</p>
         )}
       </div>
     </form>
@@ -384,10 +384,10 @@ function Interruptor({
         }`}
       />
       <span>
-        <span className="block font-mono text-[12px] tracking-[0.08em] uppercase">
+        <span className="block font-mono text-nota tracking-[0.08em] uppercase">
           {titulo}
         </span>
-        <span className="mt-1 block text-[12px] text-white/45">{texto}</span>
+        <span className="mt-1 block text-nota text-texto-3">{texto}</span>
       </span>
     </label>
   );

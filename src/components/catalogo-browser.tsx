@@ -389,17 +389,17 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
             placeholder="Buscar por marca, modelo ou peça"
-            className="w-full rounded-full bg-surface-2 py-3 pr-5 pl-11 font-mono text-[12px] transition-colors placeholder:text-white/55 hover:bg-surface-3 focus-visible:bg-surface-3"
+            className="w-full rounded-full bg-surface-2 py-3 pr-5 pl-11 font-mono text-nota transition-colors placeholder:text-texto-3 hover:bg-surface-3 focus-visible:bg-surface-3"
           />
           <span
             aria-hidden
-            className="pointer-events-none absolute left-4 font-mono text-[13px] text-accent"
+            className="pointer-events-none absolute left-4 font-mono text-nota text-accent"
           >
             ⌕
           </span>
         </label>
 
-        <p className="font-mono text-[12px] text-white/50">
+        <p className="font-mono text-nota text-texto-3">
           <span className="text-accent">{resultado.length}</span> de {itens.length} itens
         </p>
 
@@ -410,11 +410,11 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
             onClick={() => setDrawer(true)}
             aria-haspopup="dialog"
             aria-expanded={drawer}
-            className="flex items-center gap-2 rounded-full bg-surface-2 px-5 py-3 font-mono text-[11.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 lg:hidden"
+            className="flex items-center gap-2 rounded-full bg-surface-2 px-5 py-3 font-mono text-rotulo tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 lg:hidden"
           >
             Filtrar
             {ativos > 0 && (
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent font-mono text-[10px] font-bold text-black">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent font-mono text-rotulo font-bold text-black">
                 {ativos}
               </span>
             )}
@@ -430,7 +430,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
                 else p.set(CHAVE_ORDEM, e.target.value);
               })
             }
-              className="appearance-none rounded-full bg-surface-2 py-3 pr-10 pl-5 font-mono text-[11.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3"
+              className="appearance-none rounded-full bg-surface-2 py-3 pr-10 pl-5 font-mono text-rotulo tracking-[0.1em] uppercase transition-colors hover:bg-surface-3"
             >
               {ORDENS.map((o) => (
                 <option key={o.id} value={o.id} className="bg-surface">
@@ -440,7 +440,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
             </select>
             <span
               aria-hidden
-              className="pointer-events-none absolute right-4 font-mono text-[9px] text-accent"
+              className="pointer-events-none absolute right-4 font-mono text-rotulo text-accent"
             >
               ▼
             </span>
@@ -452,12 +452,12 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
         <aside className="hidden lg:block">
           <div className="sticky top-28">
             <div className="mb-6 flex items-center justify-between">
-              <p className="eyebrow text-white/50">Filtro</p>
+              <p className="eyebrow text-texto-3">Filtro</p>
               {ativos > 0 && (
                 <button
                   type="button"
                   onClick={limpar}
-                  className="font-mono text-[11px] text-accent"
+                  className="font-mono text-rotulo text-accent"
                 >
                   Limpar
                 </button>
@@ -498,7 +498,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
                 <button
                   type="button"
                   onClick={limpar}
-                  className="rounded-full bg-surface-2 px-7 py-3.5 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+                  className="rounded-full bg-surface-2 px-7 py-3.5 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
                 >
                   Limpar filtro
                 </button>
@@ -534,7 +534,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
             className="flex max-h-[82vh] flex-col rounded-t-[28px] border border-line bg-surface outline-none"
           >
             <div className="flex shrink-0 items-center justify-between px-6 py-5">
-              <p id="titulo-filtro" className="eyebrow text-white/55">
+              <p id="titulo-filtro" className="eyebrow text-texto-3">
                 Filtro · {resultado.length} itens
               </p>
               <div className="flex gap-5">
@@ -542,7 +542,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
                   <button
                     type="button"
                     onClick={limpar}
-                    className="font-mono text-[11px] text-accent"
+                    className="font-mono text-rotulo text-accent"
                   >
                     Limpar
                   </button>
@@ -550,7 +550,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
                 <button
                   type="button"
                   onClick={() => setDrawer(false)}
-                  className="font-mono text-[11px] text-white/60"
+                  className="font-mono text-rotulo text-texto-3"
                 >
                   Fechar
                 </button>
@@ -561,7 +561,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
               <button
                 type="button"
                 onClick={() => setDrawer(false)}
-                className="w-full rounded-full bg-accent py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase"
+                className="w-full rounded-full bg-accent py-4 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase"
               >
                 Ver {resultado.length} {resultado.length === 1 ? "item" : "itens"}
               </button>
@@ -576,7 +576,7 @@ export function CatalogoBrowser({ itens, filtrarCategoria = false }: Props) {
 function Grupo({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
     <section>
-      <h3 className="eyebrow mb-3 text-white/50">{titulo}</h3>
+      <h3 className="eyebrow mb-3 text-texto-3">{titulo}</h3>
       <div className="flex flex-wrap gap-2">{children}</div>
     </section>
   );
@@ -598,14 +598,14 @@ function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={ativo}
-      className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-mono text-[11.5px] transition-colors ${
+      className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-mono text-rotulo transition-colors ${
         ativo
           ? "bg-accent text-black"
-          : "bg-surface-2 text-white/70 hover:bg-surface-3 hover:text-white"
+          : "bg-surface-2 text-texto-2 hover:bg-surface-3 hover:text-white"
       }`}
     >
       {rotulo}
-      <span className={ativo ? "text-black/50" : "text-white/45"}>{quantidade}</span>
+      <span className={ativo ? "text-black/50" : "text-texto-3"}>{quantidade}</span>
     </button>
   );
 }

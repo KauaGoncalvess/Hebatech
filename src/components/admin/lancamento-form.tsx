@@ -16,7 +16,7 @@ function Salvar() {
     <button
       type="submit"
       disabled={pending}
-      className="flex h-13 items-center justify-center rounded-full bg-accent px-8 py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
+      className="flex h-13 items-center justify-center rounded-full bg-accent px-8 py-4 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover disabled:opacity-50"
     >
       {pending ? "Salvando..." : "Lançar"}
     </button>
@@ -50,10 +50,10 @@ export function LancamentoForm() {
                   type="button"
                   onClick={() => setTipo(id)}
                   aria-pressed={tipo === id}
-                  className={`flex h-13 items-center justify-center rounded-2xl font-mono text-[11.5px] tracking-[0.1em] uppercase transition-colors ${
+                  className={`flex h-13 items-center justify-center rounded-2xl font-mono text-rotulo tracking-[0.1em] uppercase transition-colors ${
                     tipo === id
                       ? "bg-accent font-bold text-black"
-                      : "bg-surface-2 text-white/55 hover:bg-surface-3"
+                      : "bg-surface-2 text-texto-3 hover:bg-surface-3"
                   }`}
                 >
                   {rotulo}
@@ -96,10 +96,10 @@ export function LancamentoForm() {
               className="mt-0.5 h-5 w-5 shrink-0 accent-[#ff6b18]"
             />
             <span>
-              <span className="block text-[13.5px]">
+              <span className="block text-nota">
                 {tipo === "entrada" ? "Já recebi este dinheiro" : "Já paguei"}
               </span>
-              <span className="mt-1 block text-[12.5px] leading-relaxed text-white/45">
+              <span className="mt-1 block text-nota leading-relaxed text-texto-3">
                 Desmarque se for fiado, carnê ou boleto que ainda vai vencer. Fica
                 em aberto até você dar baixa.
               </span>
@@ -119,7 +119,7 @@ export function LancamentoForm() {
       </Bloco>
 
       {estado.erro && (
-        <p className="card border border-accent/40 px-5 py-4 text-[13px] text-accent">
+        <p className="card border border-accent/40 px-5 py-4 text-nota text-accent">
           {estado.erro}
         </p>
       )}
@@ -128,7 +128,7 @@ export function LancamentoForm() {
         <Salvar />
         <Link
           href="/admin/financeiro"
-          className="flex h-13 items-center justify-center rounded-full bg-surface-2 px-8 font-mono text-[12px] tracking-[0.12em] text-white/60 uppercase transition-colors hover:bg-surface-3"
+          className="flex h-13 items-center justify-center rounded-full bg-surface-2 px-8 font-mono text-nota tracking-[0.12em] text-texto-3 uppercase transition-colors hover:bg-surface-3"
         >
           Cancelar
         </Link>

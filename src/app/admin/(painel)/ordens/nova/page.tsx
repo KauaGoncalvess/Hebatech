@@ -9,10 +9,10 @@ export default async function NovaOrdem() {
 
   return (
     <>
-      <section className="py-10 md:py-12">
+      <section className="py-7 md:py-9">
         <p className="eyebrow text-accent">Bancada</p>
         <h1 className="display mt-3 text-title">Abrir ordem</h1>
-        <p className="mt-4 max-w-[58ch] text-[14px] leading-relaxed text-white/55">
+        <p className="mt-4 max-w-[58ch] text-corpo leading-relaxed text-texto-3">
           Anote o número no comprovante do cliente e diga a ele que dá para acompanhar
           pelo site, com esse número e os quatro últimos dígitos do telefone.
         </p>

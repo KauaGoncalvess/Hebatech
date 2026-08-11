@@ -45,11 +45,11 @@ export default async function EtiquetaPage({ params }: Props) {
         <div className="flex flex-wrap items-center gap-3 print:hidden">
           <Link
             href={`/admin/produtos/${produto.id}`}
-            className="rounded-full bg-black/5 px-5 py-3 font-mono text-[11px] tracking-[0.12em] uppercase"
+            className="rounded-full bg-black/5 px-5 py-3 font-mono text-rotulo tracking-[0.12em] uppercase"
           >
             ← Voltar
           </Link>
-          <p className="font-mono text-[11px] text-black/50">
+          <p className="font-mono text-rotulo text-black/50">
             Use o Ctrl+P do navegador para imprimir esta folha.
           </p>
         </div>
@@ -63,19 +63,19 @@ export default async function EtiquetaPage({ params }: Props) {
               className="h-[168px] w-[168px] [&>svg]:h-full [&>svg]:w-full"
               dangerouslySetInnerHTML={{ __html: qr }}
             />
-            <p className="mt-3 text-center font-mono text-[10px] tracking-[0.1em] uppercase">
+            <p className="mt-3 text-center font-mono text-rotulo tracking-[0.1em] uppercase">
               Aponte a câmera
             </p>
           </div>
 
           <div className="min-w-0 flex-1">
-            <p className="font-mono text-[11px] tracking-[0.14em] uppercase">
+            <p className="font-mono text-rotulo tracking-[0.14em] uppercase">
               {produto.marca} · {rotuloCategoria(produto.categoria)}
             </p>
             <p className="mt-1 text-[26px] leading-[1.05] font-bold">{produto.modelo}</p>
 
             {resumo.length > 0 && (
-              <p className="mt-3 font-mono text-[12px] leading-relaxed">
+              <p className="mt-3 font-mono text-nota leading-relaxed">
                 {resumo.join(" · ")}
               </p>
             )}
@@ -83,13 +83,13 @@ export default async function EtiquetaPage({ params }: Props) {
             <p className="mt-4 text-[30px] leading-none font-bold">
               {preco(produto.preco)}
             </p>
-            <p className="mt-1 font-mono text-[11px]">
+            <p className="mt-1 font-mono text-rotulo">
               {produto.condicao === "novo" ? "Novo" : "Seminovo"}
               {produto.estadoGrau ? ` · grau ${produto.estadoGrau}` : ""} ·{" "}
               {produto.garantiaDias} dias de garantia
             </p>
 
-            <p className="mt-4 font-mono text-[10px] tracking-[0.1em] uppercase">
+            <p className="mt-4 font-mono text-rotulo tracking-[0.1em] uppercase">
               {produto.codigo} · {site.nome}
             </p>
           </div>

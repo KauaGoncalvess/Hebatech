@@ -2,6 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { excluirOrcamento, marcarOrcamento } from "@/app/admin/actions";
+import { AcaoIndisponivel, BotaoAcao, LinkAcao } from "./botao-acao";
+import { EtiquetaEstado } from "./etiqueta-estado";
 import type { PedidoOrcamento } from "@/types/orcamento";
 
 const quando = new Intl.DateTimeFormat("pt-BR", {
@@ -32,54 +34,49 @@ export function LinhaOrcamento({ p, retorno }: { p: PedidoOrcamento; retorno: st
   const aparelho = [p.tipo, p.marca, p.modelo].filter(Boolean).join(" ");
 
   return (
-    <li className={`card p-4 ${p.atendido ? "opacity-45" : ""}`}>
+    <li className={`card p-4 ${p.atendido ? "opacity-60" : ""}`}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="flex flex-wrap items-center gap-x-2 font-mono text-[9.5px] tracking-[0.16em] text-white/35 uppercase">
+          <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase">
             {quando.format(new Date(p.criadoEm))}
-            <span className="text-white/15">/</span>
-            {p.telefone}
-            {p.atendido && <span className="text-accent">· atendido</span>}
+            <span className="tabular-nums normal-case">{p.telefone}</span>
           </p>
-          <p className="mt-1 font-mono text-[13px] text-white">{p.nome}</p>
-          {aparelho && (
-            <p className="mt-0.5 font-mono text-[12px] text-white/55">{aparelho}</p>
-          )}
-          {p.defeito && <p className="mt-1 text-[13px] text-accent">{p.defeito}</p>}
+          <p className="mt-2 text-corpo-g text-texto">{p.nome}</p>
+          {aparelho && <p className="mt-0.5 text-nota text-texto-3">{aparelho}</p>}
+          {p.defeito && <p className="mt-1.5 text-nota text-texto-2">{p.defeito}</p>}
+          <p className="mt-3">
+            <EtiquetaEstado tom={p.atendido ? "ok" : "espera"}>
+              {p.atendido ? "Atendido" : "A retornar"}
+            </EtiquetaEstado>
+          </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           {retorno ? (
-            <a
+            <LinkAcao
+              variante="principal"
               href={retorno}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-accent px-4 py-2.5 font-mono text-[9.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white"
             >
               Chamar no zap
-            </a>
+            </LinkAcao>
           ) : (
-            <span className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] text-white/35 uppercase">
-              Telefone inválido
-            </span>
+            <AcaoIndisponivel>Sem telefone</AcaoIndisponivel>
           )}
-          <button
-            type="button"
-            disabled={pendente}
-            onClick={alternar}
-            className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40"
-          >
+          <BotaoAcao type="button" disabled={pendente} onClick={alternar}>
             {p.atendido ? "Reabrir" : "Atendido"}
-          </button>
-          <button
+          </BotaoAcao>
+          <BotaoAcao
+            variante="perigo"
             type="button"
             disabled={pendente}
             onClick={apagar}
             aria-label={`Apagar o pedido de ${p.nome}`}
-            className="rounded-full bg-surface-2 px-3 py-2.5 font-mono text-[9.5px] tracking-[0.1em] text-white/40 uppercase transition-colors hover:bg-surface-3 hover:text-white disabled:opacity-40"
+            className="px-4"
           >
             ✕
-          </button>
+          </BotaoAcao>
         </div>
       </div>
 
@@ -88,12 +85,12 @@ export function LinhaOrcamento({ p, retorno }: { p: PedidoOrcamento; retorno: st
           <button
             type="button"
             onClick={() => setAberto((v) => !v)}
-            className="font-mono text-[10px] tracking-[0.12em] text-white/40 uppercase transition-colors hover:text-white"
+            className="toque -mx-2 px-2 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase transition-colors hover:text-texto"
           >
             {aberto ? "− Detalhes" : "+ Detalhes"}
           </button>
           {aberto && (
-            <p className="mt-2 text-[13px] leading-relaxed whitespace-pre-wrap text-white/60">
+            <p className="mt-2 text-nota leading-relaxed whitespace-pre-wrap text-texto-2">
               {p.descricao}
             </p>
           )}
@@ -101,7 +98,10 @@ export function LinhaOrcamento({ p, retorno }: { p: PedidoOrcamento; retorno: st
       )}
 
       {erro && (
-        <p role="alert" className="mt-3 font-mono text-[11px] text-accent">
+        <p
+          role="alert"
+          className="mt-3 rounded-2xl bg-alerta/12 px-4 py-3 text-nota text-alerta"
+        >
           Não deu para salvar: {erro}
         </p>
       )}

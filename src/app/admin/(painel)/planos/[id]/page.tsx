@@ -14,7 +14,7 @@ export default async function EditarPlano({ params }: Props) {
 
   return (
     <>
-      <section className="flex flex-wrap items-end justify-between gap-4 py-10 md:py-12">
+      <section className="flex flex-wrap items-end justify-between gap-4 py-7 md:py-9">
         <div>
           <p className="eyebrow text-accent">
             {plano.codigo} · {plano.ativo ? "publicado" : "fora do ar"}

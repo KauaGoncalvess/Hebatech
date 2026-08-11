@@ -21,7 +21,7 @@ export function CtaPanel({ etiqueta, titulo, acao, href, className = "" }: Props
         <span className="display block max-w-[16ch] text-[clamp(1.6rem,3vw,2.2rem)] leading-[0.95]">
           {titulo}
         </span>
-        <span className="mt-7 inline-flex items-center gap-3 rounded-full bg-accent px-6 py-3.5 font-mono text-[11.5px] font-bold tracking-[0.12em] text-black uppercase transition-colors group-hover:bg-white">
+        <span className="mt-7 inline-flex items-center gap-3 rounded-full bg-accent px-6 py-3.5 font-mono text-rotulo font-bold tracking-[0.12em] text-black uppercase transition-colors group-hover:bg-accent-hover">
           {acao}
           <span aria-hidden>→</span>
         </span>

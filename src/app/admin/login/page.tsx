@@ -14,12 +14,12 @@ export default function LoginPage() {
             <br />
             catálogo
           </h1>
-          <p className="mt-6 max-w-[42ch] text-[13.5px] text-white/55">
+          <p className="mt-6 max-w-[42ch] text-nota text-texto-3">
             Aqui você cadastra produto, sobe foto, muda preço e tira do ar o que já
             vendeu. A alteração aparece no site em segundos.
           </p>
         </div>
-        <p className="font-mono text-[10px] tracking-[0.14em] text-white/25 uppercase">
+        <p className="font-mono text-rotulo tracking-[0.14em] text-texto-3 uppercase">
           Acesso só para a equipe da loja
         </p>
       </div>

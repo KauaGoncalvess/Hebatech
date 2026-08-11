@@ -19,7 +19,7 @@ function dataSimples(iso: string): string {
 }
 
 const CAMPO =
-  "mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3.5 font-mono text-[13.5px] transition-colors placeholder:text-white/40 focus-visible:bg-surface-3";
+  "mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3.5 font-mono text-nota transition-colors placeholder:text-texto-3 focus-visible:bg-surface-3";
 
 export function AcompanharForm() {
   const [estado, acao, pendente] = useActionState<EstadoConsulta, FormData>(
@@ -31,7 +31,7 @@ export function AcompanharForm() {
     <div className="mt-12 grid gap-4 lg:grid-cols-[1fr_1.3fr] lg:items-start">
       <form action={acao} className="card p-6 md:p-8">
         <label className="block">
-          <span className="eyebrow text-white/55">
+          <span className="eyebrow text-texto-3">
             Código da ordem <span className="text-accent">*</span>
           </span>
           <input
@@ -45,10 +45,10 @@ export function AcompanharForm() {
 
         <label className="mt-5 block">
           <span className="flex items-baseline justify-between gap-3">
-            <span className="eyebrow text-white/55">
+            <span className="eyebrow text-texto-3">
               Últimos 4 do seu telefone <span className="text-accent">*</span>
             </span>
-            <span className="font-mono text-[10px] text-white/40">Confere que é você</span>
+            <span className="font-mono text-rotulo text-texto-3">Confere que é você</span>
           </span>
           <input
             name="telefone"
@@ -63,7 +63,7 @@ export function AcompanharForm() {
         <button
           type="submit"
           disabled={pendente}
-          className="mt-7 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
+          className="mt-7 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-accent font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover disabled:opacity-50"
         >
           {pendente ? "Consultando…" : "Ver meu aparelho"}
           {!pendente && <span aria-hidden>→</span>}
@@ -72,13 +72,13 @@ export function AcompanharForm() {
         {estado.erro && (
           <p
             role="alert"
-            className="mt-5 rounded-2xl bg-surface-2 p-4 text-[13px] leading-relaxed text-accent"
+            className="mt-5 rounded-2xl bg-surface-2 p-4 text-nota leading-relaxed text-accent"
           >
             {estado.erro}
           </p>
         )}
 
-        <p className="mt-6 text-[12.5px] leading-relaxed text-white/45">
+        <p className="mt-6 text-nota leading-relaxed text-texto-3">
           O código está no comprovante que você recebeu ao deixar o aparelho. Perdeu?
           Chame a gente no WhatsApp que a gente localiza pelo seu nome.
         </p>
@@ -88,18 +88,18 @@ export function AcompanharForm() {
         <Resultado o={estado.ordem} />
       ) : (
         <aside className="card p-6 md:p-8">
-          <p className="eyebrow text-white/45">Como funciona</p>
+          <p className="eyebrow text-texto-3">Como funciona</p>
           <ol className="mt-5 space-y-4">
             {LINHA_DO_TEMPO.map((s, i) => (
               <li key={s} className="flex gap-3.5">
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-3 font-mono text-[10px] text-white/50">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-3 font-mono text-rotulo text-texto-3">
                   {i + 1}
                 </span>
                 <span>
-                  <span className="block font-mono text-[12.5px] text-white">
+                  <span className="block font-mono text-nota text-white">
                     {ETAPA[s].rotulo}
                   </span>
-                  <span className="mt-1 block text-[13px] leading-relaxed text-white/50">
+                  <span className="mt-1 block text-nota leading-relaxed text-texto-3">
                     {ETAPA[s].explicacao}
                   </span>
                 </span>
@@ -125,15 +125,15 @@ function Resultado({ o }: { o: OrdemPublica }) {
           <h2 className="display mt-3 text-sub">{aparelho}</h2>
         </div>
         <span
-          className={`rounded-full px-4 py-2.5 font-mono text-[10px] tracking-[0.12em] uppercase ${
-            cancelado ? "bg-surface-3 text-white/50" : "bg-accent text-black"
+          className={`rounded-full px-4 py-2.5 font-mono text-rotulo tracking-[0.12em] uppercase ${
+            cancelado ? "bg-surface-3 text-texto-3" : "bg-accent text-black"
           }`}
         >
           {etapa.rotulo}
         </span>
       </div>
 
-      <p className="mt-4 text-[14px] leading-relaxed text-white/60">{etapa.explicacao}</p>
+      <p className="mt-4 text-corpo leading-relaxed text-texto-3">{etapa.explicacao}</p>
 
       {!cancelado && (
         <ol className="mt-8 space-y-0">
@@ -163,12 +163,12 @@ function Resultado({ o }: { o: OrdemPublica }) {
                 </span>
                 <span className={`pb-6 ${atual ? "" : "opacity-45"}`}>
                   <span
-                    className={`block font-mono text-[12.5px] ${atual ? "text-accent" : "text-white"}`}
+                    className={`block font-mono text-nota ${atual ? "text-accent" : "text-white"}`}
                   >
                     {ETAPA[s].rotulo}
                   </span>
                   {atual && (
-                    <span className="mt-1 block text-[13px] leading-relaxed text-white/55">
+                    <span className="mt-1 block text-nota leading-relaxed text-texto-3">
                       {ETAPA[s].explicacao}
                     </span>
                   )}
@@ -194,8 +194,8 @@ function Resultado({ o }: { o: OrdemPublica }) {
 
       {o.observacoes && (
         <div className="mt-5 rounded-2xl bg-surface-2 p-5">
-          <p className="eyebrow text-white/40">Recado da bancada</p>
-          <p className="mt-3 text-[13.5px] leading-relaxed whitespace-pre-wrap text-white/65">
+          <p className="eyebrow text-texto-3">Recado da bancada</p>
+          <p className="mt-3 text-nota leading-relaxed whitespace-pre-wrap text-texto-2">
             {o.observacoes}
           </p>
         </div>
@@ -203,7 +203,7 @@ function Resultado({ o }: { o: OrdemPublica }) {
 
       {o.status === "aguardando_aprovacao" && (
         <div className="mt-5 rounded-2xl bg-accent p-6 text-black">
-          <p className="font-mono text-[10px] tracking-[0.14em] uppercase">
+          <p className="font-mono text-rotulo tracking-[0.14em] uppercase">
             Esperando o seu sim
           </p>
           {o.valorOrcado !== null && (
@@ -211,7 +211,7 @@ function Resultado({ o }: { o: OrdemPublica }) {
               {preco(o.valorOrcado)}
             </p>
           )}
-          <p className="mt-3 max-w-[42ch] text-[13.5px] leading-relaxed">
+          <p className="mt-3 max-w-[42ch] text-nota leading-relaxed">
             Nada é aberto, trocado ou cobrado sem a sua autorização. Se o valor não
             compensar, você retira o aparelho sem pagar o diagnóstico.
           </p>
@@ -220,7 +220,7 @@ function Resultado({ o }: { o: OrdemPublica }) {
             target="_blank"
             rel="noopener noreferrer"
             data-origem="acompanhar-aprovar"
-            className="mt-5 inline-flex h-13 items-center gap-3 rounded-full bg-black px-7 font-mono text-[11.5px] font-bold tracking-[0.12em] text-white uppercase transition-colors hover:bg-ink"
+            className="mt-5 inline-flex h-13 items-center gap-3 rounded-full bg-black px-7 font-mono text-rotulo font-bold tracking-[0.12em] text-white uppercase transition-colors hover:bg-ink"
           >
             Aprovar pelo WhatsApp
             <span aria-hidden>→</span>
@@ -233,7 +233,7 @@ function Resultado({ o }: { o: OrdemPublica }) {
         target="_blank"
         rel="noopener noreferrer"
         data-origem="acompanhar-duvida"
-        className="mt-5 inline-flex items-center gap-3 rounded-full bg-surface-2 px-6 py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+        className="mt-5 inline-flex items-center gap-3 rounded-full bg-surface-2 px-6 py-3.5 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
       >
         Falar sobre esta ordem
         <span aria-hidden>→</span>
@@ -245,10 +245,10 @@ function Resultado({ o }: { o: OrdemPublica }) {
 function Dado({ rotulo, valor }: { rotulo: string; valor: string }) {
   return (
     <div className="rounded-2xl bg-surface-2 p-4">
-      <dt className="font-mono text-[10px] tracking-[0.12em] text-white/40 uppercase">
+      <dt className="font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase">
         {rotulo}
       </dt>
-      <dd className="mt-2 text-[13.5px] text-white/75">{valor}</dd>
+      <dd className="mt-2 text-nota text-texto-2">{valor}</dd>
     </div>
   );
 }

@@ -71,7 +71,7 @@ export default async function ServicoPage({ params }: Params) {
       <nav aria-label="Trilha" className="mb-8">
         <Link
           href="/assistencia"
-          className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[11.5px] text-white/60 transition-colors hover:bg-surface-3 hover:text-white"
+          className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-4 py-2.5 font-mono text-rotulo text-texto-3 transition-colors hover:bg-surface-3 hover:text-white"
         >
           <span aria-hidden>←</span> Assistência
         </Link>
@@ -81,21 +81,21 @@ export default async function ServicoPage({ params }: Params) {
         <div>
           <p className="eyebrow text-accent">{s.etiqueta}</p>
           <h1 className="display mt-5 max-w-[18ch] text-title">{s.chamada}</h1>
-          <p className="mt-6 max-w-[58ch] text-[15px] leading-relaxed text-white/65">
+          <p className="mt-6 max-w-[58ch] text-corpo-g leading-relaxed text-texto-2">
             {s.descricao}
           </p>
 
           <dl className="mt-8 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-surface-2 p-5">
-              <dt className="eyebrow text-white/50">Preço</dt>
-              <dd className="mt-2 text-[13.5px] leading-relaxed text-white/70">
+              <dt className="eyebrow text-texto-3">Preço</dt>
+              <dd className="mt-2 text-nota leading-relaxed text-texto-2">
                 Fechado depois da medição, e por escrito. Nada é aberto ou trocado
                 antes da sua aprovação.
               </dd>
             </div>
             <div className="rounded-2xl bg-surface-2 p-5">
-              <dt className="eyebrow text-white/50">Prazo</dt>
-              <dd className="mt-2 text-[13.5px] leading-relaxed text-white/70">
+              <dt className="eyebrow text-texto-3">Prazo</dt>
+              <dd className="mt-2 text-nota leading-relaxed text-texto-2">
                 Informado junto do orçamento, quando já se sabe o que o aparelho tem.
               </dd>
             </div>
@@ -107,13 +107,13 @@ export default async function ServicoPage({ params }: Params) {
               data-origem={`servico:${s.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+              className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
             >
               Pedir orçamento
             </a>
             <Link
               href="/assistencia"
-              className="flex h-14 items-center justify-center rounded-full bg-surface-2 px-8 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+              className="flex h-14 items-center justify-center rounded-full bg-surface-2 px-8 font-mono text-nota tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
             >
               Tabela completa
             </Link>
@@ -125,10 +125,10 @@ export default async function ServicoPage({ params }: Params) {
             <ServicoArt area={s.area} className="h-full w-full" />
           </div>
           <div className="p-6">
-            <p className="eyebrow text-white/50">O que está incluso</p>
+            <p className="eyebrow text-texto-3">O que está incluso</p>
             <ul className="mt-5 space-y-3">
               {s.itens.map((item) => (
-                <li key={item} className="flex gap-3 text-[14px] text-white/70">
+                <li key={item} className="flex gap-3 text-corpo text-texto-2">
                   <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                   {item}
                 </li>
@@ -154,16 +154,16 @@ export default async function ServicoPage({ params }: Params) {
             <li key={o.slug}>
               <Link
                 href={rotaServico(o)}
-                className="spot card group flex h-full flex-col p-6 transition-colors hover:bg-surface-2"
+                className="card group flex h-full flex-col p-6 transition-colors hover:bg-surface-2"
               >
                 <span className="eyebrow text-accent">{o.etiqueta}</span>
                 <span className="display mt-4 text-[1.4rem] leading-[0.95]">{o.titulo}</span>
-                <span className="mt-3 flex-1 text-[13.5px] leading-relaxed text-white/55">
+                <span className="mt-3 flex-1 text-nota leading-relaxed text-texto-3">
                   {o.resumo}
                 </span>
                 <span
                   aria-hidden
-                  className="mt-5 font-mono text-sm text-white/50 transition-colors group-hover:text-accent"
+                  className="mt-5 font-mono text-sm text-texto-3 transition-colors group-hover:text-accent"
                 >
                   →
                 </span>

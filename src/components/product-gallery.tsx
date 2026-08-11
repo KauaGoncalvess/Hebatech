@@ -27,7 +27,7 @@ export function ProductGallery({ fotos, alt, children }: Props) {
           className="object-contain"
         />
         {fotos.length > 1 && (
-          <span className="absolute top-3 left-3 rounded-full bg-black/70 px-3 py-1.5 font-mono text-[10px] text-white/70 backdrop-blur">
+          <span className="absolute top-3 left-3 rounded-full bg-black/70 px-3 py-1.5 font-mono text-rotulo text-texto-2 backdrop-blur">
             {atual + 1} / {fotos.length}
           </span>
         )}

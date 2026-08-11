@@ -174,7 +174,7 @@ export default async function ProdutoPage({ params }: Params) {
       <nav aria-label="Trilha" className="mb-8">
         <Link
           href={voltarPara}
-          className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[11.5px] text-white/60 transition-colors hover:bg-surface-3 hover:text-white"
+          className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-4 py-2.5 font-mono text-rotulo text-texto-3 transition-colors hover:bg-surface-3 hover:text-white"
         >
           <span aria-hidden>←</span> {rotuloVoltar}
         </Link>
@@ -199,8 +199,8 @@ export default async function ProdutoPage({ params }: Params) {
           <ul className="mt-4 grid grid-cols-3 gap-3">
             {medidas.map(([k, v]) => (
               <li key={k} className="rounded-2xl bg-surface-2 p-4">
-                <p className="eyebrow text-white/50">{k}</p>
-                <p className="mt-2 font-mono text-[14px]">{v}</p>
+                <p className="eyebrow text-texto-3">{k}</p>
+                <p className="mt-2 font-mono text-corpo">{v}</p>
               </li>
             ))}
           </ul>
@@ -209,17 +209,14 @@ export default async function ProdutoPage({ params }: Params) {
         {/* Identificação e ação */}
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-surface-2 px-3.5 py-2 font-mono text-[10.5px] tracking-[0.12em] text-accent uppercase">
+            <span className="rounded-full bg-surface-2 px-3.5 py-2 font-mono text-rotulo tracking-[0.12em] text-accent uppercase">
               {p.marca}
             </span>
-            <span className="rounded-full bg-surface-2 px-3.5 py-2 font-mono text-[10.5px] tracking-[0.12em] text-white/50 uppercase">
+            <span className="rounded-full bg-surface-2 px-3.5 py-2 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase">
               {rotuloCategoria(p.categoria)}
             </span>
-            <span className="rounded-full bg-surface-2 px-3.5 py-2 font-mono text-[10.5px] tracking-[0.12em] text-white/55 uppercase">
-              {p.codigo}
-            </span>
             {vendido && (
-              <span className="rounded-full bg-accent px-3.5 py-2 font-mono text-[10.5px] font-bold tracking-[0.12em] text-black uppercase">
+              <span className="rounded-full bg-accent px-3.5 py-2 font-mono text-rotulo font-bold tracking-[0.12em] text-black uppercase">
                 Vendido
               </span>
             )}
@@ -230,12 +227,12 @@ export default async function ProdutoPage({ params }: Params) {
           </h1>
 
           {resumoTecnico(p).length > 0 && (
-            <p className="mt-4 font-mono text-[13px] text-white/55">
+            <p className="mt-4 font-mono text-nota text-texto-3">
               {resumoTecnico(p).join(" · ")}
             </p>
           )}
           {p.resumo && (
-            <p className="mt-4 text-[14.5px] leading-relaxed text-white/60">{p.resumo}</p>
+            <p className="mt-4 text-corpo leading-relaxed text-texto-3">{p.resumo}</p>
           )}
 
           {vendido ? (
@@ -244,7 +241,7 @@ export default async function ProdutoPage({ params }: Params) {
               <p className="display mt-4 max-w-[18ch] text-[clamp(1.6rem,4vw,2.2rem)] leading-[0.95]">
                 Este aparelho foi vendido
               </p>
-              <p className="mt-4 text-[14px] leading-relaxed text-white/60">
+              <p className="mt-4 text-corpo leading-relaxed text-texto-3">
                 A ficha continua no ar para você comparar. Chega máquina do mesmo
                 porte toda semana — diga a configuração e avisamos assim que entrar.
               </p>
@@ -254,14 +251,14 @@ export default async function ProdutoPage({ params }: Params) {
                 data-origem="produto-vendido"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+                className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
               >
                 Quero um parecido
                 <span aria-hidden>→</span>
               </a>
               <Link
                 href={voltarPara}
-                className="mt-3 flex h-14 items-center justify-center rounded-full bg-surface-2 font-mono text-[12px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+                className="mt-3 flex h-14 items-center justify-center rounded-full bg-surface-2 font-mono text-nota tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
               >
                 Ver o que tem em estoque
               </Link>
@@ -269,14 +266,14 @@ export default async function ProdutoPage({ params }: Params) {
           ) : (
             <div className="card mt-7 p-6">
               {p.precoReferencia && p.precoReferencia > p.preco && (
-                <p className="font-mono text-[12px] text-white/50 line-through">
+                <p className="font-mono text-nota text-texto-2 line-through">
                   {preco(p.precoReferencia)}
                 </p>
               )}
               <p className="display mt-1 text-[clamp(2.2rem,6vw,3rem)] leading-none">
                 {preco(p.preco)}
               </p>
-              <p className="mt-3 font-mono text-[12px] text-white/50">
+              <p className="mt-3 text-nota text-texto-3">
                 à vista no Pix · ou 10x de {parcela(p.preco)} sem juros
               </p>
 
@@ -285,12 +282,12 @@ export default async function ProdutoPage({ params }: Params) {
                 data-origem="produto"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+                className="mt-6 flex h-14 items-center justify-center gap-3 rounded-full bg-accent font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
               >
                 Reservar no WhatsApp
                 <span aria-hidden>→</span>
               </a>
-              <p className="mt-4 text-center font-mono text-[11px] text-white/55">
+              <p className="mt-4 text-center text-nota text-texto-3">
                 A mensagem já vai com modelo, código e preço.
               </p>
             </div>
@@ -299,20 +296,23 @@ export default async function ProdutoPage({ params }: Params) {
           {/* Estado de conservação */}
           <div className="card mt-4 p-6">
             <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-[13px] font-bold text-black">
+              <span
+                aria-hidden
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-accent font-mono text-nota font-bold text-accent"
+              >
                 {p.estadoGrau ?? "N"}
               </span>
               <div>
-                <h2 className="font-mono text-[12px] tracking-[0.1em] uppercase">
+                <h2 className="font-mono text-nota tracking-[0.1em] uppercase">
                   {p.estadoGrau ? "Estado de conservação" : "Produto novo"}
                 </h2>
-                <p className="font-mono text-[11px] text-white/55">
+                <p className="text-nota text-texto-3">
                   {p.estadoGrau ? `Grau ${p.estadoGrau} de A a C` : "Lacrado, com nota fiscal"}
                 </p>
               </div>
             </div>
 
-            <p className="mt-5 text-[14px] leading-relaxed text-white/65">
+            <p className="mt-5 text-corpo leading-relaxed text-texto-2">
               {p.estadoGrau
                 ? GRAU_DESCRICAO[p.estadoGrau]
                 : "Item novo, sem uso, com garantia do fabricante além da garantia da loja."}
@@ -321,7 +321,7 @@ export default async function ProdutoPage({ params }: Params) {
             {p.estadoObservacoes.length > 0 && (
               <ul className="mt-5 space-y-2.5">
                 {p.estadoObservacoes.map((o) => (
-                  <li key={o} className="flex gap-3 text-[13.5px] text-white/60">
+                  <li key={o} className="flex gap-3 text-nota text-texto-3">
                     <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                     {o}
                   </li>
@@ -329,7 +329,7 @@ export default async function ProdutoPage({ params }: Params) {
               </ul>
             )}
 
-            <p className="mt-5 text-[13px] text-white/55">
+            <p className="mt-5 text-nota text-texto-3">
               Você pode conferir o produto na loja antes de fechar, sem compromisso.
             </p>
           </div>
@@ -345,7 +345,7 @@ export default async function ProdutoPage({ params }: Params) {
           {revisao.map((r) => (
             <li
               key={r}
-              className="flex items-start gap-3 rounded-2xl bg-surface-2 p-4 text-[13.5px] text-white/70"
+              className="flex items-start gap-3 rounded-2xl bg-surface-2 p-4 text-nota text-texto-2"
             >
               <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
               {r}
@@ -361,10 +361,10 @@ export default async function ProdutoPage({ params }: Params) {
           <dl className="card mt-6 divide-y divide-line overflow-hidden">
             {[...p.ficha, { rotulo: "Código do produto", valor: p.codigo }].map((item) => (
               <div key={item.rotulo} className="grid gap-1 p-5 sm:grid-cols-[200px_1fr] sm:gap-6">
-                <dt className="font-mono text-[11px] tracking-[0.1em] text-white/50 uppercase">
+                <dt className="font-mono text-rotulo tracking-[0.1em] text-texto-3 uppercase">
                   {item.rotulo}
                 </dt>
-                <dd className="font-mono text-[13px] text-white/80">{item.valor}</dd>
+                <dd className="font-mono text-nota text-texto-2">{item.valor}</dd>
               </div>
             ))}
           </dl>
@@ -390,10 +390,10 @@ export default async function ProdutoPage({ params }: Params) {
             "Direito de arrependimento em compra à distância, conforme o CDC.",
           ],
         ].map(([k, v, texto]) => (
-          <div key={k} className="spot card p-6">
-            <p className="eyebrow text-white/50">{k}</p>
+          <div key={k} className="card p-6">
+            <p className="eyebrow text-texto-3">{k}</p>
             <p className="display mt-3 text-[1.8rem] leading-none text-accent">{v}</p>
-            <p className="mt-3 text-[13px] leading-relaxed text-white/55">{texto}</p>
+            <p className="mt-3 text-nota leading-relaxed text-texto-3">{texto}</p>
           </div>
         ))}
       </section>

@@ -26,7 +26,7 @@ export default async function NotebooksPage() {
         <div className="relative mx-auto max-w-[1180px] px-5 pt-32 pb-12 md:pt-40 md:pb-16">
         <p className="eyebrow text-accent">Notebooks seminovos</p>
         <h1 className="display mt-5 max-w-[16ch] text-title">Máquina de empresa, revisada item a item</h1>
-        <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+        <p className="mt-6 max-w-[56ch] text-corpo-g leading-relaxed text-texto-3">
           Chassi reforçado, teclado melhor e peça de reposição fácil de achar. Cada aparelho passa por teste de disco, memória, bateria, tela e portas antes de entrar na lista.
         </p>
         </div>
@@ -43,18 +43,18 @@ export default async function NotebooksPage() {
       <section className="mx-auto max-w-[1180px] px-5 pb-20 md:pb-28">
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
           <div className="card p-6 md:p-8">
-            <p className="eyebrow text-white/50">Não achou a configuração</p>
+            <p className="eyebrow text-texto-3">Não achou a configuração</p>
             <p className="display mt-4 max-w-[20ch] text-sub">
               Chega estoque novo toda semana e nem tudo é anunciado
             </p>
-            <p className="mt-4 max-w-[54ch] text-[14px] leading-relaxed text-white/55">
+            <p className="mt-4 max-w-[54ch] text-corpo leading-relaxed text-texto-3">
               Diga processador, memória e faixa de preço que você procura. Avisamos assim que entrar algo compatível — e avaliamos o seu notebook antigo como parte do pagamento.
             </p>
             <a
               href={waTroca()}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-3 rounded-full bg-surface-2 px-6 py-3.5 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3 hover:text-accent"
+              className="mt-6 inline-flex items-center gap-3 rounded-full bg-surface-2 px-6 py-3.5 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3 hover:text-accent"
             >
               Avaliar o meu usado
               <span aria-hidden>→</span>

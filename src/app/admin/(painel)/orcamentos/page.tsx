@@ -12,11 +12,10 @@ export default async function ListaOrcamentos() {
 
   return (
     <>
-      <section className="flex flex-wrap items-end justify-between gap-4 py-10 md:py-12">
+      <section className="flex flex-wrap items-end justify-between gap-4 py-7 md:py-9">
         <div>
-          <p className="eyebrow text-accent">Assistência</p>
-          <h1 className="display mt-3 text-title">Pedidos de orçamento</h1>
-          <p className="mt-4 max-w-[52ch] text-[13.5px] leading-relaxed text-white/55">
+          <h1 className="display text-[clamp(1.9rem,6vw,2.8rem)] leading-none">Pedidos de orçamento</h1>
+          <p className="mt-4 max-w-[52ch] text-nota leading-relaxed text-texto-3">
             Tudo que foi preenchido no formulário do site, inclusive de quem não chegou a
             mandar a mensagem no WhatsApp. Esses são os que mais valem uma ligação.
           </p>
@@ -26,16 +25,16 @@ export default async function ListaOrcamentos() {
       {pedidos.length === 0 ? (
         <div className="card px-6 py-20 text-center">
           <p className="display text-sub">Nenhum pedido ainda</p>
-          <p className="mx-auto mt-4 max-w-[46ch] text-[13px] text-white/55">
+          <p className="mx-auto mt-4 max-w-[46ch] text-nota text-texto-3">
             Assim que alguém preencher o formulário da página de assistência, o pedido
             aparece aqui.
           </p>
         </div>
       ) : (
         <>
-          <p className="eyebrow mb-4 text-white/35">A retornar · {abertos.length}</p>
+          <p className="eyebrow mb-4 text-texto-3">A retornar · {abertos.length}</p>
           {abertos.length === 0 ? (
-            <p className="card px-6 py-10 text-center text-[13px] text-white/45">
+            <p className="card px-6 py-10 text-center text-nota text-texto-3">
               Nenhum pedido em aberto. Tudo respondido.
             </p>
           ) : (
@@ -48,7 +47,7 @@ export default async function ListaOrcamentos() {
 
           {fechados.length > 0 && (
             <>
-              <p className="eyebrow mt-10 mb-4 text-white/35">
+              <p className="eyebrow mt-10 mb-4 text-texto-3">
                 Já atendidos · {fechados.length}
               </p>
               <ul className="grid gap-3">

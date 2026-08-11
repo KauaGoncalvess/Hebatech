@@ -8,7 +8,7 @@ import { waGenerico } from "@/lib/whatsapp";
 import { mascararTelefone } from "@/types/cliente";
 
 const CAMPO =
-  "mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3.5 font-mono text-[13.5px] transition-colors placeholder:text-white/45 focus-visible:bg-surface-3";
+  "mt-2.5 w-full rounded-2xl bg-surface-2 px-4 py-3.5 font-mono text-nota transition-colors placeholder:text-texto-3 focus-visible:bg-surface-3";
 
 export function CadastroForm() {
   const [estado, acao, pendente] = useActionState<EstadoCadastro, FormData>(
@@ -27,7 +27,7 @@ export function CadastroForm() {
             ? "Já tínhamos a sua ficha aqui"
             : "Pronto. Da próxima vez é só chegar e deixar o aparelho"}
         </h2>
-        <p className="mt-5 max-w-[52ch] text-[14.5px] leading-relaxed text-white/60">
+        <p className="mt-5 max-w-[52ch] text-corpo leading-relaxed text-texto-3">
           {estado.jaExiste
             ? "Esse telefone já tem ficha na loja, então não precisa fazer de novo. Se algum dado mudou, é só avisar no WhatsApp que a gente atualiza."
             : "Quando você trouxer o aparelho, a gente já tem seus dados e a ordem de serviço sai na hora. Nada de ditar nome e CPF no balcão."}
@@ -38,14 +38,14 @@ export function CadastroForm() {
             target="_blank"
             rel="noopener noreferrer"
             data-origem="cadastro-pronto"
-            className="inline-flex items-center gap-3 rounded-full bg-accent px-7 py-4 font-mono text-[11.5px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+            className="inline-flex items-center gap-3 rounded-full bg-accent px-7 py-4 font-mono text-rotulo font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
           >
             Falar com a loja
             <span aria-hidden>→</span>
           </a>
           <Link
             href="/assistencia"
-            className="inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+            className="inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
           >
             Pedir um orçamento
             <span aria-hidden>→</span>
@@ -105,7 +105,7 @@ export function CadastroForm() {
       </div>
 
       {estado.erro && (
-        <p role="alert" className="mt-5 font-mono text-[12px] text-accent">
+        <p role="alert" className="mt-5 font-mono text-nota text-accent">
           {estado.erro}
         </p>
       )}
@@ -113,13 +113,13 @@ export function CadastroForm() {
       <button
         type="submit"
         disabled={pendente}
-        className="mt-7 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-accent font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white disabled:opacity-50"
+        className="mt-7 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-accent font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover disabled:opacity-50"
       >
         {pendente ? "Enviando…" : "Fazer meu cadastro"}
         {!pendente && <span aria-hidden>→</span>}
       </button>
 
-      <p className="mt-4 text-center font-mono text-[11px] leading-relaxed text-white/55">
+      <p className="mt-4 text-center font-mono text-rotulo leading-relaxed text-texto-3">
         Seus dados ficam só com a {site.nome}, para atender você.{" "}
         <Link href="/privacidade" className="text-accent underline underline-offset-4">
           Como tratamos seus dados
@@ -146,11 +146,11 @@ function Campo({
   return (
     <label className={`block ${className}`}>
       <span className="flex items-baseline justify-between gap-3">
-        <span className="eyebrow text-white/55">
+        <span className="eyebrow text-texto-3">
           {rotulo}
           {obrigatorio && <span className="text-accent"> *</span>}
         </span>
-        {nota && <span className="font-mono text-[10px] text-white/45">{nota}</span>}
+        {nota && <span className="font-mono text-rotulo text-texto-3">{nota}</span>}
       </span>
       {children}
     </label>

@@ -94,7 +94,6 @@ export default async function Home() {
           className="absolute inset-0 bg-linear-to-t from-ink via-ink/85 to-ink/30 lg:bg-linear-to-r lg:from-ink lg:via-ink/85 lg:to-ink/20"
         />
         <Aura forte className="-top-40 -left-32 h-[520px] w-[520px] md:h-[680px] md:w-[680px]" />
-        <Aura className="right-[-10%] bottom-[-30%] h-[420px] w-[420px] md:h-[560px] md:w-[560px]" />
 
         <div className="relative mx-auto max-w-[1180px] px-5 pt-32 pb-14 md:pt-44 md:pb-20">
           <p className="eyebrow text-accent">
@@ -110,7 +109,7 @@ export default async function Home() {
             className="measure-in mt-8 block h-px w-full max-w-[480px] bg-accent"
           />
 
-          <p className="mt-6 max-w-[42ch] text-[16px] leading-relaxed text-white/75">
+          <p className="mt-6 max-w-[42ch] text-corpo-g leading-relaxed text-texto-2">
             Testamos o aparelho na bancada, mandamos o valor fechado de peça e mão de obra
             no WhatsApp e só começamos com o seu sim. Sem conserto, sem cobrança.
           </p>
@@ -121,13 +120,13 @@ export default async function Home() {
               data-origem="hero"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+              className="flex h-14 items-center justify-center rounded-full bg-accent px-8 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
             >
               Descrever o defeito
             </a>
             <Link
               href="/produtos"
-              className="flex h-14 items-center justify-center gap-3 rounded-full border border-white/25 bg-black/40 px-8 font-mono text-[12px] tracking-[0.12em] uppercase backdrop-blur transition-colors hover:border-accent hover:text-accent"
+              className="flex h-14 items-center justify-center gap-3 rounded-full border border-white/25 bg-black/40 px-8 font-mono text-nota tracking-[0.12em] uppercase backdrop-blur transition-colors hover:border-accent hover:text-accent"
             >
               Ver produtos à venda
               <span aria-hidden>→</span>
@@ -141,7 +140,7 @@ export default async function Home() {
                 <dt className="display text-[clamp(1.9rem,5vw,3rem)] leading-none text-accent">
                   {n}
                 </dt>
-                <dd className="mt-2 font-mono text-[10.5px] leading-tight tracking-[0.08em] text-white/60 uppercase">
+                <dd className="mt-2 font-mono text-rotulo leading-tight tracking-[0.08em] text-texto-3 uppercase">
                   {rotulo}
                 </dd>
               </div>
@@ -152,7 +151,6 @@ export default async function Home() {
 
       {/* ── Três portas ── */}
       <section className="relative overflow-hidden bg-surface/40 py-24 md:py-32">
-        <Aura className="top-[-20%] left-1/2 h-[420px] w-[420px] -translate-x-1/2 md:h-[560px] md:w-[560px]" />
         <div className="relative mx-auto max-w-[1180px] px-5">
         <SectionHead
           etiqueta="Por onde começar"
@@ -165,19 +163,19 @@ export default async function Home() {
             <li key={p.href}>
               <Link
                 href={p.href}
-                className="spot card group flex h-full flex-col p-6 transition-colors hover:bg-surface-2 md:p-8"
+                className="card group flex h-full flex-col p-6 transition-colors hover:bg-surface-2 md:p-8"
               >
                 <span className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-[12px] font-bold text-black">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-nota font-bold text-black">
                     {i + 1}
                   </span>
-                  <span className="eyebrow text-white/55">{p.etiqueta}</span>
+                  <span className="eyebrow text-texto-3">{p.etiqueta}</span>
                 </span>
                 <span className="display mt-6 text-sub">{p.titulo}</span>
-                <span className="mt-4 flex-1 text-[14px] leading-relaxed text-white/60">
+                <span className="mt-4 flex-1 text-corpo leading-relaxed text-texto-3">
                   {p.texto}
                 </span>
-                <span className="mt-7 inline-flex items-center gap-3 font-mono text-[11.5px] tracking-[0.12em] text-accent uppercase">
+                <span className="mt-7 inline-flex items-center gap-3 font-mono text-rotulo tracking-[0.12em] text-accent uppercase">
                   {p.acao}
                   <span aria-hidden className="transition-transform group-hover:translate-x-1">
                     →
@@ -192,7 +190,6 @@ export default async function Home() {
 
       {/* ── Nossos serviços ── */}
       <section className="relative overflow-hidden py-24 md:py-32">
-        <Aura className="top-1/4 right-[-15%] h-[440px] w-[440px] md:h-[620px] md:w-[620px]" />
         <div className="relative mx-auto max-w-[1180px] px-5">
           <SectionHead
             etiqueta="Nossos serviços"
@@ -212,7 +209,7 @@ export default async function Home() {
             <h2 className="display mt-5 max-w-[20ch] text-title text-black">
               Conserto, venda e contrato na mesma bancada
             </h2>
-            <p className="mt-6 max-w-[54ch] text-[15px] leading-relaxed text-black/75">
+            <p className="mt-6 max-w-[54ch] text-corpo-g leading-relaxed text-black/75">
               Você não precisa de uma loja para consertar, outra para comprar e um
               técnico avulso para a empresa. Aqui é o mesmo endereço, a mesma nota
               fiscal e a mesma garantia por escrito.
@@ -224,7 +221,7 @@ export default async function Home() {
             data-origem="faixa-laranja"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-16 items-center justify-center rounded-full bg-black px-10 font-mono text-[12px] font-bold tracking-[0.12em] whitespace-nowrap text-white uppercase transition-colors hover:bg-ink"
+            className="flex h-16 items-center justify-center rounded-full bg-black px-10 font-mono text-nota font-bold tracking-[0.12em] whitespace-nowrap text-white uppercase transition-colors hover:bg-ink"
           >
             Falar agora
           </a>
@@ -237,7 +234,6 @@ export default async function Home() {
       {/* ── Produtos em destaque ── */}
       {destaques.length > 0 && (
         <section className="relative overflow-hidden py-24 md:py-32">
-          <Aura className="top-0 left-[-12%] h-[420px] w-[420px] md:h-[560px] md:w-[560px]" />
           <div className="relative mx-auto max-w-[1180px] px-5">
             <SectionHead
               etiqueta="À venda na loja"
@@ -257,7 +253,7 @@ export default async function Home() {
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
                 href="/produtos"
-                className="flex items-center gap-3 rounded-full bg-accent px-8 py-4 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+                className="flex items-center gap-3 rounded-full bg-accent px-8 py-4 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
               >
                 Todos os produtos
                 <span aria-hidden>→</span>
@@ -287,7 +283,7 @@ export default async function Home() {
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="display mt-5 text-[1.4rem] leading-none">{titulo}</h3>
-              <p className="mt-3 max-w-[34ch] text-[13.5px] leading-relaxed text-white/60">
+              <p className="mt-3 max-w-[34ch] text-nota leading-relaxed text-texto-3">
                 {texto}
               </p>
             </li>
@@ -335,7 +331,7 @@ export default async function Home() {
           <h2 className="display mx-auto mt-5 max-w-[18ch] text-title">
             Descreva o defeito ou o modelo que você procura
           </h2>
-          <p className="mx-auto mt-5 max-w-[52ch] text-[14.5px] leading-relaxed text-white/70">
+          <p className="mx-auto mt-5 max-w-[52ch] text-corpo leading-relaxed text-texto-2">
             A resposta sai no horário comercial, com prazo, valor e o que exatamente
             será feito.
           </p>
@@ -345,13 +341,13 @@ export default async function Home() {
               data-origem="fechamento-home"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-14 items-center rounded-full bg-accent px-8 font-mono text-[12px] font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-white"
+              className="flex h-14 items-center rounded-full bg-accent px-8 font-mono text-nota font-bold tracking-[0.12em] text-black uppercase transition-colors hover:bg-accent-hover"
             >
               Chamar no WhatsApp
             </a>
             <Link
               href="/contato"
-              className="flex h-14 items-center rounded-full border border-white/25 bg-black/40 px-8 font-mono text-[12px] tracking-[0.12em] uppercase backdrop-blur transition-colors hover:border-accent hover:text-accent"
+              className="flex h-14 items-center rounded-full border border-white/25 bg-black/40 px-8 font-mono text-nota tracking-[0.12em] uppercase backdrop-blur transition-colors hover:border-accent hover:text-accent"
             >
               Endereço e horário
             </Link>

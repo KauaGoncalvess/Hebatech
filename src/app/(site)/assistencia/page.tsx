@@ -50,7 +50,7 @@ export default function AssistenciaPage() {
           Diagnóstico em até {site.operacao.prazoDiagnosticoHoras}h, orçamento antes do
           reparo
         </h1>
-        <p className="mt-6 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+        <p className="mt-6 max-w-[56ch] text-corpo-g leading-relaxed text-texto-3">
           Notebook e desktop de qualquer marca. Preencha o formulário abaixo: ele monta a
           mensagem com marca, modelo e defeito e abre o seu WhatsApp. Você confere o texto
           antes de enviar.
@@ -64,7 +64,7 @@ export default function AssistenciaPage() {
           ].map((t) => (
             <li
               key={t}
-              className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[11.5px] text-white/60"
+              className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-rotulo text-texto-3"
             >
               {t}
             </li>
@@ -72,7 +72,7 @@ export default function AssistenciaPage() {
         </ul>
 
         {/* Quem já deixou o aparelho não vem aqui pedir orçamento — vem saber se ficou pronto. */}
-        <p className="mt-7 text-[14px] text-white/50">
+        <p className="mt-7 text-corpo text-texto-3">
           Já deixou o aparelho na loja?{" "}
           <Link
             href="/acompanhar"
@@ -96,7 +96,7 @@ export default function AssistenciaPage() {
             <h2 className="display mt-4 max-w-[22ch] text-sub">
               Tem várias máquinas e nenhum TI?
             </h2>
-            <p className="mt-4 max-w-[56ch] text-[14px] leading-relaxed text-white/55">
+            <p className="mt-4 max-w-[56ch] text-corpo leading-relaxed text-texto-3">
               Existe contrato mensal com visita programada, chamado remoto e backup
               testado — sai bem mais barato que chamar técnico só
               quando o trabalho já parou.
@@ -104,7 +104,7 @@ export default function AssistenciaPage() {
           </div>
           <Link
             href="/manutencao"
-            className="flex h-14 items-center justify-center rounded-full bg-surface-2 px-8 font-mono text-[12px] tracking-[0.12em] whitespace-nowrap uppercase transition-colors hover:bg-surface-3"
+            className="flex h-14 items-center justify-center rounded-full bg-surface-2 px-8 font-mono text-nota tracking-[0.12em] whitespace-nowrap uppercase transition-colors hover:bg-surface-3"
           >
             Ver planos
           </Link>
@@ -118,12 +118,12 @@ export default function AssistenciaPage() {
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {REGRAS.map((r, i) => (
-            <article key={r.titulo} className="spot card p-6">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent font-mono text-[12px] font-bold text-black">
+            <article key={r.titulo} className="card p-6">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent font-mono text-nota font-bold text-black">
                 {i + 1}
               </span>
               <h3 className="display mt-5 text-[1.35rem] leading-none">{r.titulo}</h3>
-              <p className="mt-3 text-[13.5px] leading-relaxed text-white/55">{r.texto}</p>
+              <p className="mt-3 text-nota leading-relaxed text-texto-3">{r.texto}</p>
             </article>
           ))}
         </div>

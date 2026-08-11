@@ -11,7 +11,7 @@ export function ProductCard({ p }: { p: Produto }) {
   return (
     <Link
       href={`/produtos/${p.slug}`}
-      className="spot card flutua group flex h-full flex-col overflow-hidden hover:bg-surface-2"
+      className="card flutua group flex h-full flex-col overflow-hidden hover:bg-surface-2"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-ink">
         {p.fotos[0] ? (
@@ -32,29 +32,29 @@ export function ProductCard({ p }: { p: Produto }) {
           />
         )}
 
-        <span className="absolute top-3 left-3 rounded-full bg-black/70 px-3 py-1.5 font-mono text-[10px] tracking-[0.12em] text-white/80 uppercase backdrop-blur">
+        <span className="absolute top-3 left-3 rounded-full bg-black/70 px-3 py-1.5 font-mono text-rotulo tracking-[0.12em] text-texto-2 uppercase backdrop-blur">
           {rotuloCategoria(p.categoria)}
         </span>
 
         {p.estadoGrau ? (
-          <span className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-full bg-accent font-mono text-[11px] font-bold text-black">
+          <span className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-full bg-accent font-mono text-rotulo font-bold text-black">
             {p.estadoGrau}
           </span>
         ) : (
-          <span className="absolute top-3 right-3 rounded-full bg-accent px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.1em] text-black uppercase">
+          <span className="absolute top-3 right-3 rounded-full bg-accent px-3 py-1.5 font-mono text-rotulo font-bold tracking-[0.1em] text-black uppercase">
             Novo
           </span>
         )}
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <p className="font-mono text-[11px] tracking-[0.14em] text-accent uppercase">
+        <p className="font-mono text-rotulo tracking-[0.14em] text-accent uppercase">
           {p.marca}
         </p>
         <h3 className="display mt-2 text-[1.5rem] leading-[0.95]">{p.modelo}</h3>
 
         {detalhes.length > 0 && (
-          <p className="mt-3 line-clamp-2 text-[13.5px] leading-relaxed text-white/50">
+          <p className="mt-3 line-clamp-2 text-nota leading-relaxed text-texto-3">
             {detalhes.join(" · ")}
           </p>
         )}
@@ -64,7 +64,7 @@ export function ProductCard({ p }: { p: Produto }) {
             <p className="font-mono text-[1.35rem] leading-none font-bold">
               {preco(p.preco)}
             </p>
-            <p className="mt-2 font-mono text-[11px] text-white/55">
+            <p className="mt-2 text-nota text-texto-3">
               ou 10x {parcela(p.preco)}
             </p>
           </div>

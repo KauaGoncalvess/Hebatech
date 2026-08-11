@@ -37,7 +37,7 @@ export default function PainelIndisponivel() {
         <br />
         o banco de dados
       </h1>
-      <p className="mt-6 max-w-[54ch] text-[14px] leading-relaxed text-white/60">
+      <p className="mt-6 max-w-[54ch] text-corpo leading-relaxed text-texto-3">
         O site continua no ar e atendendo — só o painel é que não abre até a conexão
         com o banco ser configurada.
       </p>
@@ -45,7 +45,7 @@ export default function PainelIndisponivel() {
       {/* Esta página tem dois leitores, e a lista serve a só um deles. Sem dizer
           isso, quem atende no balcão fica tentando entender instruções que não
           são para ele. */}
-      <p className="card mt-8 max-w-[60ch] p-5 text-[13.5px] leading-relaxed text-white/70">
+      <p className="card mt-8 max-w-[60ch] p-5 text-nota leading-relaxed text-texto-2">
         <span className="font-mono text-accent">Se você é da loja:</span> não há nada
         para fazer aqui. Avise quem cuida do sistema e mostre esta tela — a lista
         abaixo é o passo a passo dele.
@@ -54,10 +54,10 @@ export default function PainelIndisponivel() {
       <ol className="mt-6 grid gap-3">
         {passos.map(([n, titulo, texto]) => (
           <li key={n} className="card flex gap-5 p-5">
-            <span className="font-mono text-[11px] text-accent">{n}</span>
+            <span className="font-mono text-rotulo text-accent">{n}</span>
             <span>
-              <span className="block font-mono text-[13px] tracking-[0.04em]">{titulo}</span>
-              <span className="mt-1.5 block max-w-[56ch] text-[12.5px] text-white/50">
+              <span className="block font-mono text-nota tracking-[0.04em]">{titulo}</span>
+              <span className="mt-1.5 block max-w-[56ch] text-nota text-texto-3">
                 {texto}
               </span>
             </span>
@@ -67,7 +67,7 @@ export default function PainelIndisponivel() {
 
       <Link
         href="/"
-        className="mt-10 inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+        className="mt-10 inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
       >
         Voltar para o site
         <span aria-hidden>→</span>

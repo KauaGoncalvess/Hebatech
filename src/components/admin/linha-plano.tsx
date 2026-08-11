@@ -23,20 +23,20 @@ export function LinhaPlano({ p }: { p: Plano }) {
       }`}
     >
       <div className="min-w-0">
-        <p className="flex flex-wrap items-center gap-x-2 font-mono text-[9.5px] tracking-[0.16em] text-white/35 uppercase">
+        <p className="flex flex-wrap items-center gap-x-2 font-mono text-rotulo tracking-[0.16em] text-texto-3 uppercase">
           {p.codigo}
           {p.faixa && (
             <>
-              <span className="text-white/15">/</span>
+              <span aria-hidden className="h-3 w-px bg-line-strong" />
               {p.faixa}
             </>
           )}
           {p.destaque && <span className="text-accent">· mais contratado</span>}
         </p>
-        <p className="font-mono text-[13px] text-white">{p.nome}</p>
-        <p className="mt-0.5 font-mono text-[12px] text-accent">
+        <p className="font-mono text-nota text-white">{p.nome}</p>
+        <p className="mt-0.5 font-mono text-nota text-accent">
           {p.precoMensal === null ? "Sob proposta" : `${preco(p.precoMensal)} / mês`}
-          <span className="text-white/30"> · {p.inclui.length} itens inclusos</span>
+          <span className="text-texto-3"> · {p.inclui.length} itens inclusos</span>
         </p>
       </div>
 
@@ -45,20 +45,20 @@ export function LinhaPlano({ p }: { p: Plano }) {
           type="button"
           disabled={pendente}
           onClick={alternar}
-          className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-[9.5px] tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40"
+          className="rounded-full bg-surface-2 px-4 py-2.5 font-mono text-rotulo tracking-[0.1em] uppercase transition-colors hover:bg-surface-3 disabled:opacity-40"
         >
           {p.ativo ? "Tirar do ar" : "Publicar"}
         </button>
         <Link
           href={`/admin/planos/${p.id}`}
-          className="rounded-full bg-accent px-4 py-2.5 font-mono text-[9.5px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-white"
+          className="rounded-full bg-accent px-4 py-2.5 font-mono text-rotulo font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-accent-hover"
         >
           Editar
         </Link>
       </div>
 
       {erro && (
-        <p role="alert" className="w-full font-mono text-[11px] text-accent">
+        <p role="alert" className="w-full font-mono text-rotulo text-accent">
           Não deu para mudar: {erro}
         </p>
       )}

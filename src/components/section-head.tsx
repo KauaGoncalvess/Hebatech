@@ -17,7 +17,7 @@ export function SectionHead({ etiqueta, titulo, nota, acao }: Props) {
       <p className="eyebrow text-accent">{etiqueta}</p>
       <h2 className="display mt-4 max-w-[20ch] text-title">{titulo}</h2>
       {nota && (
-        <p className="mt-5 max-w-[54ch] text-[14.5px] leading-relaxed text-white/55">
+        <p className="mt-5 max-w-[54ch] text-corpo leading-relaxed text-texto-3">
           {nota}
         </p>
       )}

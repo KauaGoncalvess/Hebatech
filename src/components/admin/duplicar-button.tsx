@@ -19,12 +19,12 @@ export function DuplicarButton({ id }: { id: string }) {
             setErro(erro ?? null);
           })
         }
-        className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-[10.5px] tracking-[0.12em] text-white/60 uppercase transition-colors hover:bg-surface-3 hover:text-white disabled:opacity-50"
+        className="flex h-11 items-center rounded-full bg-surface-2 px-5 font-mono text-rotulo tracking-[0.12em] text-texto-3 uppercase transition-colors hover:bg-surface-3 hover:text-white disabled:opacity-50"
       >
         {pendente ? "Duplicando..." : "Duplicar"}
       </button>
       {erro && (
-        <p role="alert" className="font-mono text-[11px] text-accent">
+        <p role="alert" className="font-mono text-rotulo text-accent">
           Não deu para duplicar: {erro}
         </p>
       )}

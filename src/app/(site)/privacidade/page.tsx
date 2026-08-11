@@ -71,7 +71,7 @@ export default function PrivacidadePage() {
       <h1 className="display mt-5 max-w-[18ch] text-title">
         O que fazemos com os seus dados
       </h1>
-      <p className="mt-6 max-w-[58ch] text-[15px] leading-relaxed text-white/60">
+      <p className="mt-6 max-w-[58ch] text-corpo-g leading-relaxed text-texto-3">
         Em uma frase: guardamos o pedido de orçamento só para conseguir te
         retornar, e nada do que chega aqui é usado para outra coisa.
       </p>
@@ -83,7 +83,7 @@ export default function PrivacidadePage() {
             {paragrafos.map((texto) => (
               <p
                 key={texto}
-                className="mt-4 max-w-[74ch] text-[14px] leading-relaxed text-white/60"
+                className="mt-4 max-w-[74ch] text-corpo leading-relaxed text-texto-3"
               >
                 {texto}
               </p>
@@ -94,7 +94,7 @@ export default function PrivacidadePage() {
 
       <section className="card mt-4 p-6 md:p-8">
         <h2 className="display text-sub">Quem responde</h2>
-        <p className="mt-4 text-[14px] leading-relaxed text-white/60">
+        <p className="mt-4 text-corpo leading-relaxed text-texto-3">
           {site.nomeCompleto}
           <br />
           {enderecoLinha}
@@ -105,7 +105,7 @@ export default function PrivacidadePage() {
 
       <Link
         href="/contato"
-        className="mt-10 inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-[11.5px] tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
+        className="mt-10 inline-flex items-center gap-3 rounded-full bg-surface-2 px-7 py-4 font-mono text-rotulo tracking-[0.12em] uppercase transition-colors hover:bg-surface-3"
       >
         Falar com a loja
         <span aria-hidden>→</span>

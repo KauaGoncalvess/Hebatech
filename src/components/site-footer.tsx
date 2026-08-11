@@ -21,17 +21,17 @@ export function SiteFooter() {
               height={64}
               className="rounded-full"
             />
-            <p className="mt-5 max-w-[34ch] text-[14px] leading-relaxed text-white/60">
+            <p className="mt-5 max-w-[34ch] text-corpo leading-relaxed text-texto-3">
               Assistência técnica, manutenção e venda de equipamento de informática.
               Loja física em {site.endereco.cidade}.
             </p>
-            <p className="mt-5 font-mono text-[12px] leading-relaxed text-white/50">
+            <p className="mt-5 font-mono text-nota leading-relaxed text-texto-3">
               {enderecoLinha}
             </p>
           </div>
 
           <nav>
-            <p className="eyebrow text-white/45">Páginas</p>
+            <p className="eyebrow text-texto-3">Páginas</p>
             <ul className="mt-5 space-y-3.5">
               {[
                 ...navegacao,
@@ -43,7 +43,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-[14.5px] text-white/65 transition-colors hover:text-accent"
+                    className="text-corpo text-texto-2 transition-colors hover:text-accent"
                   >
                     {item.rotulo}
                   </Link>
@@ -53,7 +53,7 @@ export function SiteFooter() {
           </nav>
 
           <div>
-            <p className="eyebrow text-white/45">Contato</p>
+            <p className="eyebrow text-texto-3">Contato</p>
             <ul className="mt-5 space-y-3.5">
               {CONTATO.map((c) => (
                 <li key={c.rotulo}>
@@ -61,7 +61,7 @@ export function SiteFooter() {
                     href={c.href}
                     target={c.externo ? "_blank" : undefined}
                     rel={c.externo ? "noopener noreferrer" : undefined}
-                    className="text-[14.5px] text-white/65 transition-colors hover:text-accent"
+                    className="text-corpo text-texto-2 transition-colors hover:text-accent"
                   >
                     {c.rotulo}
                   </a>
@@ -69,11 +69,11 @@ export function SiteFooter() {
               ))}
             </ul>
 
-            <p className="eyebrow mt-8 text-white/45">Horário</p>
+            <p className="eyebrow mt-8 text-texto-3">Horário</p>
             <ul className="mt-4 space-y-2">
               {site.horario.map((h) => (
-                <li key={h.dia} className="font-mono text-[12px] text-white/55">
-                  {h.dia} · <span className="text-white/70">{h.faixa}</span>
+                <li key={h.dia} className="font-mono text-nota text-texto-3">
+                  {h.dia} · <span className="text-texto-2">{h.faixa}</span>
                 </li>
               ))}
             </ul>
@@ -81,7 +81,7 @@ export function SiteFooter() {
         </div>
 
         <div className="bg-surface-2 px-6 py-5 text-center md:px-10">
-          <p className="font-mono text-[11px] tracking-[0.08em] text-white/50">
+          <p className="font-mono text-rotulo tracking-[0.08em] text-texto-3">
             © {new Date().getFullYear()} {site.nomeCompleto} · Preços e disponibilidade
             sujeitos a alteração
           </p>

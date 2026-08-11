@@ -33,7 +33,7 @@ export default function CadastroPage() {
         <h1 className="display mt-5 max-w-[18ch] text-title">
           Adiante o seu cadastro
         </h1>
-        <p className="mt-6 max-w-[58ch] text-[15px] leading-relaxed text-white/60">
+        <p className="mt-6 max-w-[58ch] text-corpo-g leading-relaxed text-texto-3">
           Não é obrigatório e não cria senha nenhuma. É só para você não perder tempo no
           balcão quando trouxer o aparelho.
         </p>
@@ -44,10 +44,10 @@ export default function CadastroPage() {
           <aside className="mt-12 grid gap-3">
             {VANTAGENS.map(([titulo, texto]) => (
               <div key={titulo} className="card p-6">
-                <p className="font-mono text-[12.5px] tracking-[0.06em] text-white">
+                <p className="font-mono text-nota tracking-[0.06em] text-white">
                   {titulo}
                 </p>
-                <p className="mt-2.5 text-[13.5px] leading-relaxed text-white/55">
+                <p className="mt-2.5 text-nota leading-relaxed text-texto-3">
                   {texto}
                 </p>
               </div>

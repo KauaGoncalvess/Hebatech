@@ -8,7 +8,7 @@ export function Faq({ perguntas }: { perguntas: [string, string][] }) {
       {perguntas.map(([pergunta, resposta]) => (
         <details key={pergunta} className="card group p-6">
           <summary className="flex list-none cursor-pointer items-center justify-between gap-6">
-            <h3 className="font-mono text-[13.5px] tracking-[0.02em] text-white">
+            <h3 className="font-mono text-nota tracking-[0.02em] text-white">
               {pergunta}
             </h3>
             <span
@@ -18,7 +18,7 @@ export function Faq({ perguntas }: { perguntas: [string, string][] }) {
               +
             </span>
           </summary>
-          <p className="mt-4 max-w-[72ch] text-[13.5px] leading-relaxed text-white/60">
+          <p className="mt-4 max-w-[72ch] text-nota leading-relaxed text-texto-3">
             {resposta}
           </p>
         </details>

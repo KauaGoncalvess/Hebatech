@@ -25,14 +25,14 @@ export function Comparativo() {
   return (
     <div className="grid gap-4 lg:grid-cols-2">
       <article className="card p-6 md:p-8">
-        <p className="eyebrow text-white/50">O que costuma acontecer</p>
+        <p className="eyebrow text-texto-3">O que costuma acontecer</p>
         <h3 className="display mt-4 text-sub">Assistência de esquina</h3>
         <ul className="mt-7 space-y-4">
           {COMUM.map((t) => (
-            <li key={t} className="flex gap-3.5 text-[14px] leading-relaxed text-white/50">
+            <li key={t} className="flex gap-3.5 text-corpo leading-relaxed text-texto-3">
               <span
                 aria-hidden
-                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-surface-3 font-mono text-[11px] text-white/50"
+                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-surface-3 font-mono text-rotulo text-texto-3"
               >
                 ×
               </span>
@@ -47,10 +47,10 @@ export function Comparativo() {
         <h3 className="display mt-4 text-sub">{site.nome}</h3>
         <ul className="mt-7 space-y-4">
           {AQUI.map((t) => (
-            <li key={t} className="flex gap-3.5 text-[14px] leading-relaxed text-white/80">
+            <li key={t} className="flex gap-3.5 text-corpo leading-relaxed text-texto-2">
               <span
                 aria-hidden
-                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-[11px] font-bold text-black"
+                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent font-mono text-rotulo font-bold text-black"
               >
                 ✓
               </span>

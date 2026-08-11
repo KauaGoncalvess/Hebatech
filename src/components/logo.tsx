@@ -33,11 +33,11 @@ export function Logo({ className = "", compacto = false }: Props) {
       </svg>
 
       <span className="flex flex-col leading-none">
-        <span className="font-mono text-[15px] font-bold tracking-[-0.02em]">
+        <span className="font-mono text-corpo-g font-bold tracking-[-0.02em]">
           HEBA<span className="text-accent">TE</span>CH
         </span>
         {!compacto && (
-          <span className="mt-1 font-sans text-[8.5px] leading-none tracking-[0.16em] text-white/45 uppercase">
+          <span className="mt-1 font-sans text-rotulo leading-none tracking-[0.16em] text-texto-3 uppercase">
             Soluções em Informática
           </span>
         )}
